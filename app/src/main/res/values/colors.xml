@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="background_dark">#323030</color>
+    <color name="orange_primary">#FF8A13</color>
+    <color name="orange_secondary">#FFB80A</color>
+    <color name="field_background">#323030</color>
+    <color name="hint_gray">#8A8A8A</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_gray">#9E9E9E</color>
+    <color name="button_gradient_start">#FF7319</color>
+    <color name="button_gradient_end">#FFB00A</color>
 </resources>
