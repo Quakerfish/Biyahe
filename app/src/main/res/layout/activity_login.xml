@@ -25,8 +25,8 @@
             android:layout_marginBottom="72dp">
 
             <ImageView
-                android:layout_width="34dp"
-                android:layout_height="34dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@drawable/ic_logo_swirl"
                 android:contentDescription="@null" />
 
@@ -36,7 +36,7 @@
                 android:layout_marginStart="6dp"
                 android:text="Biyahe"
                 android:textColor="@color/orange_primary"
-                android:textSize="32sp"
+                android:textSize="50sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -95,7 +95,7 @@
         </FrameLayout>
 
         <!-- Login Button -->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="Login"
