@@ -33,7 +33,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
                 android:text="Biyahe"
                 android:textColor="@color/orange_primary"
                 android:textSize="50sp"
@@ -53,6 +52,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Enter Username"
             android:background="@drawable/bg_edittext"
             android:textColor="@color/text_white"
             android:textColorHint="@color/hint_gray"
@@ -78,6 +78,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Enter Password"
                 android:background="@drawable/bg_edittext"
                 android:textColor="@color/text_white"
                 android:textColorHint="@color/hint_gray"

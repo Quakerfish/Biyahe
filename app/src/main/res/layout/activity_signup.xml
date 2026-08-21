@@ -34,14 +34,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
                 android:text="Biyahe"
                 android:textColor="@color/orange_primary"
                 android:textSize="50sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Username -->
+        <!-- Username Input Field -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,6 +53,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Enter Username"
             android:background="@drawable/bg_edittext"
             android:textColor="@color/text_white"
             android:textColorHint="@color/hint_gray"
@@ -61,7 +61,7 @@
             android:inputType="text"
             android:layout_marginBottom="18dp" />
 
-        <!-- Password -->
+        <!-- Password Input Field -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,6 +79,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Enter Password"
                 android:background="@drawable/bg_edittext"
                 android:textColor="@color/text_white"
                 android:textColorHint="@color/hint_gray"
@@ -95,7 +96,7 @@
                 android:contentDescription="@null" />
         </FrameLayout>
 
-        <!-- Confirm Password -->
+        <!-- Confirm Password Input Field -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -113,6 +114,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Confirm Password"
                 android:background="@drawable/bg_edittext"
                 android:textColor="@color/text_white"
                 android:textColorHint="@color/hint_gray"
@@ -129,7 +131,7 @@
                 android:contentDescription="@null" />
         </FrameLayout>
 
-        <!-- Email -->
+        <!-- Email Input Field -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -142,6 +144,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Enter Email"
             android:background="@drawable/bg_edittext"
             android:textColor="@color/text_white"
             android:textColorHint="@color/hint_gray"
@@ -164,7 +167,7 @@
             android:stateListAnimator="@null"
             android:layout_marginBottom="28dp" />
 
-        <!-- Login Row -->
+        <!-- Login Directory Message -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
