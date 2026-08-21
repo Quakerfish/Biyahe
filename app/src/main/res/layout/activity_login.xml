@@ -17,7 +17,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#B3000000" />
+        android:background="#CB1E1E1E" /> <!-- Darker BG: #B3000000 -->
 
     <ScrollView
         android:layout_width="match_parent"
