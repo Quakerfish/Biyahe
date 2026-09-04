@@ -22,7 +22,7 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var btnSignUp: Button
 
     // Replace with your actual server URL
-    private val SIGNUP_URL = "http://192.168.137.65/biyahe/signup.php"
+    private val SIGNUP_URL = "http://10.123.94.151/biyahe/signup.php"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
