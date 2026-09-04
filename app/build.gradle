@@ -32,6 +32,7 @@ android {
 }
 
 dependencies {
+    implementation("org.maplibre.gl:android-sdk:11.0.0")
     implementation libs.activity.ktx
     implementation libs.appcompat
     implementation libs.constraintlayout
