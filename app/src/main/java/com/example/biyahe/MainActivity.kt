@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             map.uiSettings.isRotateGesturesEnabled = false
             map.uiSettings.isTiltGesturesEnabled = false
 
-            //Starting Camera Point
+            //Starti    ng Camera Point
             val cebuCityCenter = LatLng(10.3156, 123.8854)
             val initialPosition = CameraPosition.Builder()
                 .target(cebuCityCenter)
