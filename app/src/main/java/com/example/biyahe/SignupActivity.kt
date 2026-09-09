@@ -1,5 +1,6 @@
 package com.example.biyahe
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -101,7 +102,11 @@ class SignupActivity : AppCompatActivity() {
                     btnSignUp.isEnabled = true
                     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
                     if (success) {
-                        finish() // go back to Login, or start LoginActivity explicitly
+                        val intent = Intent(this, LoginActivity::class.java)
+                        // Clears previous activities so pressing 'Back' from Login won't return to SignUp
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+//                        finish()
                     }
                 }
 

@@ -9,4 +9,6 @@
     <color name="text_gray">#9E9E9E</color>
     <color name="button_gradient_start">#FF7319</color>
     <color name="button_gradient_end">#FFB00A</color>
+    <color name="surface_dark">#1E1E1E</color>
+    <color name="surface_dark_variant">#2A2A2A</color>
 </resources>

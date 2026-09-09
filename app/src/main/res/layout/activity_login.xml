@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <!-- Background Image -->
     <ImageView
@@ -18,7 +17,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#CB1E1E1E" /> <!-- Darker BG: #B3000000 -->
+        android:background="#CB1E1E1E" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -59,9 +58,8 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <!-- Username -->
+            <!-- Username Label -->
             <TextView
-                android:id="@+id/etUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Username"
@@ -70,7 +68,9 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="6dp" />
 
+            <!-- Username Input (ID MOVED HERE) -->
             <EditText
+                android:id="@+id/etUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter Username"
@@ -79,25 +79,27 @@
                 android:textColorHint="@color/hint_gray"
                 android:textSize="14sp"
                 android:inputType="text"
+                android:padding="14dp"
                 android:layout_marginBottom="18dp" />
 
-            <!-- Password -->
+            <!-- Password Label -->
             <TextView
-                android:id="@+id/etPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Password"
                 android:textColor="@color/orange_primary"
                 android:textSize="13sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="6dp" />  ? mb
+                android:layout_marginBottom="6dp" />
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp">
 
+                <!-- Password Input (ID MOVED HERE) -->
                 <EditText
+                    android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Enter Password"
@@ -106,6 +108,7 @@
                     android:textColorHint="@color/hint_gray"
                     android:textSize="14sp"
                     android:inputType="textPassword"
+                    android:padding="14dp"
                     android:paddingEnd="44dp" />
 
                 <ImageView
@@ -142,7 +145,7 @@
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
-            <!-- Spacer pushes signup row toward bottom, like the reference -->
+            <!-- Spacer -->
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

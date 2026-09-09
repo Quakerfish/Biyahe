@@ -53,14 +53,19 @@
             <!-- Description -->
 
             <!-- Get Started Button -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnGetStarted"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="200dp"
-                android:text="GET STARTED"
+                android:layout_height="56dp"
+                android:text="Get Started"
+                android:textColor="@color/text_white"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textAllCaps="false"
+                android:background="@drawable/bg_button_gradient"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
+                android:layout_marginTop="200dp"/>
 
         </LinearLayout>
 
