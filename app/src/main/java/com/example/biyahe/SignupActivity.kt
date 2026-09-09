@@ -5,10 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import org.json.JSONObject
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
@@ -17,52 +14,40 @@ import java.net.URL
 class SignupActivity : AppCompatActivity() {
 
     private lateinit var etUsername: EditText
+    private lateinit var etEmail: EditText
     private lateinit var etPassword: EditText
     private lateinit var etConfirmPassword: EditText
-    private lateinit var etEmail: EditText
-    private lateinit var btnSignUp: Button
+    private lateinit var btnSignup: Button
 
-    // Replace with your actual server URL
-    private val SIGNUP_URL = "http://10.123.94.151/biyahe/signup.php"
+    private val SIGNUP_URL = "http://10.73.15.173/biyahe/signup.php"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_signup)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.signup)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         etUsername = findViewById(R.id.etUsername)
+        etEmail = findViewById(R.id.etEmail)
         etPassword = findViewById(R.id.etPassword)
         etConfirmPassword = findViewById(R.id.etConfirmPassword)
-        etEmail = findViewById(R.id.etEmail)
-        btnSignUp = findViewById(R.id.btnSignUp)
+        btnSignup = findViewById(R.id.btnSignUp)
 
-        btnSignUp.setOnClickListener {
+        btnSignup.setOnClickListener {
             val username = etUsername.text.toString().trim()
+            val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
             val confirmPassword = etConfirmPassword.text.toString().trim()
-            val email = etEmail.text.toString().trim()
 
-            if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || email.isEmpty()) {
+            if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (password != confirmPassword) {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            signUpUser(username, password, confirmPassword, email)
+            signupUser(username, email, password, confirmPassword)
         }
     }
 
-    private fun signUpUser(username: String, password: String, confirmPassword: String, email: String) {
-        btnSignUp.isEnabled = false
+    private fun signupUser(username: String, email: String, password: String, confirmPassword: String) {
+        btnSignup.isEnabled = false
 
         Thread {
             try {
@@ -76,9 +61,9 @@ class SignupActivity : AppCompatActivity() {
 
                 val jsonBody = JSONObject().apply {
                     put("username", username)
+                    put("email", email)
                     put("password", password)
                     put("confirmPassword", confirmPassword)
-                    put("email", email)
                 }
 
                 OutputStreamWriter(conn.outputStream).use { writer ->
@@ -99,20 +84,20 @@ class SignupActivity : AppCompatActivity() {
                 val message = jsonResponse.optString("message", "Unknown error")
 
                 runOnUiThread {
-                    btnSignUp.isEnabled = true
+                    btnSignup.isEnabled = true
                     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+
                     if (success) {
+                        // Navigate to LoginActivity
                         val intent = Intent(this, LoginActivity::class.java)
-                        // Clears previous activities so pressing 'Back' from Login won't return to SignUp
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
-//                        finish()
+                        finish() // remove SignupActivity from the back stack
                     }
                 }
 
             } catch (e: Exception) {
                 runOnUiThread {
-                    btnSignUp.isEnabled = true
+                    btnSignup.isEnabled = true
                     Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
