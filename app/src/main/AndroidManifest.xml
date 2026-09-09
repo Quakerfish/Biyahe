@@ -2,11 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Add network permissions if your signup connects to PostgreSQL/backend -->
+    <!-- Network & Location Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:networkSecurityConfig="@xml/network_security_config"
         android:usesCleartextTraffic="true"
@@ -20,7 +21,7 @@
         android:theme="@style/Theme.Biyahe"
         tools:targetApi="31">
 
-        <!-- 1. LAUNCHER ACTIVITY: SignupActivity opens first when app starts -->
+        <!-- 1. LAUNCHER ACTIVITY -->
         <activity
             android:name=".WelcomeActivity"
             android:exported="true">
@@ -30,7 +31,11 @@
             </intent-filter>
         </activity>
 
-        <!-- 2. SECONDARY ACTIVITIES: Opened after signup/login -->
+        <!-- 2. AUTH ACTIVITIES -->
+        <activity
+            android:name=".WelcomeActivity"
+            android:exported="false"/>
+
         <activity
             android:name=".SignupActivity"
             android:exported="false"/>
