@@ -20,7 +20,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: Button
 
     // Replace with your actual server URL
-    private val LOGIN_URL = "http://10.123.94.151/biyahe/login.php"
+    private val LOGIN_URL = "http://10.73.15.173/biyahe/login.php"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

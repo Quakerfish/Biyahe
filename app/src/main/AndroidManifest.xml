@@ -22,7 +22,7 @@
 
         <!-- 1. LAUNCHER ACTIVITY: SignupActivity opens first when app starts -->
         <activity
-            android:name=".MainActivity"
+            android:name=".WelcomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +40,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".MainActivity"
             android:exported="false" />
 
     </application>
