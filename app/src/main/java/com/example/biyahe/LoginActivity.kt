@@ -2,7 +2,11 @@ package com.example.biyahe
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -18,9 +22,11 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var etUsername: EditText
     private lateinit var etPassword: EditText
+    private lateinit var btnTogglePassword: ImageView
     private lateinit var btnLogin: AppCompatButton
+    private lateinit var tvSignup: TextView
 
-    private val LOGIN_URL = "http://10.123.94.151/biyahe/login.php"
+    private var isPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +41,32 @@ class LoginActivity : AppCompatActivity() {
 
         etUsername = findViewById(R.id.etUsername)
         etPassword = findViewById(R.id.etPassword)
+        btnTogglePassword = findViewById(R.id.btnTogglePassword)
         btnLogin = findViewById(R.id.btnLogin)
+        tvSignup = findViewById(R.id.tvSignup)
+
+        // 1. Password Mask / Unmask Toggle Listener
+        btnTogglePassword.setOnClickListener {
+            if (isPasswordVisible) {
+                // Mask Password
+                etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                isPasswordVisible = false
+                // Option: btnTogglePassword.setImageResource(R.drawable.ic_eye)
+            } else {
+                // Unmask Password
+                etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                isPasswordVisible = true
+                // Option: btnTogglePassword.setImageResource(R.drawable.ic_eye_off)
+            }
+            // Move cursor to end of text
+            etPassword.setSelection(etPassword.text.length)
+        }
+
+        // 2. Bottom Signup Navigation Listener
+        tvSignup.setOnClickListener {
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
+        }
 
         btnLogin.setOnClickListener {
             val username = etUsername.text.toString().trim()
@@ -55,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
 
         Thread {
             try {
-                val url = URL(LOGIN_URL)
+                val url = URL(ApiConfig.LOGIN_URL)
                 val conn = url.openConnection() as HttpURLConnection
                 conn.requestMethod = "POST"
                 conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8")

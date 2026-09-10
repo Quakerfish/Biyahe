@@ -21,9 +21,17 @@ class JeepneysActivity : AppCompatActivity() {
         setContentView(R.layout.activity_jeepneys)
 
         rootLayout = findViewById(R.id.main)
-        ViewCompat.setOnApplyWindowInsetsListener(rootLayout) { v, insets ->
+        bottomNav = findViewById(R.id.bottomNavigationView)
+
+        ViewCompat.setOnApplyWindowInsetsListener(rootLayout) { _, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+
+            // 1. Pad top of rootLayout so content doesn't go under status bar
+            rootLayout.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
+
+            // 2. Pad bottom of bottomNav so icons sit above gesture bar while background extends to edge
+            bottomNav.setPadding(0, 0, 0, systemBars.bottom)
+
             insets
         }
 

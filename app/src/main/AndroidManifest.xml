@@ -23,7 +23,7 @@
 
         <!-- 1. LAUNCHER ACTIVITY -->
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,17 +31,22 @@
             </intent-filter>
         </activity>
 
-        <!-- 2. AUTH ACTIVITIES -->
+        <!-- 2. AUTH & VERIFICATION ACTIVITIES -->
         <activity
-            android:name=".WelcomeActivity"
-            android:exported="false"/>
+            android:name=".LoginActivity"
+            android:exported="false" />
 
         <activity
             android:name=".SignupActivity"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".WelcomeActivity"
+            android:exported="false" />
+
+        <!-- 3. MAIN APP ACTIVITIES -->
+        <activity
+            android:name=".MainActivity"
             android:exported="false" />
 
         <activity
