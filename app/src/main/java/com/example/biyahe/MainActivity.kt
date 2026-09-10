@@ -60,7 +60,8 @@ class MainActivity : AppCompatActivity() {
         rootLayout = findViewById(R.id.main)
         ViewCompat.setOnApplyWindowInsetsListener(rootLayout) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            // Set bottom padding to 0 so the taskbar sits directly at the screen edge
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, 0)
             insets
         }
 

@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/signup"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <!-- Background Image -->
     <ImageView
@@ -18,7 +17,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#CB1E1E1E" /> <!-- Darker BG: #B3000000 -->
+        android:background="#CB1E1E1E" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -108,13 +107,18 @@
                     android:inputType="textPassword"
                     android:paddingEnd="44dp" />
 
+                <!-- ADDED ID TO FIRST EYE ICON -->
                 <ImageView
+                    android:id="@+id/btnTogglePassword"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginEnd="16dp"
                     android:src="@drawable/ic_eye"
-                    android:contentDescription="@null" />
+                    android:contentDescription="Toggle Password Visibility"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless" />
             </FrameLayout>
 
             <!-- Confirm Password Input Field -->
@@ -144,13 +148,18 @@
                     android:inputType="textPassword"
                     android:paddingEnd="44dp" />
 
+                <!-- ADDED ID TO SECOND EYE ICON -->
                 <ImageView
+                    android:id="@+id/btnToggleConfirmPassword"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginEnd="16dp"
                     android:src="@drawable/ic_eye"
-                    android:contentDescription="@null" />
+                    android:contentDescription="Toggle Confirm Password Visibility"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless" />
             </FrameLayout>
 
             <!-- Email Input Field -->
@@ -211,7 +220,10 @@
                     android:text="Login"
                     android:textColor="@color/orange_primary"
                     android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless" />
             </LinearLayout>
 
         </LinearLayout>

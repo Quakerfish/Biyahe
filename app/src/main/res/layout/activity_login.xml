@@ -68,7 +68,7 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="6dp" />
 
-            <!-- Username Input (ID MOVED HERE) -->
+            <!-- Username Input -->
             <EditText
                 android:id="@+id/etUsername"
                 android:layout_width="match_parent"
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp">
 
-                <!-- Password Input (ID MOVED HERE) -->
+                <!-- Password Input -->
                 <EditText
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
@@ -111,13 +111,18 @@
                     android:padding="14dp"
                     android:paddingEnd="44dp" />
 
+                <!-- ADDED ID TO EYE ICON -->
                 <ImageView
+                    android:id="@+id/btnTogglePassword"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginEnd="16dp"
                     android:src="@drawable/ic_eye"
-                    android:contentDescription="@null" />
+                    android:contentDescription="Toggle Password Visibility"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless" />
             </FrameLayout>
 
             <!-- Login Button -->
@@ -167,13 +172,18 @@
                     android:textColor="@color/text_gray"
                     android:textSize="13sp" />
 
+                <!-- ADDED ID TO SIGNUP TEXT -->
                 <TextView
+                    android:id="@+id/tvSignup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Signup"
                     android:textColor="@color/orange_primary"
                     android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -30,7 +30,9 @@
         app:labelVisibilityMode="labeled"
         app:itemIconTint="@color/bottom_nav_color"
         app:itemTextColor="@color/bottom_nav_color"
-        app:itemRippleColor="@color/orange_primary"
+        app:itemRippleColor="@null"
+        app:itemActiveIndicatorStyle="@null"
+        app:itemIconSize="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
