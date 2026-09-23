@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tvHeaderTitle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:letterSpacing="0.08"
+    android:paddingHorizontal="4dp"
+    android:paddingTop="14dp"
+    android:paddingBottom="8dp"
+    android:textAllCaps="true"
+    android:textColor="@color/brand_orange"
+    android:textSize="12.5sp"
+    android:textStyle="bold" />

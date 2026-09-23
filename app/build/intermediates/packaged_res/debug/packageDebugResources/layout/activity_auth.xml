@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_app"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Top bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_back"
+                android:tint="@color/text_primary" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:letterSpacing="0.08"
+                android:text="@string/auth_title"
+                android:textColor="@color/text_muted"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="40dp"
+                android:layout_height="1dp" />
+        </LinearLayout>
+
+        <!-- Body -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="16dp">
+
+            <FrameLayout
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@drawable/bg_avatar_circle">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_message"
+                    android:tint="@color/brand_orange" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/auth_heading"
+                android:textColor="@color/text_primary"
+                android:textSize="19sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="@string/auth_subtitle"
+                android:textColor="@color/text_secondary"
+                android:textSize="12.5sp" />
+
+            <!-- OTP boxes -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etDigit1"
+                    style="@style/OtpBox"
+                    android:autofillHints="smsOTPCode"
+                    android:cursorVisible="false"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/etDigit2"
+                    style="@style/OtpBox"
+                    android:cursorVisible="false"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/etDigit3"
+                    style="@style/OtpBox"
+                    android:cursorVisible="false"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/etDigit4"
+                    style="@style/OtpBox"
+                    android:cursorVisible="false"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/etDigit5"
+                    style="@style/OtpBox"
+                    android:cursorVisible="false"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/etDigit6"
+                    style="@style/OtpBoxLast"
+                    android:cursorVisible="false"
+                    android:inputType="number" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/resend_code_prefix"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12.5sp" />
+
+                <TextView
+                    android:id="@+id/tvResendTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/resend_in"
+                    android:textColor="@color/brand_orange"
+                    android:textSize="12.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <android.widget.Button
+                android:id="@+id/btnVerify"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_button_primary"
+                android:text="@string/btn_verify_continue"
+                android:textAllCaps="false"
+                android:textColor="@color/text_on_brand"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/secured_by"
+                android:textColor="@color/text_muted"
+                android:textSize="10.5sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

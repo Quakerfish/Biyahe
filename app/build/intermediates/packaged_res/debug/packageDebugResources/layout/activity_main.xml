@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- CoordinatorLayout bounded specifically to the screen region ABOVE bottomNav -->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomNav">
+
+        <!-- Map Container -->
+        <FrameLayout
+            android:id="@+id/mapContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <org.maplibre.android.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+        <!-- Floating Top Search Bar & Suggestions Overlay -->
+        <LinearLayout
+            android:id="@+id/searchContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="10dp"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@color/bg_white"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="4dp"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="false"
+                    app:strokeColor="@color/brand_orange"
+                    app:strokeWidth="1.5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="16dp">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginEnd="10dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_search"
+                            app:tint="@color/text_muted" />
+
+                        <EditText
+                            android:id="@+id/etSearchDestination"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:hint="@string/search_hint"
+                            android:imeOptions="actionSearch"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_muted"
+                            android:textSize="13sp" />
+
+                        <ImageView
+                            android:id="@+id/btnClearSearch"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginStart="8dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:contentDescription="Clear search"
+                            android:padding="2dp"
+                            android:src="@drawable/ic_clear"
+                            android:visibility="gone"
+                            app:tint="@color/text_muted" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <FrameLayout
+                    android:id="@+id/btnProfile"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/bg_avatar_circle"
+                    android:elevation="4dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:id="@+id/ivMainAvatar"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="Profile"
+                        android:padding="10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_person"
+                        app:tint="@color/brand_orange" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- Container for Chips & Suggestions Overlay -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <!-- Saved Routes Filter Chips Bar -->
+                <HorizontalScrollView
+                    android:id="@+id/hsvSavedChips"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    android:visibility="gone">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cgSavedRoutes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleLine="true" />
+                </HorizontalScrollView>
+
+                <!-- Route Suggestions Card (Overlaying chips, directly below search bar) -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvSuggestions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/bg_white"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="12dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvRouteSuggestions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="260dp"
+                        android:overScrollMode="never" />
+                </androidx.cardview.widget.CardView>
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Bottom Sheet Route Info Card (Restricted inside coordinatorContainer) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/routeInfoCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
+            app:cardBackgroundColor="@color/bg_white"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="16dp"
+            app:strokeWidth="0dp"
+            app:behavior_peekHeight="110dp"
+            app:behavior_hideable="true"
+            app:behavior_skipCollapsed="false"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="16dp">
+
+                <View
+                    android:layout_width="32dp"
+                    android:layout_height="4dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/bg_pill_soft" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/llPillCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_pill_soft"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp">
+
+                        <TextView
+                            android:id="@+id/tvRouteCode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/brand_orange"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_toEndOf="@+id/llPillCode"
+                        android:layout_toStartOf="@+id/btnCloseRouteCard"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvRouteName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvVehicleType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textColor="@color/text_muted"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/btnCloseRouteCard"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Close route info"
+                        android:padding="4dp"
+                        android:src="@drawable/ic_close"
+                        app:tint="@color/text_muted" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="12dp"
+                    android:background="#1A000000" />
+
+                <LinearLayout
+                    android:id="@+id/llExpandedDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Terminals Header -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="0.05"
+                        android:text="Terminals"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <!-- Origin Terminal Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_person"
+                            app:tint="@color/brand_orange" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Origin Terminal"
+                                android:textColor="@color/text_muted"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/tvOriginDetail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Connecting vertical bar -->
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="16dp"
+                        android:layout_marginVertical="2dp"
+                        android:layout_marginStart="9dp"
+                        android:background="@color/brand_orange" />
+
+                    <!-- Destination Terminal Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_search"
+                            app:tint="@color/brand_orange" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Destination Terminal"
+                                android:textColor="@color/text_muted"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/tvDestinationDetail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Untrack Route Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnUntrackRoute"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="20dp"
+                        android:backgroundTint="#FFEEEA"
+                        android:text="Untrack Route"
+                        android:textColor="@color/brand_orange"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="24dp"
+                        app:strokeColor="@color/brand_orange"
+                        app:strokeWidth="1dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!-- Bottom Navigation Bar (Placed outside CoordinatorLayout at the bottom) -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bg_white"
+        android:elevation="18dp"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemRippleColor="@null"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_nav_menu" />
+
+</RelativeLayout>

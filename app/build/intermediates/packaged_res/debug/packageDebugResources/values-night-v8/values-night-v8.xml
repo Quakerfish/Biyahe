@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <color name="bg_app">#121417</color>
+    <color name="bg_white">#1C1F24</color>
+    <color name="brand_orange">#FF7A3D</color>
+    <color name="brand_orange_dark">#F2651E</color>
+    <color name="brand_orange_soft">#3A2418</color>
+    <color name="divider">#2A2E35</color>
+    <color name="error">#F87171</color>
+    <color name="map_route_line">#FF8A4C</color>
+    <color name="success_green">#34D399</color>
+    <color name="text_muted">#7D8590</color>
+    <color name="text_primary">#F3F4F6</color>
+    <color name="text_secondary">#B0B5BD</color>
+    <style name="Theme.Biyahe" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowLightStatusBar" ns1:targetApi="23">false</item>
+        <item name="android:windowLightNavigationBar" ns1:targetApi="27">false</item>
+    </style>
+</resources>

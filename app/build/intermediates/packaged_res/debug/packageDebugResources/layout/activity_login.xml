@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_app"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="28dp">
+
+        <!-- Brand Header with Icon -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_route"
+                app:tint="@color/brand_orange" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textColor="@color/brand_orange"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="32dp"
+            android:text="Cebu City Jeepney Route Tracker"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp" />
+
+        <!-- Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card_white"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                style="@style/FieldLabel"
+                android:layout_marginTop="0dp"
+                android:text="@string/label_username" />
+
+            <LinearLayout style="@style/FieldWrap">
+                <EditText
+                    android:id="@+id/etUsername"
+                    style="@style/FieldInput"
+                    android:autofillHints="username,emailAddress"
+                    android:hint="@string/hint_username"
+                    android:imeOptions="actionNext"
+                    android:inputType="text" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/FieldLabel"
+                android:text="@string/label_password" />
+
+            <LinearLayout style="@style/FieldWrap">
+                <EditText
+                    android:id="@+id/etPassword"
+                    style="@style/FieldInput"
+                    android:autofillHints="password"
+                    android:hint="@string/hint_password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword" />
+                <ImageButton
+                    android:id="@+id/btnTogglePassword"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/label_password"
+                    android:src="@drawable/ic_eye"
+                    app:tint="@color/text_muted" />
+            </LinearLayout>
+
+            <android.widget.Button
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_button_primary"
+                android:text="@string/btn_login"
+                android:textAllCaps="false"
+                android:textColor="@color/text_on_brand"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="14dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="4dp"
+                android:text="@string/forgot_password"
+                android:textColor="@color/brand_orange"
+                android:textSize="12.5sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Signup link -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dont_have_account"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tvGoToSignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="2dp"
+                android:text="@string/sign_up"
+                android:textColor="@color/brand_orange"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

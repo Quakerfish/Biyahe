@@ -1,0 +1,232 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.biyahe.app"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="24"
+9        android:targetSdkVersion="34" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:5:5-67
+11-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:5:22-64
+12    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+12-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:6:5-79
+12-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:6:22-76
+13
+14    <uses-feature
+14-->[org.maplibre.gl:android-sdk:11.5.2] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\71939f5f6938a1013fedd5b38f6b4337\workspace\transformed\android-sdk-11.5.2\AndroidManifest.xml:7:5-9:35
+15        android:glEsVersion="0x00030000"
+15-->[org.maplibre.gl:android-sdk:11.5.2] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\71939f5f6938a1013fedd5b38f6b4337\workspace\transformed\android-sdk-11.5.2\AndroidManifest.xml:8:9-41
+16        android:required="true" />
+16-->[org.maplibre.gl:android-sdk:11.5.2] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\71939f5f6938a1013fedd5b38f6b4337\workspace\transformed\android-sdk-11.5.2\AndroidManifest.xml:9:9-32
+17    <uses-feature
+17-->[org.maplibre.gl:android-sdk:11.5.2] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\71939f5f6938a1013fedd5b38f6b4337\workspace\transformed\android-sdk-11.5.2\AndroidManifest.xml:10:5-12:36
+18        android:name="android.hardware.wifi"
+18-->[org.maplibre.gl:android-sdk:11.5.2] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\71939f5f6938a1013fedd5b38f6b4337\workspace\transformed\android-sdk-11.5.2\AndroidManifest.xml:11:9-45
+19        android:required="false" />
+19-->[org.maplibre.gl:android-sdk:11.5.2] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\71939f5f6938a1013fedd5b38f6b4337\workspace\transformed\android-sdk-11.5.2\AndroidManifest.xml:12:9-33
+20
+21    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+21-->[org.maplibre.gl:android-sdk:11.5.2] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\71939f5f6938a1013fedd5b38f6b4337\workspace\transformed\android-sdk-11.5.2\AndroidManifest.xml:16:5-76
+21-->[org.maplibre.gl:android-sdk:11.5.2] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\71939f5f6938a1013fedd5b38f6b4337\workspace\transformed\android-sdk-11.5.2\AndroidManifest.xml:16:22-73
+22    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+22-->[org.maplibre.gl:android-sdk:11.5.2] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\71939f5f6938a1013fedd5b38f6b4337\workspace\transformed\android-sdk-11.5.2\AndroidManifest.xml:17:5-81
+22-->[org.maplibre.gl:android-sdk:11.5.2] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\71939f5f6938a1013fedd5b38f6b4337\workspace\transformed\android-sdk-11.5.2\AndroidManifest.xml:17:22-78
+23    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+23-->[org.maplibre.gl:android-sdk:11.5.2] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\71939f5f6938a1013fedd5b38f6b4337\workspace\transformed\android-sdk-11.5.2\AndroidManifest.xml:18:5-79
+23-->[org.maplibre.gl:android-sdk:11.5.2] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\71939f5f6938a1013fedd5b38f6b4337\workspace\transformed\android-sdk-11.5.2\AndroidManifest.xml:18:22-76
+24
+25    <permission
+25-->[androidx.core:core:1.13.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\abeb515357a7db3fd22e844d1e55f2be\workspace\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+26        android:name="com.biyahe.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+26-->[androidx.core:core:1.13.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\abeb515357a7db3fd22e844d1e55f2be\workspace\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+27        android:protectionLevel="signature" />
+27-->[androidx.core:core:1.13.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\abeb515357a7db3fd22e844d1e55f2be\workspace\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+28
+29    <uses-permission android:name="com.biyahe.app.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+29-->[androidx.core:core:1.13.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\abeb515357a7db3fd22e844d1e55f2be\workspace\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+29-->[androidx.core:core:1.13.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\abeb515357a7db3fd22e844d1e55f2be\workspace\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+30
+31    <application
+31-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:8:5-40:19
+32        android:name="com.biyahe.app.BiyaheApp"
+32-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:9:9-34
+33        android:allowBackup="true"
+33-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:10:9-35
+34        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+34-->[androidx.core:core:1.13.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\abeb515357a7db3fd22e844d1e55f2be\workspace\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+35        android:debuggable="true"
+36        android:extractNativeLibs="false"
+37        android:icon="@mipmap/ic_launcher"
+37-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:11:9-43
+38        android:label="@string/app_name"
+38-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:12:9-41
+39        android:roundIcon="@mipmap/ic_launcher_round"
+39-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:13:9-54
+40        android:supportsRtl="true"
+40-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:14:9-35
+41        android:testOnly="true"
+42        android:theme="@style/Theme.Biyahe"
+42-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:15:9-44
+43        android:usesCleartextTraffic="true" >
+43-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:16:9-44
+44
+45        <!--
+46             usesCleartextTraffic is required while ApiConfig.BASE_URL points at a plain
+47             http:// LAN address. Remove this once the admin backend is served over https.
+48        -->
+49
+50        <activity
+50-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:22:9-30:20
+51            android:name="com.biyahe.app.SplashActivity"
+51-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:23:13-43
+52            android:exported="true"
+52-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:24:13-36
+53            android:theme="@style/Theme.App.Starting" >
+53-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:25:13-54
+54            <intent-filter>
+54-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:26:13-29:29
+55                <action android:name="android.intent.action.MAIN" />
+55-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:27:17-69
+55-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:27:25-66
+56
+57                <category android:name="android.intent.category.LAUNCHER" />
+57-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:28:17-77
+57-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:28:27-74
+58            </intent-filter>
+59        </activity>
+60        <activity
+60-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:9-118
+61            android:name="com.biyahe.app.MainActivity"
+61-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:19-47
+62            android:exported="false"
+62-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:48-72
+63            android:windowSoftInputMode="adjustResize" />
+63-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:73-115
+64        <activity
+64-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:33:9-119
+65            android:name="com.biyahe.app.LoginActivity"
+65-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:33:19-48
+66            android:exported="false"
+66-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:33:49-73
+67            android:windowSoftInputMode="adjustResize" />
+67-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:33:74-116
+68        <activity
+68-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:34:9-120
+69            android:name="com.biyahe.app.SignupActivity"
+69-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:34:19-49
+70            android:exported="false"
+70-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:34:50-74
+71            android:windowSoftInputMode="adjustResize" />
+71-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:34:75-117
+72        <activity
+72-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:35:9-118
+73            android:name="com.biyahe.app.AuthActivity"
+73-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:35:19-47
+74            android:exported="false"
+74-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:35:48-72
+75            android:windowSoftInputMode="adjustResize" />
+75-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:35:73-115
+76        <activity
+76-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:36:9-120
+77            android:name="com.biyahe.app.RoutesActivity"
+77-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:36:19-49
+78            android:exported="false"
+78-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:36:50-74
+79            android:windowSoftInputMode="adjustResize" />
+79-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:36:75-117
+80        <activity
+80-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:37:9-119
+81            android:name="com.biyahe.app.SavedActivity"
+81-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:37:19-48
+82            android:exported="false"
+82-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:37:49-73
+83            android:windowSoftInputMode="adjustResize" />
+83-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:37:74-116
+84        <activity
+84-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:38:9-120
+85            android:name="com.biyahe.app.ProfileActivity"
+85-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:38:19-50
+86            android:exported="false"
+86-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:38:51-75
+87            android:windowSoftInputMode="adjustResize" />
+87-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:38:76-118
+88        <activity
+88-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:39:9-124
+89            android:name="com.biyahe.app.EditProfileActivity"
+89-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:39:19-54
+90            android:exported="false"
+90-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:39:55-79
+91            android:windowSoftInputMode="adjustResize" />
+91-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:39:80-122
+92
+93        <provider
+93-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\95780f02b2275237aa6108cd7760d99c\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+94            android:name="androidx.startup.InitializationProvider"
+94-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\95780f02b2275237aa6108cd7760d99c\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:25:13-67
+95            android:authorities="com.biyahe.app.androidx-startup"
+95-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\95780f02b2275237aa6108cd7760d99c\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:26:13-68
+96            android:exported="false" >
+96-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\95780f02b2275237aa6108cd7760d99c\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:27:13-37
+97            <meta-data
+97-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\95780f02b2275237aa6108cd7760d99c\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+98                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+98-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\95780f02b2275237aa6108cd7760d99c\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:30:17-75
+99                android:value="androidx.startup" />
+99-->[androidx.emoji2:emoji2:1.3.0] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\95780f02b2275237aa6108cd7760d99c\workspace\transformed\emoji2-1.3.0\AndroidManifest.xml:31:17-49
+100            <meta-data
+100-->[androidx.lifecycle:lifecycle-process:2.8.4] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\554635a1186e5e4d0476c93b6774efcf\workspace\transformed\lifecycle-process-2.8.4\AndroidManifest.xml:29:13-31:52
+101                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+101-->[androidx.lifecycle:lifecycle-process:2.8.4] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\554635a1186e5e4d0476c93b6774efcf\workspace\transformed\lifecycle-process-2.8.4\AndroidManifest.xml:30:17-78
+102                android:value="androidx.startup" />
+102-->[androidx.lifecycle:lifecycle-process:2.8.4] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\554635a1186e5e4d0476c93b6774efcf\workspace\transformed\lifecycle-process-2.8.4\AndroidManifest.xml:31:17-49
+103            <meta-data
+103-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+104                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+104-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+105                android:value="androidx.startup" />
+105-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+106        </provider>
+107
+108        <receiver
+108-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+109            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+109-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+110            android:directBootAware="false"
+110-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+111            android:enabled="true"
+111-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+112            android:exported="true"
+112-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+113            android:permission="android.permission.DUMP" >
+113-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+114            <intent-filter>
+114-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+115                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+115-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+115-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+116            </intent-filter>
+117            <intent-filter>
+117-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+118                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+118-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+118-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+119            </intent-filter>
+120            <intent-filter>
+120-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+121                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+121-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+121-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+122            </intent-filter>
+123            <intent-filter>
+123-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+124                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+124-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+124-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\Administrator\.gradle\caches\9.3.0\transforms\89db838c835554f984765d2fc4287670\workspace\transformed\profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+125            </intent-filter>
+126        </receiver>
+127    </application>
+128
+129</manifest>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_app">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomNav"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Brand Header Row (Same as Routes Page) -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginEnd="6dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_route"
+                    app:tint="@color/brand_orange" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textColor="@color/brand_orange"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Profile card -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card_white"
+                android:elevation="2dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <FrameLayout
+                    android:id="@+id/btnChangeAvatar"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:id="@+id/ivProfileAvatar"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_avatar_circle"
+                        android:contentDescription="@null"
+                        android:padding="2dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_person" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_gravity="bottom|end"
+                        android:background="@drawable/bg_avatar_circle"
+                        android:contentDescription="@null"
+                        android:padding="3dp"
+                        android:src="@drawable/ic_edit"
+                        app:tint="@color/brand_orange" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <!-- Full Name -->
+                    <TextView
+                        android:id="@+id/tvFullName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/profile_name"
+                        android:textColor="@color/text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <!-- Username -->
+                    <TextView
+                        android:id="@+id/tvUsername"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/profile_handle"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12.5sp" />
+
+                    <!-- Email Address -->
+                    <TextView
+                        android:id="@+id/tvEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12.5sp"
+                        android:visibility="visible" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/btnEditProfile"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/bg_icon_button"
+                    android:contentDescription="@null"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_edit"
+                    app:tint="@color/brand_orange" />
+            </LinearLayout>
+
+            <!-- Menu rows -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/bg_card_white"
+                android:elevation="2dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/rowSavedPlaces"
+                    style="@style/ProfileMenuRow">
+
+                    <ImageView style="@style/ProfileMenuIcon" android:src="@drawable/ic_bookmark" />
+
+                    <LinearLayout style="@style/ProfileMenuTextGroup">
+                        <TextView style="@style/ProfileMenuTitle" android:text="@string/menu_saved_places_title" />
+                        <TextView style="@style/ProfileMenuDesc" android:text="@string/menu_saved_places_desc" />
+                    </LinearLayout>
+
+                    <ImageView style="@style/ProfileMenuChevron" />
+                </LinearLayout>
+
+                <View style="@style/ProfileMenuDivider" />
+
+                <LinearLayout
+                    android:id="@+id/rowPreferences"
+                    style="@style/ProfileMenuRow">
+
+                    <ImageView style="@style/ProfileMenuIcon" android:src="@drawable/ic_sliders" />
+
+                    <LinearLayout style="@style/ProfileMenuTextGroup">
+                        <TextView style="@style/ProfileMenuTitle" android:text="@string/menu_preferences_title" />
+                        <TextView style="@style/ProfileMenuDesc" android:text="@string/menu_preferences_desc" />
+                    </LinearLayout>
+
+                    <ImageView style="@style/ProfileMenuChevron" />
+                </LinearLayout>
+
+                <View style="@style/ProfileMenuDivider" />
+
+                <LinearLayout
+                    android:id="@+id/rowAppearance"
+                    style="@style/ProfileMenuRow">
+
+                    <ImageView style="@style/ProfileMenuIcon" android:src="@drawable/ic_theme" />
+
+                    <LinearLayout style="@style/ProfileMenuTextGroup">
+                        <TextView style="@style/ProfileMenuTitle" android:text="@string/menu_appearance_title" />
+                        <TextView
+                            android:id="@+id/tvAppearanceValue"
+                            style="@style/ProfileMenuDesc"
+                            android:text="@string/menu_appearance_desc_system" />
+                    </LinearLayout>
+
+                    <ImageView style="@style/ProfileMenuChevron" />
+                </LinearLayout>
+
+                <View style="@style/ProfileMenuDivider" />
+
+                <LinearLayout
+                    android:id="@+id/rowNotifications"
+                    style="@style/ProfileMenuRow">
+
+                    <ImageView style="@style/ProfileMenuIcon" android:src="@drawable/ic_bell" />
+
+                    <LinearLayout style="@style/ProfileMenuTextGroup">
+                        <TextView style="@style/ProfileMenuTitle" android:text="@string/menu_notifications_title" />
+                        <TextView style="@style/ProfileMenuDesc" android:text="@string/menu_notifications_desc" />
+                    </LinearLayout>
+
+                    <ImageView style="@style/ProfileMenuChevron" />
+                </LinearLayout>
+
+                <View style="@style/ProfileMenuDivider" />
+
+                <LinearLayout
+                    android:id="@+id/rowHelp"
+                    style="@style/ProfileMenuRow">
+
+                    <ImageView style="@style/ProfileMenuIcon" android:src="@drawable/ic_help" />
+
+                    <LinearLayout style="@style/ProfileMenuTextGroup">
+                        <TextView style="@style/ProfileMenuTitle" android:text="@string/menu_help_title" />
+                        <TextView style="@style/ProfileMenuDesc" android:text="@string/menu_help_desc" />
+                    </LinearLayout>
+
+                    <ImageView style="@style/ProfileMenuChevron" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogout"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_button_primary"
+                android:text="@string/btn_logout"
+                android:textAllCaps="false"
+                android:textColor="@color/text_on_brand"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:backgroundTint="@null"
+                app:icon="@drawable/ic_logout"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconTint="@color/text_on_brand" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/bg_white"
+        android:elevation="8dp"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_nav_menu" />
+
+</RelativeLayout>

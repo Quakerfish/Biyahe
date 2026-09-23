@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Brand: brightened slightly so it still pops on a dark surface -->
+    <color name="brand_orange">#FF7A3D</color>
+    <color name="brand_orange_dark">#F2651E</color>
+    <color name="brand_orange_soft">#3A2418</color>
+
+    <!-- Surfaces -->
+    <color name="bg_app">#121417</color>
+    <color name="bg_white">#1C1F24</color>
+
+    <!-- Text -->
+    <color name="text_primary">#F3F4F6</color>
+    <color name="text_secondary">#B0B5BD</color>
+    <color name="text_muted">#7D8590</color>
+
+    <!-- Lines / states -->
+    <color name="divider">#2A2E35</color>
+    <color name="error">#F87171</color>
+    <color name="success_green">#34D399</color>
+
+    <!-- Map -->
+    <color name="map_route_line">#FF8A4C</color>
+
+    <!-- white / text_on_brand / black_overlay_40 intentionally NOT overridden:
+         they mean "always white" / "always on-brand text" regardless of theme. -->
+</resources>

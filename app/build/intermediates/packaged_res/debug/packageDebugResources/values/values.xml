@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <color name="bg_app">#F4F5F9</color>
+    <color name="bg_white">#FFFFFF</color>
+    <color name="black_overlay_40">#66000000</color>
+    <color name="brand_orange">#F26522</color>
+    <color name="brand_orange_dark">#D9531A</color>
+    <color name="brand_orange_soft">#FDECE3</color>
+    <color name="divider">#E5E7EB</color>
+    <color name="error">#DC2626</color>
+    <color name="map_route_line">#F26522</color>
+    <color name="success_green">#22C55E</color>
+    <color name="text_muted">#9CA3AF</color>
+    <color name="text_on_brand">#FFFFFF</color>
+    <color name="text_primary">#111827</color>
+    <color name="text_secondary">#4B5563</color>
+    <color name="white">#FFFFFF</color>
+    <string name="agree_terms_prefix">I agree to the</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="app_name">BIYAHE</string>
+    <string name="auth_heading">Check your email</string>
+    <string name="auth_subtitle">Enter the 6-digit code we sent to your email</string>
+    <string name="auth_title">VERIFICATION</string>
+    <string name="btn_create_account">Create Account</string>
+    <string name="btn_login">Log In</string>
+    <string name="btn_logout">Log Out</string>
+    <string name="btn_verify_continue">Verify &amp; Continue</string>
+    <string name="dialog_appearance_title">Choose appearance</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="error_fill_required_fields">Please fill in all required fields.</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_network">Couldn\'t reach the server. Check your connection and try again.</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="hint_confirm_password">Re-enter your password</string>
+    <string name="hint_email">Enter your email</string>
+    <string name="hint_full_name">Enter your Username</string>
+    <string name="hint_password">Enter your password</string>
+    <string name="hint_username">Enter your username or email</string>
+    <string name="label_confirm_password">Confirm password</string>
+    <string name="label_email">Email address</string>
+    <string name="label_full_name">Username</string>
+    <string name="label_password">Password</string>
+    <string name="label_username">Username or email</string>
+    <string name="log_in">Log In</string>
+    <string name="login_brand_tagline">Cebu\'s smarter commute companion</string>
+    <string name="menu_appearance_desc_dark">Dark</string>
+    <string name="menu_appearance_desc_light">Light</string>
+    <string name="menu_appearance_desc_system">System default</string>
+    <string name="menu_appearance_title">Appearance</string>
+    <string name="menu_help_desc">FAQs and contact support</string>
+    <string name="menu_help_title">Help &amp; Support</string>
+    <string name="menu_notifications_desc">Route alerts and updates</string>
+    <string name="menu_notifications_title">Notifications</string>
+    <string name="menu_preferences_desc">Default vehicle type and routing options</string>
+    <string name="menu_preferences_title">Transit Preferences</string>
+    <string name="menu_saved_places_desc">Your favorite stops and terminals</string>
+    <string name="menu_saved_places_title">Saved Places</string>
+    <string name="profile_eyebrow">ACCOUNT</string>
+    <string name="profile_handle">@biyahe_user</string>
+    <string name="profile_name">Commuter</string>
+    <string name="resend_code_action">Resend code</string>
+    <string name="resend_code_prefix">Didn\'t get a code?</string>
+    <string name="resend_in">Resend in 00:45</string>
+    <string name="routes_empty_desc">Try a different route code, origin, or destination.</string>
+    <string name="routes_empty_title">No routes found</string>
+    <string name="routes_loading">Loading routes…</string>
+    <string name="save_route_action">Save route</string>
+    <string name="saved_empty_desc">Tap the bookmark on any route to save it here.</string>
+    <string name="saved_empty_title">No saved routes yet</string>
+    <string name="search_hint">Search a route or destination</string>
+    <string name="search_saved_hint">Search your saved routes</string>
+    <string name="secured_by">Secured by BIYAHE</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="signup_subtitle">Join BIYAHE to plan smarter commutes around Cebu.</string>
+    <string name="signup_title">Create account</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <style name="FieldIcon">
+        <item name="android:layout_width">18dp</item>
+        <item name="android:layout_height">18dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="android:tint">@color/text_muted</item>
+    </style>
+    <style name="FieldInput">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@null</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorHint">@color/text_muted</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="FieldLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">12.5sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="FieldWrap">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/bg_field</item>
+        <item name="android:paddingHorizontal">14dp</item>
+    </style>
+    <style name="NoAnimationTheme" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+    </style>
+    <style name="OtpBox">
+        <item name="android:layout_width">44dp</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:background">@drawable/bg_otp_box</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:importantForAutofill">no</item>
+    </style>
+    <style name="OtpBoxLast" parent="OtpBox">
+        <item name="android:layout_marginEnd">0dp</item>
+    </style>
+    <style name="ProfileMenuChevron">
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="android:src">@drawable/ic_chevron_right</item>
+        <item name="android:tint">@color/text_muted</item>
+    </style>
+    <style name="ProfileMenuDesc">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textColor">@color/text_muted</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+    <style name="ProfileMenuDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginStart">50dp</item>
+        <item name="android:background">@color/divider</item>
+    </style>
+    <style name="ProfileMenuIcon">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="android:tint">@color/brand_orange</item>
+    </style>
+    <style name="ProfileMenuRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:paddingVertical">14dp</item>
+    </style>
+    <style name="ProfileMenuTextGroup">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginStart">14dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="ProfileMenuTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        
+        <item name="windowSplashScreenBackground">@color/bg_app</item>
+
+        
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+
+        
+        <item name="postSplashScreenTheme">@style/Theme.Biyahe</item>
+    </style>
+    <style name="Theme.Biyahe" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/NoAnimationTheme</item>
+        <item name="colorPrimary">@color/brand_orange</item>
+        <item name="colorPrimaryDark">@color/brand_orange_dark</item>
+        <item name="colorOnPrimary">@color/text_on_brand</item>
+        <item name="colorAccent">@color/brand_orange</item>
+        <item name="colorSurface">@color/bg_white</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorError">@color/error</item>
+
+        <item name="android:windowBackground">@color/bg_app</item>
+        <item name="android:statusBarColor" ns1:targetApi="21">@color/bg_app</item>
+        <item name="android:navigationBarColor" ns1:targetApi="21">@color/bg_white</item>
+
+        
+        <item name="android:windowLightStatusBar" ns1:targetApi="23">true</item>
+        <item name="android:windowLightNavigationBar" ns1:targetApi="27">true</item>
+    </style>
+</resources>

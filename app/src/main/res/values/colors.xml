@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Brand -->
+    <color name="brand_orange">#F26522</color>
+    <color name="brand_orange_dark">#D9531A</color>
+    <color name="brand_orange_soft">#FDECE3</color> <!-- route-code pill bg -->
+
+    <!-- Constants: identical in every theme, never overridden in values-night -->
+    <color name="white">#FFFFFF</color>
+    <color name="text_on_brand">#FFFFFF</color>
+    <color name="black_overlay_40">#66000000</color>
+
+    <!-- Surfaces -->
+    <color name="bg_app">#F4F5F9</color>
+    <color name="bg_white">#FFFFFF</color>
+
+    <!-- Text -->
+    <color name="text_primary">#111827</color>
+    <color name="text_secondary">#4B5563</color>
+    <color name="text_muted">#9CA3AF</color>
+
+    <!-- Lines / states -->
+    <color name="divider">#E5E7EB</color>
+    <color name="error">#DC2626</color>
+    <color name="success_green">#22C55E</color>
+
+    <!-- Map -->
+    <color name="map_route_line">#F26522</color>
+</resources>

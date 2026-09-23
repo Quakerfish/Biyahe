@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.Biyahe" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowAnimationStyle">@style/NoAnimationTheme</item>
+        <item name="colorPrimary">@color/brand_orange</item>
+        <item name="colorPrimaryDark">@color/brand_orange_dark</item>
+        <item name="colorOnPrimary">@color/text_on_brand</item>
+        <item name="colorAccent">@color/brand_orange</item>
+        <item name="colorSurface">@color/bg_white</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorError">@color/error</item>
+
+        <item name="android:windowBackground">@color/bg_app</item>
+        <item name="android:statusBarColor" tools:targetApi="21">@color/bg_app</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/bg_white</item>
+
+        <!-- Kept in sync with ThemeManager: recomputed at runtime because a
+             light/dark status-bar icon needs to match whichever mode is active. -->
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+    </style>
+
+    <!-- Splash Screen Theme -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <!-- Background color behind the logo -->
+        <item name="windowSplashScreenBackground">@color/bg_app</item>
+
+        <!-- App Icon centered on screen (Use your app icon or logo drawable) -->
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+
+        <!-- Target theme after splash screen finishes -->
+        <item name="postSplashScreenTheme">@style/Theme.Biyahe</item>
+    </style>
+</resources>
