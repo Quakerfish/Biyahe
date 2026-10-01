@@ -16,10 +16,6 @@
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\item_route_suggestion.xml"
     },
     {
-        "merged": "com.biyahe.app-mergeDebugResources-40:/layout/activity_edit_profile.xml",
-        "source": "com.biyahe.app-main-43:/layout/activity_edit_profile.xml"
-    },
-    {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-mergeDebugResources-40:\\layout\\activity_signup.xml",
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\activity_signup.xml"
     },
@@ -44,12 +40,24 @@
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\bottom_sheet_route_detail.xml"
     },
     {
+        "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-mergeDebugResources-40:\\layout\\bottom_sheet_find_route.xml",
+        "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\bottom_sheet_find_route.xml"
+    },
+    {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-mergeDebugResources-40:\\layout\\item_section_header.xml",
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\item_section_header.xml"
     },
     {
+        "merged": "com.biyahe.app-mergeDebugResources-40:/layout/activity_main.xml",
+        "source": "com.biyahe.app-main-43:/layout/activity_main.xml"
+    },
+    {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-mergeDebugResources-40:\\layout\\activity_login.xml",
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-mergeDebugResources-40:\\layout\\dialog_profile_dropdown.xml",
+        "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\dialog_profile_dropdown.xml"
     },
     {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-mergeDebugResources-40:\\layout\\activity_auth.xml",

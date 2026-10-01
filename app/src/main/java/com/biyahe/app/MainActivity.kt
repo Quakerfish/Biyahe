@@ -16,9 +16,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
@@ -42,6 +45,9 @@ import org.maplibre.android.camera.CameraPosition
 import org.maplibre.android.camera.CameraUpdateFactory
 import org.maplibre.android.geometry.LatLng
 import org.maplibre.android.geometry.LatLngBounds
+import org.maplibre.android.location.LocationComponentActivationOptions
+import org.maplibre.android.location.modes.CameraMode
+import org.maplibre.android.location.modes.RenderMode
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.MapView
 import org.maplibre.android.maps.Style
@@ -72,6 +78,16 @@ class MainActivity : BaseActivity() {
     private val activeMarkers = mutableListOf<Marker>()
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<MaterialCardView>
     private var isProgrammaticTextChange = false
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        if (permissions[android.Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+            permissions[android.Manifest.permission.ACCESS_COARSE_LOCATION] == true
+        ) {
+            mapLibreMap?.style?.let { enableLocationComponent(it) }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,6 +134,7 @@ class MainActivity : BaseActivity() {
 
             map.setStyle(Style.Builder().fromUri(styleUrl)) { style ->
                 initRouteLayer(style)
+                enableLocationComponent(style)
             }
         }
 
@@ -128,6 +145,34 @@ class MainActivity : BaseActivity() {
         loadSavedRouteChips()
         loadUserProfileAvatar()
         checkTrackIntent(intent)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun enableLocationComponent(style: Style) {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) == android.content.pm.PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) {
+            val locationComponent = mapLibreMap?.locationComponent
+            locationComponent?.activateLocationComponent(
+                LocationComponentActivationOptions.builder(this, style).build()
+            )
+            locationComponent?.isLocationComponentEnabled = true
+            locationComponent?.cameraMode = CameraMode.TRACKING
+            locationComponent?.renderMode = RenderMode.COMPASS
+        } else {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
@@ -500,6 +545,13 @@ class MainActivity : BaseActivity() {
         val type = routeObj.optString("vehicle_type", "Jeepney")
         val routeId = routeObj.optInt("route_id", -1)
 
+        var isTrackConfirmed = false
+
+        // Fetch waypoints & render map path preview immediately
+        if (routeId != -1) {
+            fetchRouteWaypoints(routeId, code, "$origin – $dest", type, origin, dest)
+        }
+
         sheetView.findViewById<TextView>(R.id.tvSheetRouteCode)?.text = code
         sheetView.findViewById<TextView>(R.id.tvSheetRouteName)?.text = if (dest != "N/A") "$origin – $dest" else origin
         sheetView.findViewById<TextView>(R.id.tvSheetVehicleType)?.text = type
@@ -507,9 +559,14 @@ class MainActivity : BaseActivity() {
         sheetView.findViewById<TextView>(R.id.tvSheetDestinationTerminal)?.text = dest
 
         sheetView.findViewById<View>(R.id.btnTrackRoute)?.setOnClickListener {
+            isTrackConfirmed = true
             dialog.dismiss()
-            if (routeId != -1) {
-                fetchRouteWaypoints(routeId, code, "$origin – $dest", type, origin, dest)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        dialog.setOnDismissListener {
+            if (!isTrackConfirmed) {
+                clearMapRoute()
             }
         }
 
@@ -638,6 +695,15 @@ class MainActivity : BaseActivity() {
         clearMapRoute()
 
         binding.tvRouteCode.text = code
+        binding.tvRouteCode.setOnClickListener {
+            mapLibreMap?.getStyle {
+                val boundsBuilder = LatLngBounds.Builder()
+                points.forEach { boundsBuilder.include(it) }
+                mapLibreMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(boundsBuilder.build(), 120))
+            }
+            Toast.makeText(this, "Previewing path for $code", Toast.LENGTH_SHORT).show()
+        }
+
         binding.tvRouteName.text = name
         binding.tvVehicleType.text = type
         binding.tvOriginDetail.text = origin
@@ -675,8 +741,6 @@ class MainActivity : BaseActivity() {
             activeMarkers.add(startMarker)
             activeMarkers.add(endMarker)
         }
-
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     private fun hideKeyboard() {
@@ -702,6 +766,10 @@ class MainActivity : BaseActivity() {
             navigateToTab(ProfileActivity::class.java)
         }
 
+        binding.btnFindNearest.setOnClickListener {
+            showFindRouteBottomSheet()
+        }
+
         binding.routeInfoCard.setOnClickListener {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -715,6 +783,109 @@ class MainActivity : BaseActivity() {
         }
 
         setupBottomNav(binding.bottomNav, R.id.nav_home)
+    }
+
+    private fun showFindRouteBottomSheet() {
+        val dialog = BottomSheetDialog(this)
+        val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_find_route, null)
+        dialog.setContentView(sheetView)
+
+        val actvOrigin = sheetView.findViewById<AutoCompleteTextView>(R.id.actvOrigin)
+        val actvDestination = sheetView.findViewById<AutoCompleteTextView>(R.id.actvDestination)
+        val btnFindRoutePath = sheetView.findViewById<View>(R.id.btnFindRoutePath)
+
+        thread {
+            var conn: HttpURLConnection? = null
+            try {
+                val url = URL("${ApiConfig.ROUTES_URL}?type=terminals")
+                conn = (url.openConnection() as HttpURLConnection).apply {
+                    requestMethod = "GET"
+                    connectTimeout = 5000
+                    readTimeout = 5000
+                }
+
+                val sessionCookie = sessionPrefs.getString("session_cookie", null)
+                if (!sessionCookie.isNullOrEmpty()) {
+                    conn.setRequestProperty("Cookie", sessionCookie)
+                }
+
+                if (conn.responseCode == 200) {
+                    val jsonStr = conn.inputStream.bufferedReader().readText()
+                    val responseObj = JSONObject(jsonStr)
+
+                    if (responseObj.optBoolean("success", false)) {
+                        val terminalsArray = responseObj.getJSONArray("terminals")
+                        val terminalNames = mutableListOf<String>()
+                        for (i in 0 until terminalsArray.length()) {
+                            terminalNames.add(terminalsArray.getJSONObject(i).optString("terminal_name"))
+                        }
+
+                        val originOptions = mutableListOf("Current Location").apply { addAll(terminalNames) }
+
+                        runOnUiThread {
+                            val destAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, terminalNames)
+                            actvDestination?.setAdapter(destAdapter)
+                            actvDestination?.setOnClickListener { actvDestination.showDropDown() }
+
+                            val origAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, originOptions)
+                            actvOrigin?.setAdapter(origAdapter)
+                            actvOrigin?.setOnClickListener { actvOrigin.showDropDown() }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                conn?.disconnect()
+            }
+        }
+
+        btnFindRoutePath?.setOnClickListener {
+            val destText = actvDestination?.text.toString().trim()
+            val origText = actvOrigin?.text.toString().trim()
+
+            if (destText.isEmpty() || destText.equals("Select terminal", ignoreCase = true)) {
+                Toast.makeText(this, "Please select a destination terminal.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            dialog.dismiss()
+            findRoutePathAndConfirm(origText, destText)
+        }
+
+        dialog.show()
+    }
+
+    private fun findRoutePathAndConfirm(originStr: String, destinationStr: String) {
+        val isCurrentLocation = originStr.isEmpty() || originStr.equals("Current Location", ignoreCase = true)
+
+        val matchingRoutes = availableRoutes.filter { route ->
+            val dest = route.optString("destination_name", "")
+            val orig = route.optString("origin_name", "")
+
+            val matchesDest = dest.equals(destinationStr, ignoreCase = true) || orig.equals(destinationStr, ignoreCase = true)
+            if (isCurrentLocation) {
+                matchesDest
+            } else {
+                matchesDest && (orig.equals(originStr, ignoreCase = true) || dest.equals(originStr, ignoreCase = true))
+            }
+        }
+
+        val bestRoute = if (matchingRoutes.isNotEmpty()) {
+            matchingRoutes.first()
+        } else {
+            availableRoutes.firstOrNull { route ->
+                val dest = route.optString("destination_name", "")
+                val orig = route.optString("origin_name", "")
+                dest.equals(destinationStr, ignoreCase = true) || orig.equals(destinationStr, ignoreCase = true)
+            }
+        }
+
+        if (bestRoute != null) {
+            showRouteDetailDialog(bestRoute)
+        } else {
+            Toast.makeText(this, "No route found heading to $destinationStr.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onStart() {
@@ -763,6 +934,7 @@ class MainActivity : BaseActivity() {
                 origin = origin,
                 dest = dest
             )
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
 

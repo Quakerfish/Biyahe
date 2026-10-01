@@ -3180,6 +3180,7 @@ drawable ic_clear
 drawable ic_clear_black_24
 drawable ic_clock_black_24dp
 drawable ic_close
+drawable ic_compass
 drawable ic_edit
 drawable ic_email
 drawable ic_eye
@@ -3370,6 +3371,8 @@ id action_mode_close_button
 id action_text
 id actions
 id activity_chooser_view_content
+id actvDestination
+id actvOrigin
 id add
 id alertTitle
 id aligned
@@ -3405,6 +3408,8 @@ id btnClearSearch
 id btnCloseRouteCard
 id btnCreateAccount
 id btnEditProfile
+id btnFindNearest
+id btnFindRoutePath
 id btnLogin
 id btnLogout
 id btnProfile
@@ -3655,8 +3660,8 @@ id mtrl_picker_text_input_range_start
 id mtrl_picker_title_text
 id mtrl_view_tag_bottom_padding
 id multiply
+id nav_community
 id nav_home
-id nav_profile
 id nav_routes
 id navigation_bar_item_active_indicator_view
 id navigation_bar_item_icon_container
@@ -4021,6 +4026,7 @@ layout activity_profile
 layout activity_routes
 layout activity_saved
 layout activity_signup
+layout bottom_sheet_find_route
 layout bottom_sheet_route_detail
 layout custom_dialog
 layout design_bottom_navigation_item

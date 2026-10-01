@@ -38,6 +38,7 @@ drawable ic_bookmark_outline
 drawable ic_chevron_right
 drawable ic_clear
 drawable ic_close
+drawable ic_compass
 drawable ic_edit
 drawable ic_email
 drawable ic_eye
@@ -53,6 +54,8 @@ drawable ic_route
 drawable ic_search
 drawable ic_sliders
 drawable ic_theme
+id actvDestination
+id actvOrigin
 id bottomNav
 id btnBack
 id btnChangeAvatar
@@ -60,6 +63,8 @@ id btnClearSearch
 id btnCloseRouteCard
 id btnCreateAccount
 id btnEditProfile
+id btnFindNearest
+id btnFindRoutePath
 id btnLogin
 id btnLogout
 id btnProfile
@@ -103,8 +108,8 @@ id llExpandedDetails
 id llPillCode
 id mapContainer
 id mapView
+id nav_community
 id nav_home
-id nav_profile
 id nav_routes
 id progressBar
 id rootLayout
@@ -153,6 +158,7 @@ layout activity_profile
 layout activity_routes
 layout activity_saved
 layout activity_signup
+layout bottom_sheet_find_route
 layout bottom_sheet_route_detail
 layout item_route_display
 layout item_route_suggestion

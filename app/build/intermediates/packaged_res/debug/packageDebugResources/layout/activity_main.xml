@@ -384,6 +384,31 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Find Route / Compass Direction Button -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnFindNearest"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="80dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="@color/bg_white"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="6dp"
+            app:strokeColor="@color/brand_orange"
+            app:strokeWidth="1.5dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:contentDescription="Find route"
+                android:src="@drawable/ic_compass"
+                app:tint="@color/brand_orange" />
+        </com.google.android.material.card.MaterialCardView>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <!-- Bottom Navigation Bar (Placed outside CoordinatorLayout at the bottom) -->
