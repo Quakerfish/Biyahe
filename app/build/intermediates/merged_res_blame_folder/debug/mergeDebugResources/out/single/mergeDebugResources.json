@@ -36,6 +36,10 @@
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\activity_profile.xml"
     },
     {
+        "merged": "com.biyahe.app-debug-41:/layout_activity_main.xml.flat",
+        "source": "com.biyahe.app-main-43:/layout/activity_main.xml"
+    },
+    {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-debug-41:\\drawable_ic_clear.xml.flat",
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\drawable\\ic_clear.xml"
     },
@@ -104,12 +108,12 @@
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\mipmap-anydpi-v26\\ic_launcher.xml"
     },
     {
-        "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-debug-41:\\layout_activity_signup.xml.flat",
-        "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\activity_signup.xml"
+        "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-debug-41:\\drawable_ic_compass.xml.flat",
+        "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\drawable\\ic_compass.xml"
     },
     {
-        "merged": "com.biyahe.app-debug-41:/layout_activity_edit_profile.xml.flat",
-        "source": "com.biyahe.app-main-43:/layout/activity_edit_profile.xml"
+        "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-debug-41:\\layout_activity_signup.xml.flat",
+        "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\activity_signup.xml"
     },
     {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-debug-41:\\drawable_bg_status_dot.xml.flat",
@@ -188,6 +192,10 @@
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\drawable\\bg_route_item.xml"
     },
     {
+        "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-debug-41:\\drawable_ic_current_location.xml.flat",
+        "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\drawable\\ic_current_location.xml"
+    },
+    {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-debug-41:\\menu_bottom_nav_menu.xml.flat",
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\menu\\bottom_nav_menu.xml"
     },
@@ -210,6 +218,14 @@
     {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-debug-41:\\drawable_ic_bell.xml.flat",
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\drawable\\ic_bell.xml"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-debug-41:\\layout_dialog_profile_dropdown.xml.flat",
+        "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\dialog_profile_dropdown.xml"
+    },
+    {
+        "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-debug-41:\\layout_bottom_sheet_find_route.xml.flat",
+        "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\bottom_sheet_find_route.xml"
     },
     {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-debug-41:\\layout_item_route_suggestion.xml.flat",

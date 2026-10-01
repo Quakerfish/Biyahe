@@ -42,6 +42,9 @@ public final class ActivityMainBinding implements ViewBinding {
   public final ImageView btnCloseRouteCard;
 
   @NonNull
+  public final MaterialCardView btnFindNearest;
+
+  @NonNull
   public final FrameLayout btnProfile;
 
   @NonNull
@@ -106,12 +109,13 @@ public final class ActivityMainBinding implements ViewBinding {
 
   private ActivityMainBinding(@NonNull RelativeLayout rootView,
       @NonNull BottomNavigationView bottomNav, @NonNull ImageView btnClearSearch,
-      @NonNull ImageView btnCloseRouteCard, @NonNull FrameLayout btnProfile,
-      @NonNull MaterialButton btnUntrackRoute, @NonNull ChipGroup cgSavedRoutes,
-      @NonNull CoordinatorLayout coordinatorContainer, @NonNull CardView cvSuggestions,
-      @NonNull EditText etSearchDestination, @NonNull HorizontalScrollView hsvSavedChips,
-      @NonNull ImageView ivMainAvatar, @NonNull LinearLayout llExpandedDetails,
-      @NonNull LinearLayout llPillCode, @NonNull FrameLayout mapContainer, @NonNull MapView mapView,
+      @NonNull ImageView btnCloseRouteCard, @NonNull MaterialCardView btnFindNearest,
+      @NonNull FrameLayout btnProfile, @NonNull MaterialButton btnUntrackRoute,
+      @NonNull ChipGroup cgSavedRoutes, @NonNull CoordinatorLayout coordinatorContainer,
+      @NonNull CardView cvSuggestions, @NonNull EditText etSearchDestination,
+      @NonNull HorizontalScrollView hsvSavedChips, @NonNull ImageView ivMainAvatar,
+      @NonNull LinearLayout llExpandedDetails, @NonNull LinearLayout llPillCode,
+      @NonNull FrameLayout mapContainer, @NonNull MapView mapView,
       @NonNull RelativeLayout rootLayout, @NonNull MaterialCardView routeInfoCard,
       @NonNull RecyclerView rvRouteSuggestions, @NonNull LinearLayout searchContainer,
       @NonNull TextView tvDestinationDetail, @NonNull TextView tvOriginDetail,
@@ -121,6 +125,7 @@ public final class ActivityMainBinding implements ViewBinding {
     this.bottomNav = bottomNav;
     this.btnClearSearch = btnClearSearch;
     this.btnCloseRouteCard = btnCloseRouteCard;
+    this.btnFindNearest = btnFindNearest;
     this.btnProfile = btnProfile;
     this.btnUntrackRoute = btnUntrackRoute;
     this.cgSavedRoutes = cgSavedRoutes;
@@ -186,6 +191,12 @@ public final class ActivityMainBinding implements ViewBinding {
       id = R.id.btnCloseRouteCard;
       ImageView btnCloseRouteCard = ViewBindings.findChildViewById(rootView, id);
       if (btnCloseRouteCard == null) {
+        break missingId;
+      }
+
+      id = R.id.btnFindNearest;
+      MaterialCardView btnFindNearest = ViewBindings.findChildViewById(rootView, id);
+      if (btnFindNearest == null) {
         break missingId;
       }
 
@@ -312,11 +323,11 @@ public final class ActivityMainBinding implements ViewBinding {
       }
 
       return new ActivityMainBinding((RelativeLayout) rootView, bottomNav, btnClearSearch,
-          btnCloseRouteCard, btnProfile, btnUntrackRoute, cgSavedRoutes, coordinatorContainer,
-          cvSuggestions, etSearchDestination, hsvSavedChips, ivMainAvatar, llExpandedDetails,
-          llPillCode, mapContainer, mapView, rootLayout, routeInfoCard, rvRouteSuggestions,
-          searchContainer, tvDestinationDetail, tvOriginDetail, tvRouteCode, tvRouteName,
-          tvVehicleType);
+          btnCloseRouteCard, btnFindNearest, btnProfile, btnUntrackRoute, cgSavedRoutes,
+          coordinatorContainer, cvSuggestions, etSearchDestination, hsvSavedChips, ivMainAvatar,
+          llExpandedDetails, llPillCode, mapContainer, mapView, rootLayout, routeInfoCard,
+          rvRouteSuggestions, searchContainer, tvDestinationDetail, tvOriginDetail, tvRouteCode,
+          tvRouteName, tvVehicleType);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

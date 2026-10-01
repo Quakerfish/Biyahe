@@ -42,12 +42,12 @@ class ProfileActivity : BaseActivity() {
         setContentView(binding.root)
 
         setupClickListeners()
-        setupBottomNav(binding.bottomNav, R.id.nav_profile)
+        setupBottomNav(binding.bottomNav, -1)
     }
 
     override fun onResume() {
         super.onResume()
-        setupBottomNav(binding.bottomNav, R.id.nav_profile)
+        setupBottomNav(binding.bottomNav, -1)
         updateAppearanceSummary()
         fetchUserProfile()
     }
@@ -55,7 +55,7 @@ class ProfileActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        setupBottomNav(binding.bottomNav, R.id.nav_profile)
+        setupBottomNav(binding.bottomNav, -1)
     }
 
     private fun setupClickListeners() {
