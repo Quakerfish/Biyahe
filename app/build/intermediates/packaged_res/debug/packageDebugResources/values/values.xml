@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="http://schemas.android.com/tools">
-    <color name="bg_app">#F4F5F9</color>
+    <color name="bg_app">#F8FAFC</color>
     <color name="bg_white">#FFFFFF</color>
     <color name="black_overlay_40">#66000000</color>
-    <color name="brand_orange">#F26522</color>
-    <color name="brand_orange_dark">#D9531A</color>
-    <color name="brand_orange_soft">#FDECE3</color>
-    <color name="divider">#E5E7EB</color>
-    <color name="error">#DC2626</color>
-    <color name="map_route_line">#F26522</color>
-    <color name="success_green">#22C55E</color>
-    <color name="text_muted">#9CA3AF</color>
+    <color name="brand_blue">#0038A8</color>
+    <color name="brand_blue_dark">#002884</color>
+    <color name="brand_blue_soft">#EBF1FF</color>
+    <color name="brand_orange">#0038A8</color>
+    <color name="brand_orange_dark">#002884</color>
+    <color name="brand_orange_soft">#EBF1FF</color>
+    <color name="brand_red">#CE1126</color>
+    <color name="brand_yellow">#FCD116</color>
+    <color name="divider">#E2E8F0</color>
+    <color name="error">#CE1126</color>
+    <color name="map_route_line">#0038A8</color>
+    <color name="ph_blue">#0038A8</color>
+    <color name="ph_blue_dark">#002884</color>
+    <color name="ph_blue_soft">#EBF1FF</color>
+    <color name="ph_green">#008751</color>
+    <color name="ph_green_soft">#E6F4EA</color>
+    <color name="ph_red">#CE1126</color>
+    <color name="ph_red_soft">#FDEAEA</color>
+    <color name="ph_yellow">#FCD116</color>
+    <color name="ph_yellow_soft">#FFFBEA</color>
+    <color name="success_green">#008751</color>
+    <color name="text_muted">#64748B</color>
     <color name="text_on_brand">#FFFFFF</color>
-    <color name="text_primary">#111827</color>
-    <color name="text_secondary">#4B5563</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#475569</color>
     <color name="white">#FFFFFF</color>
     <string name="agree_terms_prefix">I agree to the</string>
     <string name="already_have_account">Already have an account?</string>
@@ -88,8 +102,8 @@
         <item name="android:layout_weight">1</item>
         <item name="android:background">@null</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textColor">@color/text_primary</item>
-        <item name="android:textColorHint">@color/text_muted</item>
+        <item name="android:textColor">#0038A8</item>
+        <item name="android:textColorHint">#64748B</item>
         <item name="android:textSize">14sp</item>
     </style>
     <style name="FieldLabel">
@@ -107,7 +121,8 @@
         <item name="android:orientation">horizontal</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:background">@drawable/bg_field</item>
-        <item name="android:paddingHorizontal">14dp</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">14dp</item>
     </style>
     <style name="NoAnimationTheme" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@null</item>
@@ -122,10 +137,9 @@
         <item name="android:background">@drawable/bg_otp_box</item>
         <item name="android:gravity">center</item>
         <item name="android:maxLength">1</item>
-        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColor">#0038A8</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:importantForAutofill">no</item>
     </style>
     <style name="OtpBoxLast" parent="OtpBox">
         <item name="android:layout_marginEnd">0dp</item>
@@ -164,8 +178,10 @@
         <item name="android:focusable">true</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingHorizontal">16dp</item>
-        <item name="android:paddingVertical">14dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
     </style>
     <style name="ProfileMenuTextGroup">
         <item name="android:layout_width">0dp</item>

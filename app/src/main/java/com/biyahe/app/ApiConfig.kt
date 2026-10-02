@@ -3,7 +3,7 @@ package com.biyahe.app
 object ApiConfig {
     // CHANGE YOUR IP / BASE URL HERE ONLY
     // Use your computer's local Wi-Fi IP (e.g., 192.168.1.X or 10.73.15.16)
-    private const val BASE_URL = "http://10.175.175.221/Biyahe-Admin"
+    private const val BASE_URL = "http://10.203.210.217/Biyahe-Admin"
 
     // Dynamic endpoints built from BASE_URL
     const val LOGIN_URL = "$BASE_URL/login.php"

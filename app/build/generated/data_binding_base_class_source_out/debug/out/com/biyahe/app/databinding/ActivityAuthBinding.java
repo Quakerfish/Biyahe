@@ -4,9 +4,7 @@ package com.biyahe.app.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -14,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.biyahe.app.R;
+import com.google.android.material.button.MaterialButton;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -23,10 +22,10 @@ public final class ActivityAuthBinding implements ViewBinding {
   private final ScrollView rootView;
 
   @NonNull
-  public final ImageButton btnBack;
+  public final TextView btnBack;
 
   @NonNull
-  public final Button btnVerify;
+  public final MaterialButton btnVerify;
 
   @NonNull
   public final EditText etDigit1;
@@ -49,8 +48,8 @@ public final class ActivityAuthBinding implements ViewBinding {
   @NonNull
   public final TextView tvResendTimer;
 
-  private ActivityAuthBinding(@NonNull ScrollView rootView, @NonNull ImageButton btnBack,
-      @NonNull Button btnVerify, @NonNull EditText etDigit1, @NonNull EditText etDigit2,
+  private ActivityAuthBinding(@NonNull ScrollView rootView, @NonNull TextView btnBack,
+      @NonNull MaterialButton btnVerify, @NonNull EditText etDigit1, @NonNull EditText etDigit2,
       @NonNull EditText etDigit3, @NonNull EditText etDigit4, @NonNull EditText etDigit5,
       @NonNull EditText etDigit6, @NonNull TextView tvResendTimer) {
     this.rootView = rootView;
@@ -93,13 +92,13 @@ public final class ActivityAuthBinding implements ViewBinding {
     int id;
     missingId: {
       id = R.id.btnBack;
-      ImageButton btnBack = ViewBindings.findChildViewById(rootView, id);
+      TextView btnBack = ViewBindings.findChildViewById(rootView, id);
       if (btnBack == null) {
         break missingId;
       }
 
       id = R.id.btnVerify;
-      Button btnVerify = ViewBindings.findChildViewById(rootView, id);
+      MaterialButton btnVerify = ViewBindings.findChildViewById(rootView, id);
       if (btnVerify == null) {
         break missingId;
       }

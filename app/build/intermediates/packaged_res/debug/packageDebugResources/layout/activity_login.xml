@@ -3,124 +3,183 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_app"
+    android:background="@color/bg_white"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:gravity="top|center_horizontal"
         android:orientation="vertical"
-        android:padding="28dp">
+        android:paddingHorizontal="28dp"
+        android:paddingTop="54dp"
+        android:paddingBottom="64dp">
 
-        <!-- Brand Header with Icon -->
+        <!-- Centered Brand Header -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:gravity="center_vertical"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="8dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="6dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_route"
-                app:tint="@color/brand_orange" />
+                android:src="@drawable/ic_biyahe_logo" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:textColor="@color/brand_orange"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bi"
+                    android:textColor="@color/ph_blue"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="yahe"
+                    android:textColor="@color/ph_red"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
+
+        <!-- Welcome Back Title & Subtitle -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome"
+            android:textColor="@color/text_primary"
+            android:textSize="26sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="32dp"
-            android:text="Cebu City Jeepney Route Tracker"
-            android:textColor="@color/text_secondary"
-            android:textSize="13sp" />
+            android:layout_marginTop="6dp"
+            android:text="Log in to track jeepneys and routes around you."
+            android:textColor="@color/text_muted"
+            android:textSize="14sp" />
 
-        <!-- Card -->
+        <!-- Form Inputs -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_card_white"
-            android:elevation="4dp"
-            android:orientation="vertical"
-            android:padding="24dp">
+            android:layout_marginTop="28dp"
+            android:orientation="vertical">
 
+            <!-- Username Field -->
             <TextView
-                style="@style/FieldLabel"
-                android:layout_marginTop="0dp"
-                android:text="@string/label_username" />
-
-            <LinearLayout style="@style/FieldWrap">
-                <EditText
-                    android:id="@+id/etUsername"
-                    style="@style/FieldInput"
-                    android:autofillHints="username,emailAddress"
-                    android:hint="@string/hint_username"
-                    android:imeOptions="actionNext"
-                    android:inputType="text" />
-            </LinearLayout>
-
-            <TextView
-                style="@style/FieldLabel"
-                android:text="@string/label_password" />
-
-            <LinearLayout style="@style/FieldWrap">
-                <EditText
-                    android:id="@+id/etPassword"
-                    style="@style/FieldInput"
-                    android:autofillHints="password"
-                    android:hint="@string/hint_password"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword" />
-                <ImageButton
-                    android:id="@+id/btnTogglePassword"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/label_password"
-                    android:src="@drawable/ic_eye"
-                    app:tint="@color/text_muted" />
-            </LinearLayout>
-
-            <android.widget.Button
-                android:id="@+id/btnLogin"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/bg_button_primary"
-                android:text="@string/btn_login"
-                android:textAllCaps="false"
-                android:textColor="@color/text_on_brand"
-                android:textSize="15sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
                 android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeColor="@color/ph_blue"
+                app:boxStrokeWidthFocused="2dp"
+                app:hintEnabled="false"
+                app:startIconDrawable="@drawable/ic_person"
+                app:startIconTint="@color/text_muted">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@null"
+                    android:hint="juandelacruz"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textColor="#0038A8"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Password Field -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Password"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeColor="@color/ph_blue"
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@color/text_muted"
+                app:hintEnabled="false"
+                app:startIconDrawable="@drawable/ic_lock"
+                app:startIconTint="@color/text_muted">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@null"
+                    android:hint="At least 8 characters"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:textColor="#0038A8"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/tvForgotPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="14dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="4dp"
-                android:text="@string/forgot_password"
-                android:textColor="@color/brand_orange"
-                android:textSize="12.5sp"
+                android:text="Forgot password?"
+                android:textColor="@color/ph_blue"
+                android:textSize="13sp"
                 android:textStyle="bold" />
+
+            <!-- Login Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="28dp"
+                android:backgroundTint="@color/ph_blue"
+                android:text="Login"
+                android:textColor="@color/bg_white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="14dp" />
         </LinearLayout>
 
-        <!-- Signup link -->
+        <!-- Footer Sign Up Link -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -131,9 +190,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dont_have_account"
-                android:textColor="@color/text_secondary"
-                android:textSize="13sp" />
+                android:text="Don't have an account?"
+                android:textColor="@color/text_muted"
+                android:textSize="13.5sp" />
 
             <TextView
                 android:id="@+id/tvGoToSignup"
@@ -141,10 +200,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="2dp"
-                android:text="@string/sign_up"
-                android:textColor="@color/brand_orange"
-                android:textSize="13sp"
+                android:text="Sign up"
+                android:textColor="@color/ph_blue"
+                android:textSize="13.5sp"
                 android:textStyle="bold" />
         </LinearLayout>
 

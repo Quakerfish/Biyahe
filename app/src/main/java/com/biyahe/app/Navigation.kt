@@ -41,7 +41,7 @@ fun Activity.setupBottomNav(nav: BottomNavigationView, currentTabId: Int) {
                 false
             }
             R.id.nav_routes -> {
-                navigateToTab(RoutesActivity::class.java)
+                navigateToTab(MainActivity::class.java)
                 false
             }
             R.id.nav_community -> {

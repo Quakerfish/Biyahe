@@ -2,9 +2,6 @@ package com.biyahe.app
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
-import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.biyahe.app.databinding.ActivitySignupBinding
@@ -28,11 +25,6 @@ class SignupActivity : BaseActivity() {
         binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
-
-        setupPasswordToggle(binding.btnTogglePassword, binding.etPassword)
-        setupPasswordToggle(binding.btnToggleConfirmPassword, binding.etConfirmPassword)
-
         binding.btnCreateAccount.setOnClickListener { attemptSignup() }
 
         binding.tvGoToLogin.setOnClickListener {
@@ -53,7 +45,7 @@ class SignupActivity : BaseActivity() {
         binding.etConfirmPassword.error = null
 
         if (fullName.isEmpty()) {
-            binding.etFullName.error = "Full name is required"
+            binding.etFullName.error = "Username is required"
             binding.etFullName.requestFocus()
             return
         }
@@ -70,10 +62,6 @@ class SignupActivity : BaseActivity() {
         if (password != confirmPassword) {
             binding.etConfirmPassword.error = "Passwords do not match"
             binding.etConfirmPassword.requestFocus()
-            return
-        }
-        if (!binding.cbAgreeTerms.isChecked) {
-            Toast.makeText(this, "Please agree to the Terms of Service to continue.", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -98,7 +86,7 @@ class SignupActivity : BaseActivity() {
 
                 val jsonBody = JSONObject().apply {
                     put("fullName", fullName)
-                    put("username", fullName) // kept for backends that accept username or fullName
+                    put("username", fullName)
                     put("email", email)
                     put("password", password)
                     put("confirmPassword", confirmPassword)
@@ -110,7 +98,6 @@ class SignupActivity : BaseActivity() {
                 }
 
                 val responseCode = conn.responseCode
-                // Handles 200 (OK) and 201 (Created) properly
                 val stream = if (responseCode in 200..299) conn.inputStream else conn.errorStream
                 val responseText = stream?.bufferedReader()?.use { it.readText() } ?: ""
 
@@ -165,21 +152,6 @@ class SignupActivity : BaseActivity() {
 
     private fun setLoading(loading: Boolean) {
         binding.btnCreateAccount.isEnabled = !loading
-        binding.btnCreateAccount.text = if (loading) "Creating account…" else getString(R.string.btn_create_account)
-    }
-
-    /** Toggles an EditText between masked and plain password input, flipping the eye icon's alpha as a simple visual cue. */
-    private fun setupPasswordToggle(button: ImageButton, field: EditText) {
-        var isVisible = false
-        button.setOnClickListener {
-            isVisible = !isVisible
-            field.inputType = if (isVisible) {
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            } else {
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            }
-            field.setSelection(field.text.length)
-            button.alpha = if (isVisible) 1.0f else 0.5f
-        }
+        binding.btnCreateAccount.text = if (loading) "Creating account…" else "Register"
     }
 }

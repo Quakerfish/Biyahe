@@ -4,9 +4,6 @@ package com.biyahe.app.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -14,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.biyahe.app.R;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -23,16 +22,13 @@ public final class ActivityLoginBinding implements ViewBinding {
   private final ScrollView rootView;
 
   @NonNull
-  public final Button btnLogin;
+  public final MaterialButton btnLogin;
 
   @NonNull
-  public final ImageButton btnTogglePassword;
+  public final TextInputEditText etPassword;
 
   @NonNull
-  public final EditText etPassword;
-
-  @NonNull
-  public final EditText etUsername;
+  public final TextInputEditText etUsername;
 
   @NonNull
   public final TextView tvForgotPassword;
@@ -40,13 +36,11 @@ public final class ActivityLoginBinding implements ViewBinding {
   @NonNull
   public final TextView tvGoToSignup;
 
-  private ActivityLoginBinding(@NonNull ScrollView rootView, @NonNull Button btnLogin,
-      @NonNull ImageButton btnTogglePassword, @NonNull EditText etPassword,
-      @NonNull EditText etUsername, @NonNull TextView tvForgotPassword,
-      @NonNull TextView tvGoToSignup) {
+  private ActivityLoginBinding(@NonNull ScrollView rootView, @NonNull MaterialButton btnLogin,
+      @NonNull TextInputEditText etPassword, @NonNull TextInputEditText etUsername,
+      @NonNull TextView tvForgotPassword, @NonNull TextView tvGoToSignup) {
     this.rootView = rootView;
     this.btnLogin = btnLogin;
-    this.btnTogglePassword = btnTogglePassword;
     this.etPassword = etPassword;
     this.etUsername = etUsername;
     this.tvForgotPassword = tvForgotPassword;
@@ -81,25 +75,19 @@ public final class ActivityLoginBinding implements ViewBinding {
     int id;
     missingId: {
       id = R.id.btnLogin;
-      Button btnLogin = ViewBindings.findChildViewById(rootView, id);
+      MaterialButton btnLogin = ViewBindings.findChildViewById(rootView, id);
       if (btnLogin == null) {
         break missingId;
       }
 
-      id = R.id.btnTogglePassword;
-      ImageButton btnTogglePassword = ViewBindings.findChildViewById(rootView, id);
-      if (btnTogglePassword == null) {
-        break missingId;
-      }
-
       id = R.id.etPassword;
-      EditText etPassword = ViewBindings.findChildViewById(rootView, id);
+      TextInputEditText etPassword = ViewBindings.findChildViewById(rootView, id);
       if (etPassword == null) {
         break missingId;
       }
 
       id = R.id.etUsername;
-      EditText etUsername = ViewBindings.findChildViewById(rootView, id);
+      TextInputEditText etUsername = ViewBindings.findChildViewById(rootView, id);
       if (etUsername == null) {
         break missingId;
       }
@@ -116,8 +104,8 @@ public final class ActivityLoginBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityLoginBinding((ScrollView) rootView, btnLogin, btnTogglePassword,
-          etPassword, etUsername, tvForgotPassword, tvGoToSignup);
+      return new ActivityLoginBinding((ScrollView) rootView, btnLogin, etPassword, etUsername,
+          tvForgotPassword, tvGoToSignup);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -18,7 +18,8 @@
         <item name="android:orientation">horizontal</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:background">@drawable/bg_field</item>
-        <item name="android:paddingHorizontal">14dp</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">14dp</item>
     </style>
 
     <style name="FieldIcon">
@@ -35,8 +36,8 @@
         <item name="android:layout_weight">1</item>
         <item name="android:background">@null</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textColor">@color/text_primary</item>
-        <item name="android:textColorHint">@color/text_muted</item>
+        <item name="android:textColor">#0038A8</item>
+        <item name="android:textColorHint">#64748B</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -48,10 +49,9 @@
         <item name="android:background">@drawable/bg_otp_box</item>
         <item name="android:gravity">center</item>
         <item name="android:maxLength">1</item>
-        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColor">#0038A8</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:importantForAutofill">no</item>
     </style>
 
     <style name="OtpBoxLast" parent="OtpBox">
@@ -67,8 +67,10 @@
         <item name="android:focusable">true</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingHorizontal">16dp</item>
-        <item name="android:paddingVertical">14dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
     </style>
 
     <style name="ProfileMenuIcon">

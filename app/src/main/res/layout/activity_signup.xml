@@ -3,32 +3,63 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_app"
+    android:background="@color/bg_white"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="top|center_horizontal"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:paddingHorizontal="28dp"
+        android:paddingTop="54dp"
+        android:paddingBottom="64dp">
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_back"
-            android:tint="@color/text_primary" />
+        <!-- Centered Brand Header -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <!-- Screen Title Header -->
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="6dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_biyahe_logo" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bi"
+                    android:textColor="@color/ph_blue"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="yahe"
+                    android:textColor="@color/ph_red"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Create Account Title & Subtitle -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/signup_title"
-            android:textColor="@color/brand_orange"
+            android:text="Create an account"
+            android:textColor="@color/text_primary"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -36,160 +67,196 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="@string/signup_subtitle"
-            android:textColor="@color/text_secondary"
-            android:textSize="13sp" />
+            android:text="Join commuters sharing live jeepney updates."
+            android:textColor="@color/text_muted"
+            android:textSize="14sp" />
 
-        <!-- Full name -->
-        <TextView
-            style="@style/FieldLabel"
-            android:layout_marginTop="24dp"
-            android:text="@string/label_full_name" />
-
-        <LinearLayout style="@style/FieldWrap">
-            <ImageView style="@style/FieldIcon" android:src="@drawable/ic_person" />
-            <EditText
-                android:id="@+id/etFullName"
-                style="@style/FieldInput"
-                android:autofillHints="name"
-                android:hint="@string/hint_full_name"
-                android:imeOptions="actionNext"
-                android:inputType="textPersonName" />
-        </LinearLayout>
-
-        <!-- Email -->
-        <TextView
-            style="@style/FieldLabel"
-            android:layout_marginTop="16dp"
-            android:text="@string/label_email" />
-
-        <LinearLayout style="@style/FieldWrap">
-            <ImageView style="@style/FieldIcon" android:src="@drawable/ic_email" />
-            <EditText
-                android:id="@+id/etEmail"
-                style="@style/FieldInput"
-                android:autofillHints="emailAddress"
-                android:hint="@string/hint_email"
-                android:imeOptions="actionNext"
-                android:inputType="textEmailAddress" />
-        </LinearLayout>
-
-        <!-- Password -->
-        <TextView
-            style="@style/FieldLabel"
-            android:layout_marginTop="16dp"
-            android:text="@string/label_password" />
-
-        <LinearLayout style="@style/FieldWrap">
-            <ImageView style="@style/FieldIcon" android:src="@drawable/ic_lock" />
-            <EditText
-                android:id="@+id/etPassword"
-                style="@style/FieldInput"
-                android:autofillHints="newPassword"
-                android:hint="@string/hint_password"
-                android:imeOptions="actionNext"
-                android:inputType="textPassword" />
-            <ImageButton
-                android:id="@+id/btnTogglePassword"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/label_password"
-                android:src="@drawable/ic_eye"
-                android:tint="@color/text_muted" />
-        </LinearLayout>
-
-        <!-- Confirm password -->
-        <TextView
-            style="@style/FieldLabel"
-            android:layout_marginTop="16dp"
-            android:text="@string/label_confirm_password" />
-
-        <LinearLayout style="@style/FieldWrap">
-            <ImageView style="@style/FieldIcon" android:src="@drawable/ic_lock" />
-            <EditText
-                android:id="@+id/etConfirmPassword"
-                style="@style/FieldInput"
-                android:autofillHints="newPassword"
-                android:hint="@string/hint_confirm_password"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword" />
-            <ImageButton
-                android:id="@+id/btnToggleConfirmPassword"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/label_confirm_password"
-                android:src="@drawable/ic_eye"
-                android:tint="@color/text_muted" />
-        </LinearLayout>
-
-        <!-- Terms checkbox -->
+        <!-- Form Inputs -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginTop="28dp"
+            android:orientation="vertical">
 
-            <CheckBox
-                android:id="@+id/cbAgreeTerms"
+            <!-- Username Field -->
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/brand_orange" />
+                android:text="Username"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_marginTop="6dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeColor="@color/ph_blue"
+                app:boxStrokeWidthFocused="2dp"
+                app:hintEnabled="false"
+                app:startIconDrawable="@drawable/ic_person"
+                app:startIconTint="@color/text_muted">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/agree_terms_prefix"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12.5sp" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@null"
+                    android:hint="juandelacruz"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textColor="#0038A8"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="@string/terms_of_service"
-                    android:textColor="@color/brand_orange"
-                    android:textSize="12.5sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            <!-- Email Field -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Email"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeColor="@color/ph_blue"
+                app:boxStrokeWidthFocused="2dp"
+                app:hintEnabled="false"
+                app:startIconDrawable="@drawable/ic_email"
+                app:startIconTint="@color/text_muted">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@null"
+                    android:hint="juan@gmail.com"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#0038A8"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Password Field -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Password"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeColor="@color/ph_blue"
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@color/text_muted"
+                app:hintEnabled="false"
+                app:startIconDrawable="@drawable/ic_lock"
+                app:startIconTint="@color/text_muted">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@null"
+                    android:hint="At least 8 characters"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:textColor="#0038A8"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Confirm Password Field -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Confirm Password"
+                android:textColor="@color/text_primary"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxStrokeColor="@color/ph_blue"
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@color/text_muted"
+                app:hintEnabled="false"
+                app:startIconDrawable="@drawable/ic_lock"
+                app:startIconTint="@color/text_muted">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="@null"
+                    android:hint="Re-enter your password"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:textColor="#0038A8"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Register Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCreateAccount"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="28dp"
+                android:backgroundTint="@color/ph_blue"
+                android:text="Register"
+                android:textColor="@color/bg_white"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:cornerRadius="14dp" />
         </LinearLayout>
 
-        <!-- Create account button -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnCreateAccount"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/bg_button_primary"
-            android:text="@string/btn_create_account"
-            android:textAllCaps="false"
-            android:textColor="@color/text_on_brand"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <!-- Login link -->
+        <!-- Footer Log in Link -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="28dp"
             android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/already_have_account"
-                android:textColor="@color/text_secondary"
-                android:textSize="13sp" />
+                android:text="Already have an account?"
+                android:textColor="@color/text_muted"
+                android:textSize="13.5sp" />
 
             <TextView
                 android:id="@+id/tvGoToLogin"
@@ -197,10 +264,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:padding="2dp"
-                android:text="@string/log_in"
-                android:textColor="@color/brand_orange"
-                android:textSize="13sp"
+                android:text="Log in"
+                android:textColor="@color/ph_blue"
+                android:textSize="13.5sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
