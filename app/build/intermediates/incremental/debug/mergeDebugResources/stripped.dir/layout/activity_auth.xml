@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_white"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="28dp"
+        android:paddingTop="36dp"
+        android:paddingBottom="24dp">
+
+        <!-- Brand Header -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_biyahe_logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Biyahe"
+                android:textColor="@color/ph_blue"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Title & Subtitle -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Check your Gmail"
+            android:textColor="@color/text_primary"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:lineSpacingExtra="3dp"
+            android:text="We sent a 6-digit code to re•••@gmail.com. Enter it below to continue."
+            android:textColor="@color/text_muted"
+            android:textSize="14sp" />
+
+        <!-- 6 OTP Boxes -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etDigit1"
+                style="@style/OtpBox"
+                android:autofillHints="smsOTPCode"
+                android:cursorVisible="false"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/etDigit2"
+                style="@style/OtpBox"
+                android:cursorVisible="false"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/etDigit3"
+                style="@style/OtpBox"
+                android:cursorVisible="false"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/etDigit4"
+                style="@style/OtpBox"
+                android:cursorVisible="false"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/etDigit5"
+                style="@style/OtpBox"
+                android:cursorVisible="false"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/etDigit6"
+                style="@style/OtpBoxLast"
+                android:cursorVisible="false"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <!-- Verify Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVerify"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="@color/ph_blue"
+            android:text="Verify"
+            android:textColor="@color/bg_white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:cornerRadius="14dp" />
+
+        <TextView
+            android:id="@+id/tvResendTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Didn't get it? Resend in 0:22"
+            android:textColor="@color/text_muted"
+            android:textSize="13sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Footer Back to login -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wrong account?"
+                android:textColor="@color/text_muted"
+                android:textSize="13.5sp" />
+
+            <TextView
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="Back to login"
+                android:textColor="@color/ph_blue"
+                android:textSize="13.5sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
