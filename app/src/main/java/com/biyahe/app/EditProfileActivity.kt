@@ -17,7 +17,7 @@ import java.io.DataOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-class EditProfileActivity : AppCompatActivity() {
+class EditProfileActivity : BaseActivity() {
 
     private lateinit var binding: ActivityEditProfileBinding
     private var selectedImageUri: Uri? = null

@@ -18,16 +18,18 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.biyahe.app.databinding.ActivityMainBinding
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -73,11 +75,20 @@ class MainActivity : BaseActivity() {
     private val sessionPrefs by lazy { getSharedPreferences("app_session", MODE_PRIVATE) }
 
     private val availableRoutes = mutableListOf<JSONObject>()
+    private val availableTerminals = mutableListOf<JSONObject>()
+    private val savedRouteIds = mutableSetOf<Int>()
+
     private lateinit var routeAdapter: RouteSuggestionAdapter
 
     private val activeMarkers = mutableListOf<Marker>()
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<MaterialCardView>
     private var isProgrammaticTextChange = false
+
+    private val sampleCommunityPosts = mutableListOf(
+        CommunityPost(1, "MD", "Maricel D.", "4 min ago", "Traffic", "#CE1126", "Heavy traffic heading to Welcome Rotonda — a stalled bus is blocking the middle lane. Add 15 minutes to your trip.", "España – Lacson", 23),
+        CommunityPost(2, "PR", "Paolo R.", "12 min ago", "Crowded", "#B45309", "Long line for Cubao jeeps right now. It is faster to board at the Hidalgo corner.", "Quiapo Church", 41),
+        CommunityPost(3, "AL", "Ana L.", "27 min ago", "Detour", "#0038A8", "Road works near Pedro Gil. Baclaran jeeps are taking Mabini until UN Ave.", "Taft – Pedro Gil", 17)
+    )
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
@@ -193,6 +204,20 @@ class MainActivity : BaseActivity() {
                     hideKeyboard()
                 }
             }
+
+            if (binding.cvProfileDropdown.visibility == View.VISIBLE) {
+                val dropdownRect = Rect()
+                val profileBtnRect = Rect()
+                binding.cvProfileDropdown.getGlobalVisibleRect(dropdownRect)
+                binding.btnProfile.getGlobalVisibleRect(profileBtnRect)
+
+                val x = ev.rawX.toInt()
+                val y = ev.rawY.toInt()
+
+                if (!dropdownRect.contains(x, y) && !profileBtnRect.contains(x, y)) {
+                    binding.cvProfileDropdown.visibility = View.GONE
+                }
+            }
         }
         return super.dispatchTouchEvent(ev)
     }
@@ -238,8 +263,8 @@ class MainActivity : BaseActivity() {
 
         if (style.getLayer(ROUTE_LAYER_ID) == null) {
             val lineLayer = LineLayer(ROUTE_LAYER_ID, ROUTE_SOURCE_ID).withProperties(
-                lineColor(Color.parseColor("#FF6D00")),
-                lineWidth(3.5f),
+                lineColor(Color.parseColor("#0038A8")),
+                lineWidth(4f),
                 lineCap(Property.LINE_CAP_ROUND),
                 lineJoin(Property.LINE_JOIN_ROUND)
             )
@@ -352,9 +377,13 @@ class MainActivity : BaseActivity() {
                         JSONArray(jsonStr)
                     }
 
+                    savedRouteIds.clear()
                     val savedList = mutableListOf<JSONObject>()
                     for (i in 0 until savedArray.length()) {
-                        savedList.add(savedArray.getJSONObject(i))
+                        val item = savedArray.getJSONObject(i)
+                        savedList.add(item)
+                        val id = item.optInt("route_id", -1)
+                        if (id != -1) savedRouteIds.add(id)
                     }
 
                     runOnUiThread {
@@ -393,12 +422,12 @@ class MainActivity : BaseActivity() {
                 isCheckable = false
                 isClickable = true
                 setChipIconResource(R.drawable.ic_bookmark)
-                setChipIconTintResource(R.color.brand_orange)
+                setChipIconTintResource(R.color.ph_blue)
                 chipBackgroundColor = ColorStateList.valueOf(
                     ContextCompat.getColor(this@MainActivity, R.color.bg_white)
                 )
                 chipStrokeColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(this@MainActivity, R.color.brand_orange)
+                    ContextCompat.getColor(this@MainActivity, R.color.ph_blue)
                 )
                 chipStrokeWidth = 2f
                 setTextColor(ContextCompat.getColor(this@MainActivity, R.color.text_primary))
@@ -433,11 +462,16 @@ class MainActivity : BaseActivity() {
                     val responseObj = JSONObject(jsonStr)
 
                     if (responseObj.optBoolean("success", false)) {
+                        val username = responseObj.optString("username", "Commuter")
+                        val email = responseObj.optString("email", "")
                         val profileImageUrl = if (responseObj.has("profile_image") && !responseObj.isNull("profile_image")) {
                             responseObj.getString("profile_image")
                         } else null
 
                         runOnUiThread {
+                            binding.tvDropdownUsername.text = username
+                            binding.tvDropdownEmail.text = email
+
                             if (!profileImageUrl.isNullOrEmpty()) {
                                 binding.ivMainAvatar.setPadding(0, 0, 0, 0)
                                 binding.ivMainAvatar.imageTintList = null
@@ -446,12 +480,18 @@ class MainActivity : BaseActivity() {
                                     .circleCrop()
                                     .placeholder(R.drawable.ic_person)
                                     .into(binding.ivMainAvatar)
+
+                                Glide.with(this@MainActivity)
+                                    .load(profileImageUrl)
+                                    .circleCrop()
+                                    .placeholder(R.drawable.ic_person)
+                                    .into(binding.ivDropdownAvatar)
                             } else {
                                 val padInPx = (10 * resources.displayMetrics.density).toInt()
                                 binding.ivMainAvatar.setPadding(padInPx, padInPx, padInPx, padInPx)
                                 binding.ivMainAvatar.setImageResource(R.drawable.ic_person)
                                 binding.ivMainAvatar.imageTintList = ColorStateList.valueOf(
-                                    ContextCompat.getColor(this@MainActivity, R.color.brand_orange)
+                                    ContextCompat.getColor(this@MainActivity, R.color.ph_blue)
                                 )
                             }
                         }
@@ -547,7 +587,6 @@ class MainActivity : BaseActivity() {
 
         var isTrackConfirmed = false
 
-        // Fetch waypoints & render map path preview immediately
         if (routeId != -1) {
             fetchRouteWaypoints(routeId, code, "$origin – $dest", type, origin, dest)
         }
@@ -665,13 +704,13 @@ class MainActivity : BaseActivity() {
         val center = size / 2f
 
         val auraPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = Color.parseColor("#4DFF6D00")
+            color = Color.parseColor("#330038A8")
             style = Paint.Style.FILL
         }
         canvas.drawCircle(center, center, 22f, auraPaint)
 
         val fillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = Color.parseColor("#FF6D00")
+            color = Color.parseColor("#0038A8")
             style = Paint.Style.FILL
         }
         canvas.drawCircle(center, center, 14f, fillPaint)
@@ -763,7 +802,17 @@ class MainActivity : BaseActivity() {
 
     private fun setupButtonsAndNav() {
         binding.btnProfile.setOnClickListener {
+            binding.cvProfileDropdown.visibility = if (binding.cvProfileDropdown.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        }
+
+        binding.rowProfileCardDetails.setOnClickListener {
+            binding.cvProfileDropdown.visibility = View.GONE
             navigateToTab(ProfileActivity::class.java)
+        }
+
+        binding.btnDropdownLogout.setOnClickListener {
+            binding.cvProfileDropdown.visibility = View.GONE
+            showSignOutConfirmation()
         }
 
         binding.btnFindNearest.setOnClickListener {
@@ -782,7 +831,276 @@ class MainActivity : BaseActivity() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
 
-        setupBottomNav(binding.bottomNav, R.id.nav_home)
+        setupMainBottomNav()
+    }
+
+    private fun setupMainBottomNav() {
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            binding.cvProfileDropdown.visibility = View.GONE
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    true
+                }
+                R.id.nav_routes -> {
+                    showRoutesListBottomSheet()
+                    false
+                }
+                R.id.nav_community -> {
+                    showCommunityBottomSheet()
+                    false
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun showRoutesListBottomSheet() {
+        val dialog = BottomSheetDialog(this)
+        val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_routes_list, null)
+        dialog.setContentView(sheetView)
+
+        val rvList = sheetView.findViewById<RecyclerView>(R.id.rvRoutesSheetList)
+        val tvTrackedCount = sheetView.findViewById<TextView>(R.id.tvRoutesTrackedCount)
+
+        val chipAll = sheetView.findViewById<Chip>(R.id.chipSheetAll)
+        val chipSaved = sheetView.findViewById<Chip>(R.id.chipSheetSaved)
+        val chipJeepneys = sheetView.findViewById<Chip>(R.id.chipSheetJeepneys)
+        val chipTerminals = sheetView.findViewById<Chip>(R.id.chipSheetTerminals)
+
+        val combinedList = mutableListOf<JSONObject>().apply {
+            addAll(availableRoutes)
+            addAll(availableTerminals)
+        }
+
+        val adapter = JeepneyRouteSheetAdapter(
+            items = combinedList,
+            savedRouteIds = savedRouteIds,
+            onItemClick = { selectedItem ->
+                val isTerminal = selectedItem.has("terminal_name")
+                if (isTerminal) {
+                    val terminalName = selectedItem.optString("terminal_name")
+                    dialog.dismiss()
+                    findRoutePathAndConfirm("Current Location", terminalName)
+                } else {
+                    dialog.dismiss()
+                    showRouteDetailDialog(selectedItem)
+                }
+            },
+            onSaveClick = { item, currentlySaved ->
+                val isTerminal = item.has("terminal_name")
+                val id = if (isTerminal) item.optInt("terminal_id", -1) else item.optInt("route_id", -1)
+                if (id != -1) {
+                    if (currentlySaved) {
+                        savedRouteIds.remove(id)
+                        Toast.makeText(this, "Removed from saved", Toast.LENGTH_SHORT).show()
+                    } else {
+                        savedRouteIds.add(id)
+                        Toast.makeText(this, "Saved successfully!", Toast.LENGTH_SHORT).show()
+                    }
+                    toggleSaveRouteServer(id, !currentlySaved)
+                }
+            }
+        )
+
+        fun updateChipStyles(activeChip: Chip) {
+            val chips = listOf(chipAll, chipSaved, chipJeepneys, chipTerminals)
+            for (c in chips) {
+                if (c == activeChip) {
+                    c?.setTextColor(ContextCompat.getColor(this, R.color.ph_blue))
+                    c?.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.ph_blue_soft))
+                    c?.chipStrokeColor = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.ph_blue))
+                } else {
+                    c?.setTextColor(ContextCompat.getColor(this, R.color.text_secondary))
+                    c?.chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.bg_white))
+                    c?.chipStrokeColor = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.divider))
+                }
+            }
+        }
+
+        chipAll?.setOnClickListener {
+            updateChipStyles(chipAll)
+            val all = mutableListOf<JSONObject>().apply {
+                addAll(availableRoutes)
+                addAll(availableTerminals)
+            }
+            adapter.updateList(all, savedRouteIds)
+            tvTrackedCount?.text = "${all.size} items in Cebu City"
+        }
+
+        chipSaved?.setOnClickListener {
+            updateChipStyles(chipSaved)
+            val savedList = availableRoutes.filter { route ->
+                savedRouteIds.contains(route.optInt("route_id", -1))
+            }
+            adapter.updateList(savedList, savedRouteIds)
+            tvTrackedCount?.text = "${savedList.size} saved routes"
+        }
+
+        chipJeepneys?.setOnClickListener {
+            updateChipStyles(chipJeepneys)
+            adapter.updateList(availableRoutes, savedRouteIds)
+            tvTrackedCount?.text = "${availableRoutes.size} jeepney routes tracked"
+        }
+
+        chipTerminals?.setOnClickListener {
+            updateChipStyles(chipTerminals)
+            adapter.updateList(availableTerminals, savedRouteIds)
+            tvTrackedCount?.text = "${availableTerminals.size} terminals found"
+        }
+
+        tvTrackedCount?.text = "${availableRoutes.size} routes tracked in Cebu City"
+
+        rvList?.layoutManager = LinearLayoutManager(this)
+        rvList?.adapter = adapter
+
+        if (availableTerminals.isEmpty()) {
+            loadTerminalsForSheet(adapter)
+        }
+
+        dialog.show()
+    }
+
+    private fun loadTerminalsForSheet(adapter: JeepneyRouteSheetAdapter) {
+        thread {
+            var conn: HttpURLConnection? = null
+            try {
+                val url = URL("${ApiConfig.ROUTES_URL}?type=terminals")
+                conn = (url.openConnection() as HttpURLConnection).apply {
+                    requestMethod = "GET"
+                    connectTimeout = 5000
+                    readTimeout = 5000
+                }
+
+                val sessionCookie = sessionPrefs.getString("session_cookie", null)
+                if (!sessionCookie.isNullOrEmpty()) {
+                    conn.setRequestProperty("Cookie", sessionCookie)
+                }
+
+                if (conn.responseCode == 200) {
+                    val jsonStr = conn.inputStream.bufferedReader().readText()
+                    val responseObj = JSONObject(jsonStr)
+
+                    if (responseObj.optBoolean("success", false)) {
+                        val terminalsArray = responseObj.getJSONArray("terminals")
+                        availableTerminals.clear()
+                        for (i in 0 until terminalsArray.length()) {
+                            availableTerminals.add(terminalsArray.getJSONObject(i))
+                        }
+
+                        runOnUiThread {
+                            val all = mutableListOf<JSONObject>().apply {
+                                addAll(availableRoutes)
+                                addAll(availableTerminals)
+                            }
+                            adapter.updateList(all, savedRouteIds)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                conn?.disconnect()
+            }
+        }
+    }
+
+    private fun toggleSaveRouteServer(routeId: Int, shouldSave: Boolean) {
+        thread {
+            var conn: HttpURLConnection? = null
+            try {
+                val url = URL(ApiConfig.SAVED_ROUTES_URL)
+                conn = (url.openConnection() as HttpURLConnection).apply {
+                    requestMethod = "POST"
+                    setRequestProperty("Content-Type", "application/json; utf-8")
+                    doOutput = true
+                    connectTimeout = 5000
+                    readTimeout = 5000
+
+                    val sessionCookie = sessionPrefs.getString("session_cookie", null)
+                    if (!sessionCookie.isNullOrEmpty()) {
+                        setRequestProperty("Cookie", sessionCookie)
+                    }
+                }
+
+                val jsonBody = JSONObject().apply {
+                    put("route_id", routeId)
+                    put("action", if (shouldSave) "save" else "unsave")
+                }
+
+                conn.outputStream.use { os ->
+                    os.write(jsonBody.toString().toByteArray(Charsets.UTF_8))
+                }
+
+                conn.responseCode
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                conn?.disconnect()
+            }
+        }
+    }
+
+    private fun showCommunityBottomSheet() {
+        val dialog = BottomSheetDialog(this)
+        val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_community, null)
+        dialog.setContentView(sheetView)
+
+        val rvPosts = sheetView.findViewById<RecyclerView>(R.id.rvCommunityPosts)
+        val etInput = sheetView.findViewById<EditText>(R.id.etCommunityPostInput)
+        val btnPost = sheetView.findViewById<View>(R.id.btnSubmitPost)
+
+        val tagTraffic = sheetView.findViewById<TextView>(R.id.tagTraffic)
+        val tagCrowded = sheetView.findViewById<TextView>(R.id.tagCrowded)
+        val tagDetour = sheetView.findViewById<TextView>(R.id.tagDetour)
+        val tagAllClear = sheetView.findViewById<TextView>(R.id.tagAllClear)
+
+        var selectedTag = "Traffic"
+        var selectedColor = "#CE1126"
+
+        fun selectTag(view: TextView?, tag: String, color: String) {
+            selectedTag = tag
+            selectedColor = color
+            Toast.makeText(this, "Tag: $tag selected", Toast.LENGTH_SHORT).show()
+        }
+
+        tagTraffic?.setOnClickListener { selectTag(tagTraffic, "Traffic", "#CE1126") }
+        tagCrowded?.setOnClickListener { selectTag(tagCrowded, "Crowded", "#B45309") }
+        tagDetour?.setOnClickListener { selectTag(tagDetour, "Detour", "#0038A8") }
+        tagAllClear?.setOnClickListener { selectTag(tagAllClear, "All clear", "#008751") }
+
+        val adapter = CommunityPostAdapter(sampleCommunityPosts)
+        rvPosts?.layoutManager = LinearLayoutManager(this)
+        rvPosts?.adapter = adapter
+
+        btnPost?.setOnClickListener {
+            val text = etInput?.text.toString().trim()
+            if (text.isEmpty()) {
+                Toast.makeText(this, "Please write a road update first.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val username = sessionPrefs.getString("username", "Commuter") ?: "Commuter"
+            val initials = if (username.length >= 2) username.take(2).uppercase() else "C"
+
+            val newPost = CommunityPost(
+                id = (System.currentTimeMillis() % 10000).toInt(),
+                avatarInitials = initials,
+                username = username,
+                timestamp = "Just now",
+                tagText = selectedTag,
+                tagColorHex = selectedColor,
+                bodyText = text,
+                locationText = "Cebu City Center",
+                helpfulCount = 0
+            )
+
+            adapter.addPost(newPost)
+            etInput?.text?.clear()
+            rvPosts?.scrollToPosition(0)
+            Toast.makeText(this, "Road report posted!", Toast.LENGTH_SHORT).show()
+        }
+
+        dialog.show()
     }
 
     private fun showFindRouteBottomSheet() {
@@ -888,6 +1206,22 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun showSignOutConfirmation() {
+        AlertDialog.Builder(this)
+            .setTitle("Log Out")
+            .setMessage("Are you sure you want to log out?")
+            .setPositiveButton("Log Out") { _, _ ->
+                sessionPrefs.edit().clear().apply()
+                val intent = Intent(this, LoginActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
+                startActivity(intent)
+                finish()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
     override fun onStart() {
         super.onStart()
         mapView.onStart()
@@ -896,7 +1230,7 @@ class MainActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         mapView.onResume()
-        setupBottomNav(binding.bottomNav, R.id.nav_home)
+        setupMainBottomNav()
         loadSavedRouteChips()
         loadUserProfileAvatar()
     }
@@ -904,7 +1238,7 @@ class MainActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
-        setupBottomNav(binding.bottomNav, R.id.nav_home)
+        setupMainBottomNav()
         checkTrackIntent(intent)
     }
 

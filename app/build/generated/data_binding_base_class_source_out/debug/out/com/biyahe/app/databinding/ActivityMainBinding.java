@@ -42,6 +42,9 @@ public final class ActivityMainBinding implements ViewBinding {
   public final ImageView btnCloseRouteCard;
 
   @NonNull
+  public final LinearLayout btnDropdownLogout;
+
+  @NonNull
   public final MaterialCardView btnFindNearest;
 
   @NonNull
@@ -57,6 +60,9 @@ public final class ActivityMainBinding implements ViewBinding {
   public final CoordinatorLayout coordinatorContainer;
 
   @NonNull
+  public final MaterialCardView cvProfileDropdown;
+
+  @NonNull
   public final CardView cvSuggestions;
 
   @NonNull
@@ -64,6 +70,9 @@ public final class ActivityMainBinding implements ViewBinding {
 
   @NonNull
   public final HorizontalScrollView hsvSavedChips;
+
+  @NonNull
+  public final ImageView ivDropdownAvatar;
 
   @NonNull
   public final ImageView ivMainAvatar;
@@ -87,13 +96,25 @@ public final class ActivityMainBinding implements ViewBinding {
   public final MaterialCardView routeInfoCard;
 
   @NonNull
+  public final LinearLayout rowProfileCardDetails;
+
+  @NonNull
   public final RecyclerView rvRouteSuggestions;
 
   @NonNull
   public final LinearLayout searchContainer;
 
   @NonNull
+  public final LinearLayout topBarContainer;
+
+  @NonNull
   public final TextView tvDestinationDetail;
+
+  @NonNull
+  public final TextView tvDropdownEmail;
+
+  @NonNull
+  public final TextView tvDropdownUsername;
 
   @NonNull
   public final TextView tvOriginDetail;
@@ -109,30 +130,36 @@ public final class ActivityMainBinding implements ViewBinding {
 
   private ActivityMainBinding(@NonNull RelativeLayout rootView,
       @NonNull BottomNavigationView bottomNav, @NonNull ImageView btnClearSearch,
-      @NonNull ImageView btnCloseRouteCard, @NonNull MaterialCardView btnFindNearest,
-      @NonNull FrameLayout btnProfile, @NonNull MaterialButton btnUntrackRoute,
-      @NonNull ChipGroup cgSavedRoutes, @NonNull CoordinatorLayout coordinatorContainer,
+      @NonNull ImageView btnCloseRouteCard, @NonNull LinearLayout btnDropdownLogout,
+      @NonNull MaterialCardView btnFindNearest, @NonNull FrameLayout btnProfile,
+      @NonNull MaterialButton btnUntrackRoute, @NonNull ChipGroup cgSavedRoutes,
+      @NonNull CoordinatorLayout coordinatorContainer, @NonNull MaterialCardView cvProfileDropdown,
       @NonNull CardView cvSuggestions, @NonNull EditText etSearchDestination,
-      @NonNull HorizontalScrollView hsvSavedChips, @NonNull ImageView ivMainAvatar,
-      @NonNull LinearLayout llExpandedDetails, @NonNull LinearLayout llPillCode,
-      @NonNull FrameLayout mapContainer, @NonNull MapView mapView,
+      @NonNull HorizontalScrollView hsvSavedChips, @NonNull ImageView ivDropdownAvatar,
+      @NonNull ImageView ivMainAvatar, @NonNull LinearLayout llExpandedDetails,
+      @NonNull LinearLayout llPillCode, @NonNull FrameLayout mapContainer, @NonNull MapView mapView,
       @NonNull RelativeLayout rootLayout, @NonNull MaterialCardView routeInfoCard,
-      @NonNull RecyclerView rvRouteSuggestions, @NonNull LinearLayout searchContainer,
-      @NonNull TextView tvDestinationDetail, @NonNull TextView tvOriginDetail,
+      @NonNull LinearLayout rowProfileCardDetails, @NonNull RecyclerView rvRouteSuggestions,
+      @NonNull LinearLayout searchContainer, @NonNull LinearLayout topBarContainer,
+      @NonNull TextView tvDestinationDetail, @NonNull TextView tvDropdownEmail,
+      @NonNull TextView tvDropdownUsername, @NonNull TextView tvOriginDetail,
       @NonNull TextView tvRouteCode, @NonNull TextView tvRouteName,
       @NonNull TextView tvVehicleType) {
     this.rootView = rootView;
     this.bottomNav = bottomNav;
     this.btnClearSearch = btnClearSearch;
     this.btnCloseRouteCard = btnCloseRouteCard;
+    this.btnDropdownLogout = btnDropdownLogout;
     this.btnFindNearest = btnFindNearest;
     this.btnProfile = btnProfile;
     this.btnUntrackRoute = btnUntrackRoute;
     this.cgSavedRoutes = cgSavedRoutes;
     this.coordinatorContainer = coordinatorContainer;
+    this.cvProfileDropdown = cvProfileDropdown;
     this.cvSuggestions = cvSuggestions;
     this.etSearchDestination = etSearchDestination;
     this.hsvSavedChips = hsvSavedChips;
+    this.ivDropdownAvatar = ivDropdownAvatar;
     this.ivMainAvatar = ivMainAvatar;
     this.llExpandedDetails = llExpandedDetails;
     this.llPillCode = llPillCode;
@@ -140,9 +167,13 @@ public final class ActivityMainBinding implements ViewBinding {
     this.mapView = mapView;
     this.rootLayout = rootLayout;
     this.routeInfoCard = routeInfoCard;
+    this.rowProfileCardDetails = rowProfileCardDetails;
     this.rvRouteSuggestions = rvRouteSuggestions;
     this.searchContainer = searchContainer;
+    this.topBarContainer = topBarContainer;
     this.tvDestinationDetail = tvDestinationDetail;
+    this.tvDropdownEmail = tvDropdownEmail;
+    this.tvDropdownUsername = tvDropdownUsername;
     this.tvOriginDetail = tvOriginDetail;
     this.tvRouteCode = tvRouteCode;
     this.tvRouteName = tvRouteName;
@@ -194,6 +225,12 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.btnDropdownLogout;
+      LinearLayout btnDropdownLogout = ViewBindings.findChildViewById(rootView, id);
+      if (btnDropdownLogout == null) {
+        break missingId;
+      }
+
       id = R.id.btnFindNearest;
       MaterialCardView btnFindNearest = ViewBindings.findChildViewById(rootView, id);
       if (btnFindNearest == null) {
@@ -224,6 +261,12 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.cvProfileDropdown;
+      MaterialCardView cvProfileDropdown = ViewBindings.findChildViewById(rootView, id);
+      if (cvProfileDropdown == null) {
+        break missingId;
+      }
+
       id = R.id.cvSuggestions;
       CardView cvSuggestions = ViewBindings.findChildViewById(rootView, id);
       if (cvSuggestions == null) {
@@ -239,6 +282,12 @@ public final class ActivityMainBinding implements ViewBinding {
       id = R.id.hsvSavedChips;
       HorizontalScrollView hsvSavedChips = ViewBindings.findChildViewById(rootView, id);
       if (hsvSavedChips == null) {
+        break missingId;
+      }
+
+      id = R.id.ivDropdownAvatar;
+      ImageView ivDropdownAvatar = ViewBindings.findChildViewById(rootView, id);
+      if (ivDropdownAvatar == null) {
         break missingId;
       }
 
@@ -280,6 +329,12 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.rowProfileCardDetails;
+      LinearLayout rowProfileCardDetails = ViewBindings.findChildViewById(rootView, id);
+      if (rowProfileCardDetails == null) {
+        break missingId;
+      }
+
       id = R.id.rvRouteSuggestions;
       RecyclerView rvRouteSuggestions = ViewBindings.findChildViewById(rootView, id);
       if (rvRouteSuggestions == null) {
@@ -292,9 +347,27 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.topBarContainer;
+      LinearLayout topBarContainer = ViewBindings.findChildViewById(rootView, id);
+      if (topBarContainer == null) {
+        break missingId;
+      }
+
       id = R.id.tvDestinationDetail;
       TextView tvDestinationDetail = ViewBindings.findChildViewById(rootView, id);
       if (tvDestinationDetail == null) {
+        break missingId;
+      }
+
+      id = R.id.tvDropdownEmail;
+      TextView tvDropdownEmail = ViewBindings.findChildViewById(rootView, id);
+      if (tvDropdownEmail == null) {
+        break missingId;
+      }
+
+      id = R.id.tvDropdownUsername;
+      TextView tvDropdownUsername = ViewBindings.findChildViewById(rootView, id);
+      if (tvDropdownUsername == null) {
         break missingId;
       }
 
@@ -323,11 +396,13 @@ public final class ActivityMainBinding implements ViewBinding {
       }
 
       return new ActivityMainBinding((RelativeLayout) rootView, bottomNav, btnClearSearch,
-          btnCloseRouteCard, btnFindNearest, btnProfile, btnUntrackRoute, cgSavedRoutes,
-          coordinatorContainer, cvSuggestions, etSearchDestination, hsvSavedChips, ivMainAvatar,
-          llExpandedDetails, llPillCode, mapContainer, mapView, rootLayout, routeInfoCard,
-          rvRouteSuggestions, searchContainer, tvDestinationDetail, tvOriginDetail, tvRouteCode,
-          tvRouteName, tvVehicleType);
+          btnCloseRouteCard, btnDropdownLogout, btnFindNearest, btnProfile, btnUntrackRoute,
+          cgSavedRoutes, coordinatorContainer, cvProfileDropdown, cvSuggestions,
+          etSearchDestination, hsvSavedChips, ivDropdownAvatar, ivMainAvatar, llExpandedDetails,
+          llPillCode, mapContainer, mapView, rootLayout, routeInfoCard, rowProfileCardDetails,
+          rvRouteSuggestions, searchContainer, topBarContainer, tvDestinationDetail,
+          tvDropdownEmail, tvDropdownUsername, tvOriginDetail, tvRouteCode, tvRouteName,
+          tvVehicleType);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

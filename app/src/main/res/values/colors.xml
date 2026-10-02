@@ -1,30 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Brand -->
-    <color name="brand_orange">#F26522</color>
-    <color name="brand_orange_dark">#D9531A</color>
-    <color name="brand_orange_soft">#FDECE3</color> <!-- route-code pill bg -->
+    <!-- Philippine Flag Palette -->
+    <color name="ph_blue">#0038A8</color>
+    <color name="ph_blue_dark">#002884</color>
+    <color name="ph_blue_soft">#EBF1FF</color>
+    <color name="ph_red">#CE1126</color>
+    <color name="ph_red_soft">#FDEAEA</color>
+    <color name="ph_yellow">#FCD116</color>
+    <color name="ph_yellow_soft">#FFFBEA</color>
+    <color name="ph_green">#008751</color>
+    <color name="ph_green_soft">#E6F4EA</color>
 
-    <!-- Constants: identical in every theme, never overridden in values-night -->
+    <!-- Brand Aliases -->
+    <color name="brand_orange">#0038A8</color>
+    <color name="brand_orange_dark">#002884</color>
+    <color name="brand_orange_soft">#EBF1FF</color>
+    <color name="brand_blue">#0038A8</color>
+    <color name="brand_blue_dark">#002884</color>
+    <color name="brand_blue_soft">#EBF1FF</color>
+    <color name="brand_red">#CE1126</color>
+    <color name="brand_yellow">#FCD116</color>
+
+    <!-- Constants -->
     <color name="white">#FFFFFF</color>
     <color name="text_on_brand">#FFFFFF</color>
     <color name="black_overlay_40">#66000000</color>
 
     <!-- Surfaces -->
-    <color name="bg_app">#F4F5F9</color>
+    <color name="bg_app">#F8FAFC</color>
     <color name="bg_white">#FFFFFF</color>
 
     <!-- Text -->
-    <color name="text_primary">#111827</color>
-    <color name="text_secondary">#4B5563</color>
-    <color name="text_muted">#9CA3AF</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#475569</color>
+    <color name="text_muted">#64748B</color>
 
     <!-- Lines / states -->
-    <color name="divider">#E5E7EB</color>
-    <color name="error">#DC2626</color>
-    <color name="success_green">#22C55E</color>
+    <color name="divider">#E2E8F0</color>
+    <color name="error">#CE1126</color>
+    <color name="success_green">#008751</color>
 
     <!-- Map -->
-    <color name="map_route_line">#F26522</color>
+    <color name="map_route_line">#0038A8</color>
 </resources>

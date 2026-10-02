@@ -4,17 +4,15 @@ package com.biyahe.app.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.biyahe.app.R;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -24,46 +22,29 @@ public final class ActivitySignupBinding implements ViewBinding {
   private final ScrollView rootView;
 
   @NonNull
-  public final ImageButton btnBack;
+  public final MaterialButton btnCreateAccount;
 
   @NonNull
-  public final AppCompatButton btnCreateAccount;
+  public final TextInputEditText etConfirmPassword;
 
   @NonNull
-  public final ImageButton btnToggleConfirmPassword;
+  public final TextInputEditText etEmail;
 
   @NonNull
-  public final ImageButton btnTogglePassword;
+  public final TextInputEditText etFullName;
 
   @NonNull
-  public final CheckBox cbAgreeTerms;
-
-  @NonNull
-  public final EditText etConfirmPassword;
-
-  @NonNull
-  public final EditText etEmail;
-
-  @NonNull
-  public final EditText etFullName;
-
-  @NonNull
-  public final EditText etPassword;
+  public final TextInputEditText etPassword;
 
   @NonNull
   public final TextView tvGoToLogin;
 
-  private ActivitySignupBinding(@NonNull ScrollView rootView, @NonNull ImageButton btnBack,
-      @NonNull AppCompatButton btnCreateAccount, @NonNull ImageButton btnToggleConfirmPassword,
-      @NonNull ImageButton btnTogglePassword, @NonNull CheckBox cbAgreeTerms,
-      @NonNull EditText etConfirmPassword, @NonNull EditText etEmail, @NonNull EditText etFullName,
-      @NonNull EditText etPassword, @NonNull TextView tvGoToLogin) {
+  private ActivitySignupBinding(@NonNull ScrollView rootView,
+      @NonNull MaterialButton btnCreateAccount, @NonNull TextInputEditText etConfirmPassword,
+      @NonNull TextInputEditText etEmail, @NonNull TextInputEditText etFullName,
+      @NonNull TextInputEditText etPassword, @NonNull TextView tvGoToLogin) {
     this.rootView = rootView;
-    this.btnBack = btnBack;
     this.btnCreateAccount = btnCreateAccount;
-    this.btnToggleConfirmPassword = btnToggleConfirmPassword;
-    this.btnTogglePassword = btnTogglePassword;
-    this.cbAgreeTerms = cbAgreeTerms;
     this.etConfirmPassword = etConfirmPassword;
     this.etEmail = etEmail;
     this.etFullName = etFullName;
@@ -98,56 +79,32 @@ public final class ActivitySignupBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.btnBack;
-      ImageButton btnBack = ViewBindings.findChildViewById(rootView, id);
-      if (btnBack == null) {
-        break missingId;
-      }
-
       id = R.id.btnCreateAccount;
-      AppCompatButton btnCreateAccount = ViewBindings.findChildViewById(rootView, id);
+      MaterialButton btnCreateAccount = ViewBindings.findChildViewById(rootView, id);
       if (btnCreateAccount == null) {
         break missingId;
       }
 
-      id = R.id.btnToggleConfirmPassword;
-      ImageButton btnToggleConfirmPassword = ViewBindings.findChildViewById(rootView, id);
-      if (btnToggleConfirmPassword == null) {
-        break missingId;
-      }
-
-      id = R.id.btnTogglePassword;
-      ImageButton btnTogglePassword = ViewBindings.findChildViewById(rootView, id);
-      if (btnTogglePassword == null) {
-        break missingId;
-      }
-
-      id = R.id.cbAgreeTerms;
-      CheckBox cbAgreeTerms = ViewBindings.findChildViewById(rootView, id);
-      if (cbAgreeTerms == null) {
-        break missingId;
-      }
-
       id = R.id.etConfirmPassword;
-      EditText etConfirmPassword = ViewBindings.findChildViewById(rootView, id);
+      TextInputEditText etConfirmPassword = ViewBindings.findChildViewById(rootView, id);
       if (etConfirmPassword == null) {
         break missingId;
       }
 
       id = R.id.etEmail;
-      EditText etEmail = ViewBindings.findChildViewById(rootView, id);
+      TextInputEditText etEmail = ViewBindings.findChildViewById(rootView, id);
       if (etEmail == null) {
         break missingId;
       }
 
       id = R.id.etFullName;
-      EditText etFullName = ViewBindings.findChildViewById(rootView, id);
+      TextInputEditText etFullName = ViewBindings.findChildViewById(rootView, id);
       if (etFullName == null) {
         break missingId;
       }
 
       id = R.id.etPassword;
-      EditText etPassword = ViewBindings.findChildViewById(rootView, id);
+      TextInputEditText etPassword = ViewBindings.findChildViewById(rootView, id);
       if (etPassword == null) {
         break missingId;
       }
@@ -158,9 +115,8 @@ public final class ActivitySignupBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivitySignupBinding((ScrollView) rootView, btnBack, btnCreateAccount,
-          btnToggleConfirmPassword, btnTogglePassword, cbAgreeTerms, etConfirmPassword, etEmail,
-          etFullName, etPassword, tvGoToLogin);
+      return new ActivitySignupBinding((ScrollView) rootView, btnCreateAccount, etConfirmPassword,
+          etEmail, etFullName, etPassword, tvGoToLogin);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

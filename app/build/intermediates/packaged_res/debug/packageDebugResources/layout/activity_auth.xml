@@ -3,176 +3,158 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_app"
+    android:background="@color/bg_white"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:paddingHorizontal="28dp"
+        android:paddingTop="36dp"
+        android:paddingBottom="24dp">
 
-        <!-- Top bar -->
+        <!-- Brand Header -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/btnBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_back"
-                android:tint="@color/text_primary" />
+                android:src="@drawable/ic_biyahe_logo" />
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:letterSpacing="0.08"
-                android:text="@string/auth_title"
-                android:textColor="@color/text_muted"
-                android:textSize="11sp"
+                android:text="Biyahe"
+                android:textColor="@color/ph_blue"
+                android:textSize="28sp"
                 android:textStyle="bold" />
-
-            <View
-                android:layout_width="40dp"
-                android:layout_height="1dp" />
         </LinearLayout>
 
-        <!-- Body -->
+        <!-- Title & Subtitle -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Check your Gmail"
+            android:textColor="@color/text_primary"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:lineSpacingExtra="3dp"
+            android:text="We sent a 6-digit code to re•••@gmail.com. Enter it below to continue."
+            android:textColor="@color/text_muted"
+            android:textSize="14sp" />
+
+        <!-- 6 OTP Boxes -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:paddingTop="16dp">
+            android:orientation="horizontal">
 
-            <FrameLayout
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:background="@drawable/bg_avatar_circle">
+            <EditText
+                android:id="@+id/etDigit1"
+                style="@style/OtpBox"
+                android:autofillHints="smsOTPCode"
+                android:cursorVisible="false"
+                android:inputType="number" />
 
-                <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_message"
-                    android:tint="@color/brand_orange" />
-            </FrameLayout>
+            <EditText
+                android:id="@+id/etDigit2"
+                style="@style/OtpBox"
+                android:cursorVisible="false"
+                android:inputType="number" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/auth_heading"
-                android:textColor="@color/text_primary"
-                android:textSize="19sp"
-                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/etDigit3"
+                style="@style/OtpBox"
+                android:cursorVisible="false"
+                android:inputType="number" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:gravity="center"
-                android:text="@string/auth_subtitle"
-                android:textColor="@color/text_secondary"
-                android:textSize="12.5sp" />
+            <EditText
+                android:id="@+id/etDigit4"
+                style="@style/OtpBox"
+                android:cursorVisible="false"
+                android:inputType="number" />
 
-            <!-- OTP boxes -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
+            <EditText
+                android:id="@+id/etDigit5"
+                style="@style/OtpBox"
+                android:cursorVisible="false"
+                android:inputType="number" />
 
-                <EditText
-                    android:id="@+id/etDigit1"
-                    style="@style/OtpBox"
-                    android:autofillHints="smsOTPCode"
-                    android:cursorVisible="false"
-                    android:inputType="number" />
+            <EditText
+                android:id="@+id/etDigit6"
+                style="@style/OtpBoxLast"
+                android:cursorVisible="false"
+                android:inputType="number" />
+        </LinearLayout>
 
-                <EditText
-                    android:id="@+id/etDigit2"
-                    style="@style/OtpBox"
-                    android:cursorVisible="false"
-                    android:inputType="number" />
+        <!-- Verify Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVerify"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="32dp"
+            android:backgroundTint="@color/ph_blue"
+            android:text="Verify"
+            android:textColor="@color/bg_white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:cornerRadius="14dp" />
 
-                <EditText
-                    android:id="@+id/etDigit3"
-                    style="@style/OtpBox"
-                    android:cursorVisible="false"
-                    android:inputType="number" />
+        <TextView
+            android:id="@+id/tvResendTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Didn't get it? Resend in 0:22"
+            android:textColor="@color/text_muted"
+            android:textSize="13sp" />
 
-                <EditText
-                    android:id="@+id/etDigit4"
-                    style="@style/OtpBox"
-                    android:cursorVisible="false"
-                    android:inputType="number" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-                <EditText
-                    android:id="@+id/etDigit5"
-                    style="@style/OtpBox"
-                    android:cursorVisible="false"
-                    android:inputType="number" />
-
-                <EditText
-                    android:id="@+id/etDigit6"
-                    style="@style/OtpBoxLast"
-                    android:cursorVisible="false"
-                    android:inputType="number" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/resend_code_prefix"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12.5sp" />
-
-                <TextView
-                    android:id="@+id/tvResendTimer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="@string/resend_in"
-                    android:textColor="@color/brand_orange"
-                    android:textSize="12.5sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <android.widget.Button
-                android:id="@+id/btnVerify"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/bg_button_primary"
-                android:text="@string/btn_verify_continue"
-                android:textAllCaps="false"
-                android:textColor="@color/text_on_brand"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+        <!-- Footer Back to login -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="24dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/secured_by"
+                android:text="Wrong account?"
                 android:textColor="@color/text_muted"
-                android:textSize="10.5sp" />
+                android:textSize="13.5sp" />
 
+            <TextView
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="Back to login"
+                android:textColor="@color/ph_blue"
+                android:textSize="13.5sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>

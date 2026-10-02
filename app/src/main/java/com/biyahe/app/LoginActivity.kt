@@ -2,7 +2,6 @@ package com.biyahe.app
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
 import android.widget.Toast
 import com.biyahe.app.databinding.ActivityLoginBinding
 import org.json.JSONException
@@ -16,23 +15,11 @@ import java.net.URL
 class LoginActivity : BaseActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private var passwordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.btnTogglePassword.setOnClickListener {
-            passwordVisible = !passwordVisible
-            binding.etPassword.inputType = if (passwordVisible) {
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            } else {
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            }
-            binding.etPassword.setSelection(binding.etPassword.text.length)
-            binding.btnTogglePassword.alpha = if (passwordVisible) 1.0f else 0.5f
-        }
 
         binding.btnLogin.setOnClickListener { attemptLogin() }
         binding.etPassword.setOnEditorActionListener { _, actionId, _ ->

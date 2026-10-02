@@ -42,12 +42,12 @@ class ProfileActivity : BaseActivity() {
         setContentView(binding.root)
 
         setupClickListeners()
-        setupBottomNav(binding.bottomNav, -1)
+        setupProfileBottomNav()
     }
 
     override fun onResume() {
         super.onResume()
-        setupBottomNav(binding.bottomNav, -1)
+        setupProfileBottomNav()
         updateAppearanceSummary()
         fetchUserProfile()
     }
@@ -55,7 +55,38 @@ class ProfileActivity : BaseActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+        setupProfileBottomNav()
+    }
+
+    private fun setupProfileBottomNav() {
         setupBottomNav(binding.bottomNav, -1)
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    navigateToTab(MainActivity::class.java)
+                    false
+                }
+                R.id.nav_routes -> {
+                    val intent = Intent(this, MainActivity::class.java).apply {
+                        putExtra("OPEN_ROUTES_SHEET", true)
+                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    }
+                    startActivity(intent)
+                    disableActivityTransitions()
+                    false
+                }
+                R.id.nav_community -> {
+                    val intent = Intent(this, MainActivity::class.java).apply {
+                        putExtra("OPEN_COMMUNITY_SHEET", true)
+                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    }
+                    startActivity(intent)
+                    disableActivityTransitions()
+                    false
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setupClickListeners() {
@@ -75,7 +106,12 @@ class ProfileActivity : BaseActivity() {
         }
 
         binding.rowSavedPlaces.setOnClickListener {
-            navigateToTab(SavedActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra("OPEN_ROUTES_SHEET", true)
+                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+            disableActivityTransitions()
         }
 
         binding.rowPreferences.setOnClickListener {

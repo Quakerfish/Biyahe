@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="44dp"
+    android:height="44dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Left Half Pin Body (Philippine Blue) -->
+    <path
+        android:fillColor="#0038A8"
+        android:pathData="M12,2C8.13,2 5,5.13 5,9c0,5.25 7,13 7,13z" />
+
+    <!-- Right Half Pin Body (Philippine Red) -->
+    <path
+        android:fillColor="#CE1126"
+        android:pathData="M12,2c3.87,0 7,3.13 7,7 0,5.25 -7,13 -7,13z" />
+
+    <!-- Inner White Circle for Sun Background -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,9m-4,0a4,4 0,1 0,8 0a4,4 0,1 0,-8 0" />
+
+    <!-- Yellow Philippine Sun inside Pin -->
+    <path
+        android:fillColor="#FCD116"
+        android:pathData="M12,9m-3,0a3,3 0,1 0,6 0a3,3 0,1 0,-6 0" />
+
+    <!-- Center White Dot -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,9m-1,0a1,1 0,1 0,2 0a1,1 0,1 0,-2 0" />
+</vector>
