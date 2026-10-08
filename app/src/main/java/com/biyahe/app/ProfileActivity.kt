@@ -3,6 +3,7 @@ package com.biyahe.app
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,8 +14,12 @@ import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
-import java.io.DataOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -59,7 +64,7 @@ class ProfileActivity : BaseActivity() {
     }
 
     private fun setupProfileBottomNav() {
-        setupBottomNav(binding.bottomNav, -1)
+        setupBottomNav(binding.bottomNav, R.id.nav_settings)
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
@@ -75,14 +80,8 @@ class ProfileActivity : BaseActivity() {
                     disableActivityTransitions()
                     false
                 }
-                R.id.nav_community -> {
-                    val intent = Intent(this, MainActivity::class.java).apply {
-                        putExtra("OPEN_COMMUNITY_SHEET", true)
-                        flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    }
-                    startActivity(intent)
-                    disableActivityTransitions()
-                    false
+                R.id.nav_settings -> {
+                    true
                 }
                 else -> false
             }
@@ -160,8 +159,13 @@ class ProfileActivity : BaseActivity() {
                     if (json.optBoolean("success", false)) {
                         val username = json.optString("username", "")
                         val email = json.optString("email", "")
-                        val profileImageUrl = if (json.has("profile_image") && !json.isNull("profile_image")) {
+                        val rawUrl = if (json.has("profile_image") && !json.isNull("profile_image")) {
                             json.getString("profile_image")
+                        } else null
+                        val profileImageUrl = if (rawUrl?.startsWith("http://", ignoreCase = true) == true ||
+                            rawUrl?.startsWith("https://", ignoreCase = true) == true
+                        ) {
+                            rawUrl
                         } else null
 
                         currentProfileImageUrl = profileImageUrl
@@ -201,50 +205,58 @@ class ProfileActivity : BaseActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val inputStream = contentResolver.openInputStream(fileUri) ?: return@launch
-                val boundary = "*****" + System.currentTimeMillis() + "*****"
-                val url = URL(ApiConfig.UPLOAD_AVATAR_URL)
+                val imageBytes = inputStream.use { it.readBytes() }
+                val mimeType = contentResolver.getType(fileUri) ?: "image/jpeg"
+                val mediaType = mimeType.toMediaTypeOrNull()
 
-                val connection = (url.openConnection() as HttpURLConnection).apply {
-                    requestMethod = "POST"
-                    doOutput = true
-                    doInput = true
-                    useCaches = false
-                    setRequestProperty("Connection", "Keep-Alive")
-                    setRequestProperty("Content-Type", "multipart/form-data; boundary=$boundary")
+                // Previously hardcoded "avatar.jpg" regardless of the real
+                // file type picked - matching the extension to the actual
+                // MIME type is more correct even though the server already
+                // reads the real content type separately.
+                val requestBody = MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart(
+                        "profile_image",
+                        "avatar.${extensionForMimeType(mimeType)}",
+                        imageBytes.toRequestBody(mediaType)
+                    )
+                    .build()
 
-                    val cookie = getSharedPreferences("app_session", MODE_PRIVATE)
-                        .getString("session_cookie", null)
-                    if (!cookie.isNullOrEmpty()) {
-                        setRequestProperty("Cookie", cookie)
-                    }
+                val cookie = getSharedPreferences("app_session", MODE_PRIVATE)
+                    .getString("session_cookie", null)
+
+                Log.d("ProfileActivity", "Uploading avatar with cookie: $cookie")
+
+                val requestBuilder = Request.Builder()
+                    .url(ApiConfig.UPLOAD_AVATAR_URL)
+                    .post(requestBody)
+
+                if (!cookie.isNullOrEmpty()) {
+                    requestBuilder.addHeader("Cookie", cookie)
                 }
 
-                val outputStream = DataOutputStream(connection.outputStream)
-                outputStream.writeBytes("--$boundary\r\n")
-                outputStream.writeBytes("Content-Disposition: form-data; name=\"profile_image\"; filename=\"avatar.jpg\"\r\n")
-                outputStream.writeBytes("Content-Type: image/jpeg\r\n\r\n")
+                val client = OkHttpClient()
+                val response = client.newCall(requestBuilder.build()).execute()
+                val responseCode = response.code
+                val responseText = response.body?.string() ?: ""
+                Log.d("ProfileActivity", "Upload response ($responseCode): $responseText")
 
-                inputStream.copyTo(outputStream)
-
-                outputStream.writeBytes("\r\n--$boundary--\r\n")
-                outputStream.flush()
-                outputStream.close()
-
-                val responseCode = connection.responseCode
-                val stream = if (responseCode == HttpURLConnection.HTTP_OK) connection.inputStream else connection.errorStream
-                val responseText = stream?.bufferedReader()?.use { it.readText() } ?: ""
-                val json = JSONObject(responseText)
+                val json = try { JSONObject(responseText) } catch (_: Exception) { null }
 
                 withContext(Dispatchers.Main) {
-                    if (responseCode == HttpURLConnection.HTTP_OK && json.optBoolean("success", false)) {
+                    if (response.isSuccessful && json?.optBoolean("success", false) == true) {
                         Toast.makeText(this@ProfileActivity, "Profile picture updated!", Toast.LENGTH_SHORT).show()
+                        fetchUserProfile()
                     } else {
-                        val message = json.optString("message", "Failed to upload image.")
+                        val message = json?.optString("message")
+                            ?: json?.optJSONArray("detail")?.optJSONObject(0)?.optString("msg")
+                            ?: "Failed to upload image (HTTP $responseCode)."
                         Toast.makeText(this@ProfileActivity, message, Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+                Log.e("ProfileActivity", "Upload exception", e)
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@ProfileActivity, "Upload failed: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
                 }
@@ -266,7 +278,7 @@ class ProfileActivity : BaseActivity() {
     private fun performServerLogout() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val url = URL("${ApiConfig.GET_PROFILE_URL}?action=logout")
+                val url = URL(ApiConfig.LOGOUT_URL)
                 val connection = (url.openConnection() as HttpURLConnection).apply {
                     requestMethod = "POST"
                     connectTimeout = 5000
@@ -320,5 +332,11 @@ class ProfileActivity : BaseActivity() {
 
     private fun updateAppearanceSummary() {
         binding.tvAppearanceValue.setText(ThemeManager.labelFor(ThemeManager.getMode(this)))
+    }
+
+    private fun extensionForMimeType(mimeType: String): String = when (mimeType.lowercase()) {
+        "image/png" -> "png"
+        "image/webp" -> "webp"
+        else -> "jpg" // covers image/jpeg, and any unrecognized type as a safe fallback
     }
 }

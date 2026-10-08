@@ -4,7 +4,7 @@
             "outputFile": "com.biyahe.app-mergeDebugResources-39:/values-eu/values-eu.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.3.0\\transforms\\24f21dc46bfe02f24239effa48d60f1d\\workspace\\transformed\\appcompat-1.7.0\\res\\values-eu\\values-eu.xml",
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.3.0\\transforms\\253792258bd8f5a03874a80c891002ca\\workspace\\transformed\\appcompat-1.7.0\\res\\values-eu\\values-eu.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.3.0\\transforms\\843150b3d79472a947974857cf39ddcf\\workspace\\transformed\\material-1.12.0\\res\\values-eu\\values-eu.xml",
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.3.0\\transforms\\dc699a81d58a022ede61f671110c1cdf\\workspace\\transformed\\material-1.12.0\\res\\values-eu\\values-eu.xml",
                     "from": {
                         "startLines": "2,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -40,7 +40,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.3.0\\transforms\\abeb515357a7db3fd22e844d1e55f2be\\workspace\\transformed\\core-1.13.1\\res\\values-eu\\values-eu.xml",
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.3.0\\transforms\\5add8e03c4d24f2d58228009f5968e03\\workspace\\transformed\\core-1.13.1\\res\\values-eu\\values-eu.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

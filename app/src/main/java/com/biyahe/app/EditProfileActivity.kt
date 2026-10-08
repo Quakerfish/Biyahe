@@ -2,18 +2,22 @@ package com.biyahe.app
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.biyahe.app.databinding.ActivityEditProfileBinding
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
-import java.io.DataOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -42,6 +46,7 @@ class EditProfileActivity : BaseActivity() {
         val currentUsername = intent.getStringExtra("EXTRA_USERNAME") ?: ""
         val currentEmail = intent.getStringExtra("EXTRA_EMAIL") ?: ""
         val currentAvatarUrl = intent.getStringExtra("EXTRA_AVATAR_URL")
+            ?.takeIf { it.startsWith("http://", ignoreCase = true) || it.startsWith("https://", ignoreCase = true) }
 
         binding.etUsername.setText(currentUsername)
         binding.etEmail.setText(currentEmail)
@@ -91,9 +96,13 @@ class EditProfileActivity : BaseActivity() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // 1. Upload avatar if a new one was selected
+                // 1. Upload avatar if a new one was selected. Previously this
+                // result was discarded - if the avatar upload silently
+                // failed, the user still saw "Profile updated successfully"
+                // because only the username/email save below was checked.
+                var avatarUploadFailed = false
                 selectedImageUri?.let { uri ->
-                    uploadAvatarSync(uri)
+                    avatarUploadFailed = !uploadAvatarSync(uri)
                 }
 
                 // 2. Update profile details
@@ -137,7 +146,12 @@ class EditProfileActivity : BaseActivity() {
                 withContext(Dispatchers.Main) {
                     binding.btnSave.isEnabled = true
                     if (responseCode == HttpURLConnection.HTTP_OK && json.optBoolean("success", false)) {
-                        Toast.makeText(this@EditProfileActivity, message, Toast.LENGTH_SHORT).show()
+                        val finalMessage = if (avatarUploadFailed) {
+                            "$message (Your profile picture, however, failed to upload - please try that again.)"
+                        } else {
+                            message
+                        }
+                        Toast.makeText(this@EditProfileActivity, finalMessage, Toast.LENGTH_LONG).show()
                         finish()
                     } else {
                         Toast.makeText(this@EditProfileActivity, message, Toast.LENGTH_LONG).show()
@@ -153,36 +167,56 @@ class EditProfileActivity : BaseActivity() {
         }
     }
 
-    private fun uploadAvatarSync(fileUri: Uri) {
-        val inputStream = contentResolver.openInputStream(fileUri) ?: return
-        val boundary = "*****" + System.currentTimeMillis() + "*****"
-        val url = URL(ApiConfig.UPLOAD_AVATAR_URL)
+    /** Returns true on a confirmed successful upload, false on any failure (network, non-2xx, or success:false in the response body). */
+    private fun uploadAvatarSync(fileUri: Uri): Boolean {
+        return try {
+            val inputStream = contentResolver.openInputStream(fileUri) ?: return false
+            val imageBytes = inputStream.use { it.readBytes() }
+            val mimeType = contentResolver.getType(fileUri) ?: "image/jpeg"
+            val mediaType = mimeType.toMediaTypeOrNull()
 
-        val connection = (url.openConnection() as HttpURLConnection).apply {
-            requestMethod = "POST"
-            doOutput = true
-            doInput = true
-            useCaches = false
-            setRequestProperty("Connection", "Keep-Alive")
-            setRequestProperty("Content-Type", "multipart/form-data; boundary=$boundary")
+            // Previously hardcoded "avatar.jpg" regardless of the real file
+            // type - a PNG/WEBP pick would still be tagged .jpg server-side.
+            // The server reads the actual content type separately, so this
+            // was cosmetic rather than a visible bug, but it's still wrong:
+            // match the filename's extension to what was actually picked.
+            val requestBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart(
+                    "profile_image",
+                    "avatar.${extensionForMimeType(mimeType)}",
+                    imageBytes.toRequestBody(mediaType)
+                )
+                .build()
 
             val cookie = getSharedPreferences("app_session", MODE_PRIVATE)
                 .getString("session_cookie", null)
+
+            val requestBuilder = Request.Builder()
+                .url(ApiConfig.UPLOAD_AVATAR_URL)
+                .post(requestBody)
+
             if (!cookie.isNullOrEmpty()) {
-                setRequestProperty("Cookie", cookie)
+                requestBuilder.addHeader("Cookie", cookie)
             }
+
+            val client = OkHttpClient()
+            val response = client.newCall(requestBuilder.build()).execute()
+            val responseText = response.body?.string() ?: ""
+            Log.d("EditProfileActivity", "Upload response (${response.code}): $responseText")
+
+            response.isSuccessful &&
+                    (try { JSONObject(responseText).optBoolean("success", false) } catch (_: Exception) { false })
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.e("EditProfileActivity", "Upload exception", e)
+            false
         }
+    }
 
-        val outputStream = DataOutputStream(connection.outputStream)
-        outputStream.writeBytes("--$boundary\r\n")
-        outputStream.writeBytes("Content-Disposition: form-data; name=\"profile_image\"; filename=\"avatar.jpg\"\r\n")
-        outputStream.writeBytes("Content-Type: image/jpeg\r\n\r\n")
-
-        inputStream.copyTo(outputStream)
-
-        outputStream.writeBytes("\r\n--$boundary--\r\n")
-        outputStream.flush()
-        outputStream.close()
-        connection.responseCode
+    private fun extensionForMimeType(mimeType: String): String = when (mimeType.lowercase()) {
+        "image/png" -> "png"
+        "image/webp" -> "webp"
+        else -> "jpg" // covers image/jpeg, and any unrecognized type as a safe fallback
     }
 }

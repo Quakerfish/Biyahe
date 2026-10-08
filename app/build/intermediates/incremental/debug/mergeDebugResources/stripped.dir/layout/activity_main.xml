@@ -140,8 +140,8 @@
                         android:imeOptions="actionSearch"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:textColor="#0038A8"
-                        android:textColorHint="#64748B"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_muted"
                         android:textSize="13sp" />
 
                     <ImageView
@@ -311,6 +311,56 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <!-- Side-by-side Terminal Photos -->
+                    <LinearLayout
+                        android:id="@+id/llTerminalImages"
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cvOriginTerminalPhoto"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="6dp"
+                            android:visibility="gone"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="2dp"
+                            app:strokeColor="@color/divider"
+                            app:strokeWidth="1dp">
+
+                            <ImageView
+                                android:id="@+id/ivOriginTerminalPhoto"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:contentDescription="Origin terminal photo"
+                                android:scaleType="centerCrop" />
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/cvDestinationTerminalPhoto"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_marginStart="6dp"
+                            android:visibility="gone"
+                            app:cardCornerRadius="12dp"
+                            app:cardElevation="2dp"
+                            app:strokeColor="@color/divider"
+                            app:strokeWidth="1dp">
+
+                            <ImageView
+                                android:id="@+id/ivDestinationTerminalPhoto"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:contentDescription="Destination terminal photo"
+                                android:scaleType="centerCrop" />
+                        </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -403,20 +453,111 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Untrack Route Button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnUntrackRoute"
+                    <!-- Fare Information Section -->
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_marginTop="20dp"
-                        android:backgroundTint="#FDEAEA"
-                        android:text="Untrack Route"
-                        android:textColor="@color/ph_red"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        app:cornerRadius="24dp"
-                        app:strokeColor="@color/ph_red"
-                        app:strokeWidth="1dp" />
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="12dp"
+                        android:background="#1A000000" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:letterSpacing="0.05"
+                        android:text="Fare Information"
+                        android:textAllCaps="true"
+                        android:textColor="@color/text_muted"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Base Fare"
+                                android:textColor="@color/text_muted"
+                                android:textSize="11sp" />
+
+                            <TextView
+                                android:id="@+id/tvBaseFare"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/text_primary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Discounted (Student/Senior/PWD)"
+                                android:textColor="@color/ph_green"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvDiscountedFare"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/ph_green"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Action Buttons: Rate & Untrack -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnRateRoute"
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="6dp"
+                            android:backgroundTint="@color/ph_blue"
+                            android:text="Rate"
+                            android:textColor="@color/bg_white"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="24dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnUntrackRoute"
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="6dp"
+                            android:backgroundTint="@color/ph_blue_soft"
+                            android:text="Untrack"
+                            android:textColor="@color/ph_blue"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="24dp"
+                            app:strokeColor="@color/ph_blue"
+                            app:strokeWidth="1dp" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

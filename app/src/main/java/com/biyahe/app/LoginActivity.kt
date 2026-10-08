@@ -88,7 +88,11 @@ class LoginActivity : BaseActivity() {
                 // Extract PHP session cookie if login succeeded
                 if (responseCode == HttpURLConnection.HTTP_OK) {
                     val cookies = conn.headerFields["Set-Cookie"]
-                    val sessionCookie = cookies?.firstOrNull { it.contains("PHPSESSID") } ?: cookies?.firstOrNull()
+                    // The FastAPI backend's session cookie is named "biyahe_session"
+                    // (PHPSESSID was the old PHP backend's cookie name). The
+                    // firstOrNull() fallback means this kept working either way,
+                    // but naming it explicitly here avoids confusion later.
+                    val sessionCookie = cookies?.firstOrNull { it.contains("biyahe_session") } ?: cookies?.firstOrNull()
 
                     if (sessionCookie != null) {
                         val rawCookie = sessionCookie.split(";")[0]

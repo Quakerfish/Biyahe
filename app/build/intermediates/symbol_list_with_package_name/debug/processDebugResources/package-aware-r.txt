@@ -3433,10 +3433,12 @@ id btnHelpful
 id btnLogin
 id btnLogout
 id btnProfile
+id btnRateRoute
 id btnSave
 id btnSaveRoute
 id btnSheetSaveRoute
 id btnSubmitPost
+id btnSubmitRating
 id btnTrackRoute
 id btnUntrackRoute
 id btnVerify
@@ -3486,8 +3488,11 @@ id currentState
 id custom
 id customPanel
 id cut
+id cvDestinationTerminalPhoto
+id cvOriginTerminalPhoto
 id cvProfileDropdown
 id cvSuggestions
+id cvTerminalPhotoContainer
 id date_picker_actions
 id decelerate
 id decelerateAndComplete
@@ -3544,6 +3549,7 @@ id etEmail
 id etFullName
 id etNewPassword
 id etPassword
+id etRatingComment
 id etSearchDestination
 id etUsername
 id exitUntilCollapsed
@@ -3600,10 +3606,13 @@ id inward
 id is_pooling_container_tag
 id italic
 id item_touch_helper_previous_elevation
+id ivDestinationTerminalPhoto
 id ivDropdownAvatar
 id ivEditAvatar
 id ivMainAvatar
+id ivOriginTerminalPhoto
 id ivProfileAvatar
+id ivTerminalPhoto
 id jumpToEnd
 id jumpToStart
 id labeled
@@ -3618,6 +3627,7 @@ id listMode
 id list_item
 id llExpandedDetails
 id llPillCode
+id llTerminalImages
 id m3_side_sheet
 id mapContainer
 id mapView
@@ -3680,9 +3690,9 @@ id mtrl_picker_text_input_range_start
 id mtrl_picker_title_text
 id mtrl_view_tag_bottom_padding
 id multiply
-id nav_community
 id nav_home
 id nav_routes
+id nav_settings
 id navigation_bar_item_active_indicator_view
 id navigation_bar_item_icon_container
 id navigation_bar_item_icon_view
@@ -3741,6 +3751,8 @@ id progress_circular
 id progress_horizontal
 id radio
 id ratio
+id rbFareAccuracy
+id rbRouteAccuracy
 id rectangles
 id report_drawn
 id reverseSawtooth
@@ -3761,6 +3773,7 @@ id row_index_key
 id rvCommunityPosts
 id rvRouteSuggestions
 id rvRoutesSheetList
+id rvTerminalRoutes
 id save_non_transition_alpha
 id save_overlay_view
 id sawtooth
@@ -3879,7 +3892,9 @@ id transition_scene_layoutid_cache
 id transition_transform
 id triangle
 id tvAppearanceValue
+id tvBaseFare
 id tvDestinationDetail
+id tvDiscountedFare
 id tvDropdownEmail
 id tvDropdownUsername
 id tvEmail
@@ -3894,6 +3909,7 @@ id tvPostTag
 id tvPostTimestamp
 id tvPostUserAvatar
 id tvPostUserName
+id tvRateRouteHeader
 id tvResendTimer
 id tvRouteCode
 id tvRouteName
@@ -3908,6 +3924,9 @@ id tvSheetRouteName
 id tvSheetVehicleType
 id tvSuggestionCode
 id tvSuggestionName
+id tvTerminalDescription
+id tvTerminalName
+id tvTerminalStatus
 id tvTerminals
 id tvUsername
 id tvVehicleType
@@ -4058,8 +4077,10 @@ layout activity_profile
 layout activity_signup
 layout bottom_sheet_community
 layout bottom_sheet_find_route
+layout bottom_sheet_rate_route
 layout bottom_sheet_route_detail
 layout bottom_sheet_routes_list
+layout bottom_sheet_terminal_detail
 layout custom_dialog
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog

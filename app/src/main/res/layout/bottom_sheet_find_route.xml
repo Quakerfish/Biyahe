@@ -90,8 +90,8 @@
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="8dp"
                     android:text="Current Location"
-                    android:textColor="#0038A8"
-                    android:textColorHint="#64748B"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_muted"
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -131,8 +131,8 @@
                     android:minHeight="52dp"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="8dp"
-                    android:textColor="#0038A8"
-                    android:textColorHint="#64748B"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_muted"
                     android:textSize="12.5sp" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>

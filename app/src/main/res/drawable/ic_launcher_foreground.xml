@@ -5,34 +5,35 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Outer Compass Ring -->
-    <path
-        android:pathData="M54,26 C38.54,26 26,38.54 26,54 C26,69.46 38.54,82 54,82 C69.46,82 82,69.46 82,54 C82,38.54 69.46,26 54,26 Z M54,76 C41.85,76 32,66.15 32,54 C32,41.85 41.85,32 54,32 C66.15,32 76,41.85 76,54 C76,66.15 66.15,76 54,76 Z"
-        android:fillColor="#FFFFFF"
-        android:fillAlpha="0.9" />
+    <group
+        android:scaleX="2.8"
+        android:scaleY="2.8"
+        android:translateX="20.4"
+        android:translateY="20.4">
 
-    <!-- North Pointer - Right Side (Pure White) -->
-    <path
-        android:pathData="M54,36 L62,54 L54,50 Z"
-        android:fillColor="#FFFFFF" />
+        <!-- Left Half Pin Body (Philippine Blue) -->
+        <path
+            android:fillColor="#0038A8"
+            android:pathData="M12,2C8.13,2 5,5.13 5,9c0,5.25 7,13 7,13z" />
 
-    <!-- North Pointer - Left Side (Slightly Darker White/Grey Shading) -->
-    <path
-        android:pathData="M54,36 L46,54 L54,50 Z"
-        android:fillColor="#FFFFFF" />
+        <!-- Right Half Pin Body (Philippine Red) -->
+        <path
+            android:fillColor="#CE1126"
+            android:pathData="M12,2c3.87,0 7,3.13 7,7 0,5.25 -7,13 -7,13z" />
 
-    <!-- South Pointer - Left Side (Pure White) -->
-    <path
-        android:pathData="M54,72 L46,54 L54,58 Z"
-        android:fillColor="#FFFFFF" />
+        <!-- Inner White Circle for Sun Background -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M12,9m-4,0a4,4 0,1 0,8 0a4,4 0,1 0,-8 0" />
 
-    <!-- South Pointer - Right Side (Slightly Darker White/Grey Shading) -->
-    <path
-        android:pathData="M54,72 L62,54 L54,58 Z"
-        android:fillColor="#FFFFFF" />
+        <!-- Yellow Philippine Sun inside Pin -->
+        <path
+            android:fillColor="#FCD116"
+            android:pathData="M12,9m-3,0a3,3 0,1 0,6 0a3,3 0,1 0,-6 0" />
 
-    <!-- Center Pivot Pin -->
-    <path
-        android:pathData="M54,54 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0"
-        android:fillColor="#FFFFFF" />
+        <!-- Center White Dot -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M12,9m-1,0a1,1 0,1 0,2 0a1,1 0,1 0,-2 0" />
+    </group>
 </vector>

@@ -3,21 +3,21 @@
     <!-- Focused state: Philippine Blue border -->
     <item android:state_focused="true">
         <shape android:shape="rectangle">
-            <solid android:color="#FFFFFF" />
+            <solid android:color="@color/bg_white" />
             <stroke
                 android:width="2dp"
-                android:color="#0038A8" />
+                android:color="@color/ph_blue" />
             <corners android:radius="12dp" />
         </shape>
     </item>
 
-    <!-- Default state: light gray border -->
+    <!-- Default state: theme border -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#FFFFFF" />
+            <solid android:color="@color/bg_white" />
             <stroke
                 android:width="1dp"
-                android:color="#E2E8F0" />
+                android:color="@color/divider" />
             <corners android:radius="12dp" />
         </shape>
     </item>

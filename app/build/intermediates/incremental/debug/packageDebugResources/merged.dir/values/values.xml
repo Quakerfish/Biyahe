@@ -102,7 +102,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:background">@null</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textColor">#0038A8</item>
+        <item name="android:textColor">@color/text_primary</item>
         <item name="android:textColorHint">#64748B</item>
         <item name="android:textSize">14sp</item>
     </style>
@@ -137,7 +137,7 @@
         <item name="android:background">@drawable/bg_otp_box</item>
         <item name="android:gravity">center</item>
         <item name="android:maxLength">1</item>
-        <item name="android:textColor">#0038A8</item>
+        <item name="android:textColor">@color/text_primary</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
     </style>
