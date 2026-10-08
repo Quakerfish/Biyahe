@@ -3,7 +3,6 @@ package com.biyahe.app
 import android.app.Activity
 import android.content.Intent
 import android.os.Build
-import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 /** Helper function to completely strip window transitions in both modern and legacy Android. */
@@ -44,8 +43,8 @@ fun Activity.setupBottomNav(nav: BottomNavigationView, currentTabId: Int) {
                 navigateToTab(MainActivity::class.java)
                 false
             }
-            R.id.nav_community -> {
-                Toast.makeText(nav.context, "Community will be added soon.", Toast.LENGTH_SHORT).show()
+            R.id.nav_settings -> {
+                navigateToTab(ProfileActivity::class.java)
                 false
             }
             else -> false

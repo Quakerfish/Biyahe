@@ -67,8 +67,8 @@
                 android:hint="How's your ride? Share a road update..."
                 android:inputType="textMultiLine"
                 android:minLines="2"
-                android:textColor="#0038A8"
-                android:textColorHint="#64748B"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_muted"
                 android:textSize="14sp" />
 
             <LinearLayout

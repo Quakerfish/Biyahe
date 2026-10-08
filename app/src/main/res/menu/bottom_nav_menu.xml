@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_route"
         android:title="Routes" />
     <item
-        android:id="@+id/nav_community"
-        android:icon="@drawable/ic_message"
-        android:title="Community" />
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_sliders"
+        android:title="Settings" />
 </menu>

@@ -4,7 +4,7 @@
             "outputFile": "com.biyahe.app-mergeDebugResources-39:/values-he/values-he.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.3.0\\transforms\\71939f5f6938a1013fedd5b38f6b4337\\workspace\\transformed\\android-sdk-11.5.2\\res\\values-he\\values-he.xml",
+                    "source": "C:\\Users\\Administrator\\.gradle\\caches\\9.3.0\\transforms\\017710c3c34721a1eea27144424de391\\workspace\\transformed\\android-sdk-11.5.2\\res\\values-he\\values-he.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8",
                         "startColumns": "4,4,4,4,4,4,4",

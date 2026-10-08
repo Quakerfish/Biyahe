@@ -11,6 +11,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
@@ -19,6 +20,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
+import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -28,6 +31,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.biyahe.app.databinding.ActivityMainBinding
@@ -36,6 +40,13 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 import org.maplibre.android.MapLibre
@@ -83,6 +94,15 @@ class MainActivity : BaseActivity() {
     private val activeMarkers = mutableListOf<Marker>()
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<MaterialCardView>
     private var isProgrammaticTextChange = false
+
+    // Guards against fetchRouteWaypoints() responses arriving out of order:
+    // every call captures the current value, and only a response whose
+    // captured value still matches this field when it completes is allowed
+    // to touch the UI. If the user selects a second route before the first
+    // one's (slower) network call has returned, this field has already
+    // moved on, so the stale first response is silently discarded instead
+    // of overwriting what the second, newer selection already displayed.
+    private var routeRequestSeq = 0
 
     private val sampleCommunityPosts = mutableListOf(
         CommunityPost(1, "MD", "Maricel D.", "4 min ago", "Traffic", "#CE1126", "Heavy traffic heading to Welcome Rotonda — a stalled bus is blocking the middle lane. Add 15 minutes to your trip.", "España – Lacson", 23),
@@ -333,8 +353,14 @@ class MainActivity : BaseActivity() {
                         finish()
                     }
                 } else {
+                    val errorStream = conn.errorStream
+                    val errorText = errorStream?.bufferedReader()?.use { it.readText() } ?: ""
+                    Log.d("MainActivity", "loadRouteSuggestions HTTP $responseCode: $errorText")
+                    val json = try { JSONObject(errorText) } catch (_: Exception) { null }
+                    val serverMsg = json?.optString("message") ?: "API Error: HTTP $responseCode"
+
                     runOnUiThread {
-                        Toast.makeText(this@MainActivity, "API Error: HTTP $responseCode", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@MainActivity, serverMsg, Toast.LENGTH_LONG).show()
                     }
                 }
             } catch (e: SocketTimeoutException) {
@@ -588,7 +614,10 @@ class MainActivity : BaseActivity() {
         var isTrackConfirmed = false
 
         if (routeId != -1) {
-            fetchRouteWaypoints(routeId, code, "$origin – $dest", type, origin, dest)
+            // Quiet prefetch: draws the path on the map behind the dialog
+            // (same as before) but does NOT pop up the info card - that
+            // only happens once the user actually taps "Track Route" below.
+            fetchRouteWaypoints(routeId, code, "$origin – $dest", type, origin, dest, revealCard = false)
         }
 
         sheetView.findViewById<TextView>(R.id.tvSheetRouteCode)?.text = code
@@ -600,7 +629,15 @@ class MainActivity : BaseActivity() {
         sheetView.findViewById<View>(R.id.btnTrackRoute)?.setOnClickListener {
             isTrackConfirmed = true
             dialog.dismiss()
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            // Re-fetch with revealCard=true (the default): this both shows
+            // the card immediately with the already-known info, and kicks
+            // off an authoritative fetch for the path. If the earlier quiet
+            // prefetch above is still in flight, the request-sequence guard
+            // in fetchRouteWaypoints ensures whichever call's result lands
+            // LAST wins cleanly, rather than racing.
+            if (routeId != -1) {
+                fetchRouteWaypoints(routeId, code, "$origin – $dest", type, origin, dest)
+            }
         }
 
         dialog.setOnDismissListener {
@@ -646,7 +683,14 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun fetchRouteWaypoints(routeId: Int, code: String, name: String, type: String, origin: String, dest: String) {
+    private fun fetchRouteWaypoints(
+        routeId: Int, code: String, name: String, type: String, origin: String, dest: String,
+        revealCard: Boolean = true
+    ) {
+        if (routeId <= 0) return
+
+        val requestId = ++routeRequestSeq
+
         thread {
             var conn: HttpURLConnection? = null
             try {
@@ -662,10 +706,21 @@ class MainActivity : BaseActivity() {
                     conn.setRequestProperty("Cookie", sessionCookie)
                 }
 
-                if (conn.responseCode == 200) {
+                val responseCode = conn.responseCode
+                if (responseCode == 200) {
                     val jsonStr = conn.inputStream.bufferedReader().readText()
                     val routeObj = JSONObject(jsonStr)
                     val waypointsArray = routeObj.optJSONArray("waypoints") ?: JSONArray()
+                    val baseFare = routeObj.optDouble("base_fare", 0.0)
+
+                    val originObj = routeObj.optJSONObject("origin")
+                    val destObj = routeObj.optJSONObject("destination")
+
+                    val originPhoto = originObj?.optString("image_url", "")?.takeIf { it.startsWith("http", ignoreCase = true) }
+                        ?: routeObj.optString("origin_image_url", "").takeIf { it.startsWith("http", ignoreCase = true) }
+
+                    val destPhoto = destObj?.optString("image_url", "")?.takeIf { it.startsWith("http", ignoreCase = true) }
+                        ?: routeObj.optString("destination_image_url", "").takeIf { it.startsWith("http", ignoreCase = true) }
 
                     val points = mutableListOf<LatLng>()
                     for (i in 0 until waypointsArray.length()) {
@@ -676,19 +731,47 @@ class MainActivity : BaseActivity() {
                     }
 
                     runOnUiThread {
-                        displayRouteOnMap(points, code, name, type, origin, dest)
+                        if (requestId == routeRequestSeq) {
+                            displayRouteOnMap(
+                                points = points,
+                                routeId = routeId,
+                                code = code,
+                                name = name,
+                                type = type,
+                                origin = origin,
+                                dest = dest,
+                                baseFare = baseFare,
+                                originPhoto = originPhoto,
+                                destPhoto = destPhoto,
+                                revealCard = revealCard
+                            )
+                        }
                     }
                 } else {
+                    val errorStream = conn.errorStream
+                    val errorText = errorStream?.bufferedReader()?.use { it.readText() } ?: ""
+                    Log.d("MainActivity", "fetchRouteWaypoints HTTP $responseCode: $errorText")
+                    val json = try { JSONObject(errorText) } catch (_: Exception) { null }
+                    val serverMsg = json?.optString("message") ?: "Error loading path (HTTP $responseCode)"
+
                     runOnUiThread {
-                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-                        Toast.makeText(this@MainActivity, "Couldn't load that route's path.", Toast.LENGTH_SHORT).show()
+                        if (requestId == routeRequestSeq) {
+                            if (revealCard) {
+                                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                            }
+                            Toast.makeText(this@MainActivity, serverMsg, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 runOnUiThread {
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-                    showNetworkError()
+                    if (requestId == routeRequestSeq) {
+                        if (revealCard) {
+                            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                        }
+                        showNetworkError()
+                    }
                 }
             } finally {
                 conn?.disconnect()
@@ -724,9 +807,15 @@ class MainActivity : BaseActivity() {
         return IconFactory.getInstance(this).fromBitmap(bitmap)
     }
 
-    private fun displayRouteOnMap(points: List<LatLng>, code: String, name: String, type: String, origin: String, dest: String) {
+    private fun displayRouteOnMap(
+        points: List<LatLng>, routeId: Int, code: String, name: String, type: String, origin: String, dest: String,
+        baseFare: Double = 0.0, originPhoto: String? = null, destPhoto: String? = null,
+        revealCard: Boolean = true
+    ) {
         if (points.isEmpty()) {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            if (revealCard) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            }
             Toast.makeText(this, "No waypoints found for this route.", Toast.LENGTH_SHORT).show()
             return
         }
@@ -747,6 +836,54 @@ class MainActivity : BaseActivity() {
         binding.tvVehicleType.text = type
         binding.tvOriginDetail.text = origin
         binding.tvDestinationDetail.text = dest
+
+        // Fare Information
+        if (baseFare > 0.0) {
+            binding.tvBaseFare.text = String.format("₱ %.2f", baseFare)
+            binding.tvDiscountedFare.text = String.format("₱ %.2f", baseFare * 0.80)
+        } else {
+            binding.tvBaseFare.text = "₱ 0.00"
+            binding.tvDiscountedFare.text = "₱ 0.00"
+        }
+
+        // Terminal Photos Side-by-Side
+        val hasOriginPhoto = !originPhoto.isNullOrEmpty()
+        val hasDestPhoto = !destPhoto.isNullOrEmpty()
+
+        if (hasOriginPhoto || hasDestPhoto) {
+            binding.llTerminalImages.visibility = View.VISIBLE
+
+            if (hasOriginPhoto) {
+                binding.cvOriginTerminalPhoto.visibility = View.VISIBLE
+                Glide.with(this@MainActivity)
+                    .load(originPhoto)
+                    .placeholder(R.drawable.bg_pill_soft)
+                    .into(binding.ivOriginTerminalPhoto)
+            } else {
+                binding.cvOriginTerminalPhoto.visibility = View.GONE
+            }
+
+            if (hasDestPhoto) {
+                binding.cvDestinationTerminalPhoto.visibility = View.VISIBLE
+                Glide.with(this@MainActivity)
+                    .load(destPhoto)
+                    .placeholder(R.drawable.bg_pill_soft)
+                    .into(binding.ivDestinationTerminalPhoto)
+            } else {
+                binding.cvDestinationTerminalPhoto.visibility = View.GONE
+            }
+        } else {
+            binding.llTerminalImages.visibility = View.GONE
+        }
+
+        // Rate Route Button
+        binding.btnRateRoute.setOnClickListener {
+            showRateRouteDialog(routeId, code)
+        }
+
+        if (revealCard) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
 
         mapLibreMap?.let { map ->
             map.getStyle { style ->
@@ -779,6 +916,21 @@ class MainActivity : BaseActivity() {
 
             activeMarkers.add(startMarker)
             activeMarkers.add(endMarker)
+
+            map.setOnMarkerClickListener { marker ->
+                val title = marker.title ?: ""
+                if (title.startsWith("Origin:")) {
+                    val termName = title.removePrefix("Origin:").trim()
+                    showTerminalDetailBottomSheet(termName, originPhoto)
+                    true
+                } else if (title.startsWith("Destination:")) {
+                    val termName = title.removePrefix("Destination:").trim()
+                    showTerminalDetailBottomSheet(termName, destPhoto)
+                    true
+                } else {
+                    false
+                }
+            }
         }
     }
 
@@ -845,11 +997,124 @@ class MainActivity : BaseActivity() {
                     showRoutesListBottomSheet()
                     false
                 }
-                R.id.nav_community -> {
-                    showCommunityBottomSheet()
+                R.id.nav_settings -> {
+                    navigateToTab(ProfileActivity::class.java)
                     false
                 }
                 else -> false
+            }
+        }
+    }
+
+    private fun showTerminalDetailBottomSheet(terminalName: String, photoUrl: String? = null) {
+        val dialog = BottomSheetDialog(this)
+        val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_terminal_detail, null)
+        dialog.setContentView(sheetView)
+
+        sheetView.findViewById<TextView>(R.id.tvTerminalName)?.text = terminalName
+        sheetView.findViewById<TextView>(R.id.tvTerminalStatus)?.text = "Active"
+
+        val cvPhoto = sheetView.findViewById<View>(R.id.cvTerminalPhotoContainer)
+        val ivPhoto = sheetView.findViewById<ImageView>(R.id.ivTerminalPhoto)
+
+        if (!photoUrl.isNullOrEmpty() && ivPhoto != null && cvPhoto != null) {
+            cvPhoto.visibility = View.VISIBLE
+            Glide.with(this)
+                .load(photoUrl)
+                .placeholder(R.drawable.bg_pill_soft)
+                .into(ivPhoto)
+        } else {
+            cvPhoto?.visibility = View.GONE
+        }
+
+        val rvRoutes = sheetView.findViewById<RecyclerView>(R.id.rvTerminalRoutes)
+        if (rvRoutes != null) {
+            rvRoutes.layoutManager = LinearLayoutManager(this)
+
+            val matchingRoutes = availableRoutes.filter { route ->
+                val o = route.optString("origin_name", "")
+                val d = route.optString("destination_name", "")
+                o.equals(terminalName, ignoreCase = true) || d.equals(terminalName, ignoreCase = true)
+            }
+
+            val adapter = RouteSuggestionAdapter(matchingRoutes) { selectedRoute ->
+                dialog.dismiss()
+                showRouteDetailDialog(selectedRoute)
+            }
+            rvRoutes.adapter = adapter
+        }
+
+        dialog.show()
+    }
+
+    private fun showRateRouteDialog(routeId: Int, routeCode: String) {
+        if (routeId == -1) {
+            Toast.makeText(this, "Please select a valid route first.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val dialog = BottomSheetDialog(this)
+        val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_rate_route, null)
+        dialog.setContentView(sheetView)
+
+        sheetView.findViewById<TextView>(R.id.tvRateRouteHeader)?.text = "Route Code: $routeCode"
+
+        val rbRouteAccuracy = sheetView.findViewById<RatingBar>(R.id.rbRouteAccuracy)
+        val rbFareAccuracy = sheetView.findViewById<RatingBar>(R.id.rbFareAccuracy)
+        val etComment = sheetView.findViewById<EditText>(R.id.etRatingComment)
+        val btnSubmit = sheetView.findViewById<View>(R.id.btnSubmitRating)
+
+        btnSubmit?.setOnClickListener {
+            val routeAccuracy = rbRouteAccuracy?.rating?.toInt() ?: 5
+            val fareAccuracy = rbFareAccuracy?.rating?.toInt() ?: 5
+            val commentText = etComment?.text?.toString()?.trim() ?: ""
+
+            dialog.dismiss()
+            submitRouteRating(routeId, routeAccuracy, fareAccuracy, commentText)
+        }
+
+        dialog.show()
+    }
+
+    private fun submitRouteRating(routeId: Int, routeAccuracy: Int, fareAccuracy: Int, comment: String) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val url = URL(ApiConfig.getRouteRatingUrl(routeId))
+                val jsonBody = JSONObject().apply {
+                    put("route_accuracy_rating", routeAccuracy)
+                    put("fare_accuracy_rating", fareAccuracy)
+                    if (comment.isNotBlank()) put("comment", comment)
+                }
+
+                val requestBody = jsonBody.toString().toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+
+                val sessionCookie = sessionPrefs.getString("session_cookie", null)
+                val requestBuilder = Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+
+                if (!sessionCookie.isNullOrEmpty()) {
+                    requestBuilder.addHeader("Cookie", sessionCookie)
+                }
+
+                val client = OkHttpClient()
+                val response = client.newCall(requestBuilder.build()).execute()
+                val responseText = response.body?.string() ?: ""
+                val json = try { JSONObject(responseText) } catch (_: Exception) { null }
+
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful && json?.optBoolean("success", false) == true) {
+                        Toast.makeText(this@MainActivity, "Rating submitted! Thank you.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val msg = json?.optString("message") ?: "Rating submitted successfully."
+                        Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, "Rating submitted successfully.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -1005,14 +1270,19 @@ class MainActivity : BaseActivity() {
     }
 
     private fun toggleSaveRouteServer(routeId: Int, shouldSave: Boolean) {
+        // NOTE: previously this always sent POST with an "action" field in the
+        // body - but the backend (old PHP and new FastAPI alike) only ever
+        // dispatched on the HTTP method, never read that field. So "unsaving"
+        // a route silently did nothing server-side (the DB row was never
+        // removed), even though the UI looked like it worked. Fixed here:
+        // POST to save, DELETE to unsave, route_id as a query param either
+        // way - matching how /api/saved-routes actually works.
         thread {
             var conn: HttpURLConnection? = null
             try {
-                val url = URL(ApiConfig.SAVED_ROUTES_URL)
+                val url = URL("${ApiConfig.SAVED_ROUTES_URL}?route_id=$routeId")
                 conn = (url.openConnection() as HttpURLConnection).apply {
-                    requestMethod = "POST"
-                    setRequestProperty("Content-Type", "application/json; utf-8")
-                    doOutput = true
+                    requestMethod = if (shouldSave) "POST" else "DELETE"
                     connectTimeout = 5000
                     readTimeout = 5000
 
@@ -1020,15 +1290,6 @@ class MainActivity : BaseActivity() {
                     if (!sessionCookie.isNullOrEmpty()) {
                         setRequestProperty("Cookie", sessionCookie)
                     }
-                }
-
-                val jsonBody = JSONObject().apply {
-                    put("route_id", routeId)
-                    put("action", if (shouldSave) "save" else "unsave")
-                }
-
-                conn.outputStream.use { os ->
-                    os.write(jsonBody.toString().toByteArray(Charsets.UTF_8))
                 }
 
                 conn.responseCode
@@ -1260,6 +1521,14 @@ class MainActivity : BaseActivity() {
 
             intent.removeExtra("EXTRA_ROUTE_ID")
 
+            // revealCard defaults to true, so this shows the card immediately
+            // with the already-known info (no separate state assignment
+            // needed here anymore - that was the original bug: setting
+            // STATE_COLLAPSED here, before the fetch even started, could
+            // later get clobbered by a slow/failed response's old hide-on-
+            // failure branch. fetchRouteWaypoints now handles revealing
+            // correctly and keeps the card's info intact even if the path
+            // fetch itself fails.
             fetchRouteWaypoints(
                 routeId = routeId,
                 code = routeCode,
@@ -1268,7 +1537,6 @@ class MainActivity : BaseActivity() {
                 origin = origin,
                 dest = dest
             )
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
 
