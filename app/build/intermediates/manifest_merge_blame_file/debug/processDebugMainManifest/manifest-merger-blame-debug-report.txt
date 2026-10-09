@@ -98,13 +98,13 @@
 58            </intent-filter>
 59        </activity>
 60        <activity
-60-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:9-118
+60-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:9-115
 61            android:name="com.biyahe.app.MainActivity"
 61-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:19-47
 62            android:exported="false"
 62-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:48-72
-63            android:windowSoftInputMode="adjustResize" />
-63-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:73-115
+63            android:windowSoftInputMode="adjustPan" />
+63-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:73-112
 64        <activity
 64-->E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:33:9-119
 65            android:name="com.biyahe.app.LoginActivity"

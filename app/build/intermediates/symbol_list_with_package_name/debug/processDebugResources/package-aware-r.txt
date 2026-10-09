@@ -3154,6 +3154,7 @@ drawable abc_vector_test
 drawable avd_hide_password
 drawable avd_show_password
 drawable bg_avatar_circle
+drawable bg_bottom_sheet_rounded
 drawable bg_button_blue
 drawable bg_button_primary
 drawable bg_card_white
@@ -3566,6 +3567,7 @@ id fitStart
 id fitToContents
 id fitXY
 id fixed
+id flMainRouteLoadingOverlay
 id flip
 id floating
 id forever
@@ -3627,7 +3629,10 @@ id listMode
 id list_item
 id llExpandedDetails
 id llPillCode
+id llRoutePathLoading
+id llRoutesSheetLoading
 id llTerminalImages
+id llUserRatingContainer
 id m3_side_sheet
 id mapContainer
 id mapView
@@ -3740,6 +3745,9 @@ id parent_matrix
 id password_toggle
 id path
 id pathRelative
+id pbRoutePathLoading
+id pbRouteSearch
+id pbRoutesSheetLoading
 id peekHeight
 id percent
 id pin
@@ -3753,6 +3761,7 @@ id radio
 id ratio
 id rbFareAccuracy
 id rbRouteAccuracy
+id rbUserRouteRating
 id rectangles
 id report_drawn
 id reverseSawtooth
@@ -3912,7 +3921,10 @@ id tvPostUserName
 id tvRateRouteHeader
 id tvResendTimer
 id tvRouteCode
+id tvRouteDisclaimer
 id tvRouteName
+id tvRoutePathLoadingLabel
+id tvRoutesSheetLoadingLabel
 id tvRoutesTrackedCount
 id tvSheetDestinationTerminal
 id tvSheetItemRouteCode
@@ -3928,6 +3940,7 @@ id tvTerminalDescription
 id tvTerminalName
 id tvTerminalStatus
 id tvTerminals
+id tvUserRouteRatingText
 id tvUsername
 id tvVehicleType
 id unchecked
@@ -4810,6 +4823,7 @@ style ShapeAppearance_MaterialComponents_LargeComponent
 style ShapeAppearance_MaterialComponents_MediumComponent
 style ShapeAppearance_MaterialComponents_SmallComponent
 style ShapeAppearance_MaterialComponents_Tooltip
+style ShapeAppearanceOverlay_App_TopCorners20dp
 style ShapeAppearanceOverlay_Material3_Button
 style ShapeAppearanceOverlay_Material3_Chip
 style ShapeAppearanceOverlay_Material3_Corner_Bottom

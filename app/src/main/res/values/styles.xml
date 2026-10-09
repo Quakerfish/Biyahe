@@ -119,6 +119,14 @@
         <item name="android:background">@color/divider</item>
     </style>
 
+    <!-- ===== Shape Overlays ===== -->
+    <style name="ShapeAppearanceOverlay.App.TopCorners20dp" parent="">
+        <item name="cornerSizeTopLeft">24dp</item>
+        <item name="cornerSizeTopRight">24dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
     <!-- ===== Transition Animations Overrides ===== -->
     <style name="NoAnimationTheme" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@null</item>
