@@ -9,6 +9,8 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -78,6 +80,9 @@ public final class ActivityMainBinding implements ViewBinding {
   public final EditText etSearchDestination;
 
   @NonNull
+  public final FrameLayout flMainRouteLoadingOverlay;
+
+  @NonNull
   public final HorizontalScrollView hsvSavedChips;
 
   @NonNull
@@ -99,13 +104,28 @@ public final class ActivityMainBinding implements ViewBinding {
   public final LinearLayout llPillCode;
 
   @NonNull
+  public final LinearLayout llRoutePathLoading;
+
+  @NonNull
   public final LinearLayout llTerminalImages;
+
+  @NonNull
+  public final LinearLayout llUserRatingContainer;
 
   @NonNull
   public final FrameLayout mapContainer;
 
   @NonNull
   public final MapView mapView;
+
+  @NonNull
+  public final ProgressBar pbRoutePathLoading;
+
+  @NonNull
+  public final ProgressBar pbRouteSearch;
+
+  @NonNull
+  public final RatingBar rbUserRouteRating;
 
   @NonNull
   public final RelativeLayout rootLayout;
@@ -147,7 +167,16 @@ public final class ActivityMainBinding implements ViewBinding {
   public final TextView tvRouteCode;
 
   @NonNull
+  public final TextView tvRouteDisclaimer;
+
+  @NonNull
   public final TextView tvRouteName;
+
+  @NonNull
+  public final TextView tvRoutePathLoadingLabel;
+
+  @NonNull
+  public final TextView tvUserRouteRatingText;
 
   @NonNull
   public final TextView tvVehicleType;
@@ -161,19 +190,23 @@ public final class ActivityMainBinding implements ViewBinding {
       @NonNull MaterialCardView cvDestinationTerminalPhoto,
       @NonNull MaterialCardView cvOriginTerminalPhoto, @NonNull MaterialCardView cvProfileDropdown,
       @NonNull CardView cvSuggestions, @NonNull EditText etSearchDestination,
-      @NonNull HorizontalScrollView hsvSavedChips, @NonNull ImageView ivDestinationTerminalPhoto,
-      @NonNull ImageView ivDropdownAvatar, @NonNull ImageView ivMainAvatar,
-      @NonNull ImageView ivOriginTerminalPhoto, @NonNull LinearLayout llExpandedDetails,
-      @NonNull LinearLayout llPillCode, @NonNull LinearLayout llTerminalImages,
-      @NonNull FrameLayout mapContainer, @NonNull MapView mapView,
+      @NonNull FrameLayout flMainRouteLoadingOverlay, @NonNull HorizontalScrollView hsvSavedChips,
+      @NonNull ImageView ivDestinationTerminalPhoto, @NonNull ImageView ivDropdownAvatar,
+      @NonNull ImageView ivMainAvatar, @NonNull ImageView ivOriginTerminalPhoto,
+      @NonNull LinearLayout llExpandedDetails, @NonNull LinearLayout llPillCode,
+      @NonNull LinearLayout llRoutePathLoading, @NonNull LinearLayout llTerminalImages,
+      @NonNull LinearLayout llUserRatingContainer, @NonNull FrameLayout mapContainer,
+      @NonNull MapView mapView, @NonNull ProgressBar pbRoutePathLoading,
+      @NonNull ProgressBar pbRouteSearch, @NonNull RatingBar rbUserRouteRating,
       @NonNull RelativeLayout rootLayout, @NonNull MaterialCardView routeInfoCard,
       @NonNull LinearLayout rowProfileCardDetails, @NonNull RecyclerView rvRouteSuggestions,
       @NonNull LinearLayout searchContainer, @NonNull LinearLayout topBarContainer,
       @NonNull TextView tvBaseFare, @NonNull TextView tvDestinationDetail,
       @NonNull TextView tvDiscountedFare, @NonNull TextView tvDropdownEmail,
       @NonNull TextView tvDropdownUsername, @NonNull TextView tvOriginDetail,
-      @NonNull TextView tvRouteCode, @NonNull TextView tvRouteName,
-      @NonNull TextView tvVehicleType) {
+      @NonNull TextView tvRouteCode, @NonNull TextView tvRouteDisclaimer,
+      @NonNull TextView tvRouteName, @NonNull TextView tvRoutePathLoadingLabel,
+      @NonNull TextView tvUserRouteRatingText, @NonNull TextView tvVehicleType) {
     this.rootView = rootView;
     this.bottomNav = bottomNav;
     this.btnClearSearch = btnClearSearch;
@@ -190,6 +223,7 @@ public final class ActivityMainBinding implements ViewBinding {
     this.cvProfileDropdown = cvProfileDropdown;
     this.cvSuggestions = cvSuggestions;
     this.etSearchDestination = etSearchDestination;
+    this.flMainRouteLoadingOverlay = flMainRouteLoadingOverlay;
     this.hsvSavedChips = hsvSavedChips;
     this.ivDestinationTerminalPhoto = ivDestinationTerminalPhoto;
     this.ivDropdownAvatar = ivDropdownAvatar;
@@ -197,9 +231,14 @@ public final class ActivityMainBinding implements ViewBinding {
     this.ivOriginTerminalPhoto = ivOriginTerminalPhoto;
     this.llExpandedDetails = llExpandedDetails;
     this.llPillCode = llPillCode;
+    this.llRoutePathLoading = llRoutePathLoading;
     this.llTerminalImages = llTerminalImages;
+    this.llUserRatingContainer = llUserRatingContainer;
     this.mapContainer = mapContainer;
     this.mapView = mapView;
+    this.pbRoutePathLoading = pbRoutePathLoading;
+    this.pbRouteSearch = pbRouteSearch;
+    this.rbUserRouteRating = rbUserRouteRating;
     this.rootLayout = rootLayout;
     this.routeInfoCard = routeInfoCard;
     this.rowProfileCardDetails = rowProfileCardDetails;
@@ -213,7 +252,10 @@ public final class ActivityMainBinding implements ViewBinding {
     this.tvDropdownUsername = tvDropdownUsername;
     this.tvOriginDetail = tvOriginDetail;
     this.tvRouteCode = tvRouteCode;
+    this.tvRouteDisclaimer = tvRouteDisclaimer;
     this.tvRouteName = tvRouteName;
+    this.tvRoutePathLoadingLabel = tvRoutePathLoadingLabel;
+    this.tvUserRouteRatingText = tvUserRouteRatingText;
     this.tvVehicleType = tvVehicleType;
   }
 
@@ -334,6 +376,12 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.flMainRouteLoadingOverlay;
+      FrameLayout flMainRouteLoadingOverlay = ViewBindings.findChildViewById(rootView, id);
+      if (flMainRouteLoadingOverlay == null) {
+        break missingId;
+      }
+
       id = R.id.hsvSavedChips;
       HorizontalScrollView hsvSavedChips = ViewBindings.findChildViewById(rootView, id);
       if (hsvSavedChips == null) {
@@ -376,9 +424,21 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.llRoutePathLoading;
+      LinearLayout llRoutePathLoading = ViewBindings.findChildViewById(rootView, id);
+      if (llRoutePathLoading == null) {
+        break missingId;
+      }
+
       id = R.id.llTerminalImages;
       LinearLayout llTerminalImages = ViewBindings.findChildViewById(rootView, id);
       if (llTerminalImages == null) {
+        break missingId;
+      }
+
+      id = R.id.llUserRatingContainer;
+      LinearLayout llUserRatingContainer = ViewBindings.findChildViewById(rootView, id);
+      if (llUserRatingContainer == null) {
         break missingId;
       }
 
@@ -391,6 +451,24 @@ public final class ActivityMainBinding implements ViewBinding {
       id = R.id.mapView;
       MapView mapView = ViewBindings.findChildViewById(rootView, id);
       if (mapView == null) {
+        break missingId;
+      }
+
+      id = R.id.pbRoutePathLoading;
+      ProgressBar pbRoutePathLoading = ViewBindings.findChildViewById(rootView, id);
+      if (pbRoutePathLoading == null) {
+        break missingId;
+      }
+
+      id = R.id.pbRouteSearch;
+      ProgressBar pbRouteSearch = ViewBindings.findChildViewById(rootView, id);
+      if (pbRouteSearch == null) {
+        break missingId;
+      }
+
+      id = R.id.rbUserRouteRating;
+      RatingBar rbUserRouteRating = ViewBindings.findChildViewById(rootView, id);
+      if (rbUserRouteRating == null) {
         break missingId;
       }
 
@@ -468,9 +546,27 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvRouteDisclaimer;
+      TextView tvRouteDisclaimer = ViewBindings.findChildViewById(rootView, id);
+      if (tvRouteDisclaimer == null) {
+        break missingId;
+      }
+
       id = R.id.tvRouteName;
       TextView tvRouteName = ViewBindings.findChildViewById(rootView, id);
       if (tvRouteName == null) {
+        break missingId;
+      }
+
+      id = R.id.tvRoutePathLoadingLabel;
+      TextView tvRoutePathLoadingLabel = ViewBindings.findChildViewById(rootView, id);
+      if (tvRoutePathLoadingLabel == null) {
+        break missingId;
+      }
+
+      id = R.id.tvUserRouteRatingText;
+      TextView tvUserRouteRatingText = ViewBindings.findChildViewById(rootView, id);
+      if (tvUserRouteRatingText == null) {
         break missingId;
       }
 
@@ -484,11 +580,13 @@ public final class ActivityMainBinding implements ViewBinding {
           btnCloseRouteCard, btnDropdownLogout, btnFindNearest, btnProfile, btnRateRoute,
           btnUntrackRoute, cgSavedRoutes, coordinatorContainer, cvDestinationTerminalPhoto,
           cvOriginTerminalPhoto, cvProfileDropdown, cvSuggestions, etSearchDestination,
-          hsvSavedChips, ivDestinationTerminalPhoto, ivDropdownAvatar, ivMainAvatar,
-          ivOriginTerminalPhoto, llExpandedDetails, llPillCode, llTerminalImages, mapContainer,
-          mapView, rootLayout, routeInfoCard, rowProfileCardDetails, rvRouteSuggestions,
-          searchContainer, topBarContainer, tvBaseFare, tvDestinationDetail, tvDiscountedFare,
-          tvDropdownEmail, tvDropdownUsername, tvOriginDetail, tvRouteCode, tvRouteName,
+          flMainRouteLoadingOverlay, hsvSavedChips, ivDestinationTerminalPhoto, ivDropdownAvatar,
+          ivMainAvatar, ivOriginTerminalPhoto, llExpandedDetails, llPillCode, llRoutePathLoading,
+          llTerminalImages, llUserRatingContainer, mapContainer, mapView, pbRoutePathLoading,
+          pbRouteSearch, rbUserRouteRating, rootLayout, routeInfoCard, rowProfileCardDetails,
+          rvRouteSuggestions, searchContainer, topBarContainer, tvBaseFare, tvDestinationDetail,
+          tvDiscountedFare, tvDropdownEmail, tvDropdownUsername, tvOriginDetail, tvRouteCode,
+          tvRouteDisclaimer, tvRouteName, tvRoutePathLoadingLabel, tvUserRouteRatingText,
           tvVehicleType);
     }
     String missingId = rootView.getResources().getResourceName(id);

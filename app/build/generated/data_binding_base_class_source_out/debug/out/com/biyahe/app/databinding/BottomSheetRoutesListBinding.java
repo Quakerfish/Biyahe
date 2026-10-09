@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +39,16 @@ public final class BottomSheetRoutesListBinding implements ViewBinding {
   public final Chip chipSheetTerminals;
 
   @NonNull
+  public final LinearLayout llRoutesSheetLoading;
+
+  @NonNull
+  public final ProgressBar pbRoutesSheetLoading;
+
+  @NonNull
   public final RecyclerView rvRoutesSheetList;
+
+  @NonNull
+  public final TextView tvRoutesSheetLoadingLabel;
 
   @NonNull
   public final TextView tvRoutesTrackedCount;
@@ -46,15 +56,19 @@ public final class BottomSheetRoutesListBinding implements ViewBinding {
   private BottomSheetRoutesListBinding(@NonNull LinearLayout rootView,
       @NonNull ChipGroup cgRoutesSheetFilter, @NonNull Chip chipSheetAll,
       @NonNull Chip chipSheetJeepneys, @NonNull Chip chipSheetSaved,
-      @NonNull Chip chipSheetTerminals, @NonNull RecyclerView rvRoutesSheetList,
-      @NonNull TextView tvRoutesTrackedCount) {
+      @NonNull Chip chipSheetTerminals, @NonNull LinearLayout llRoutesSheetLoading,
+      @NonNull ProgressBar pbRoutesSheetLoading, @NonNull RecyclerView rvRoutesSheetList,
+      @NonNull TextView tvRoutesSheetLoadingLabel, @NonNull TextView tvRoutesTrackedCount) {
     this.rootView = rootView;
     this.cgRoutesSheetFilter = cgRoutesSheetFilter;
     this.chipSheetAll = chipSheetAll;
     this.chipSheetJeepneys = chipSheetJeepneys;
     this.chipSheetSaved = chipSheetSaved;
     this.chipSheetTerminals = chipSheetTerminals;
+    this.llRoutesSheetLoading = llRoutesSheetLoading;
+    this.pbRoutesSheetLoading = pbRoutesSheetLoading;
     this.rvRoutesSheetList = rvRoutesSheetList;
+    this.tvRoutesSheetLoadingLabel = tvRoutesSheetLoadingLabel;
     this.tvRoutesTrackedCount = tvRoutesTrackedCount;
   }
 
@@ -115,9 +129,27 @@ public final class BottomSheetRoutesListBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.llRoutesSheetLoading;
+      LinearLayout llRoutesSheetLoading = ViewBindings.findChildViewById(rootView, id);
+      if (llRoutesSheetLoading == null) {
+        break missingId;
+      }
+
+      id = R.id.pbRoutesSheetLoading;
+      ProgressBar pbRoutesSheetLoading = ViewBindings.findChildViewById(rootView, id);
+      if (pbRoutesSheetLoading == null) {
+        break missingId;
+      }
+
       id = R.id.rvRoutesSheetList;
       RecyclerView rvRoutesSheetList = ViewBindings.findChildViewById(rootView, id);
       if (rvRoutesSheetList == null) {
+        break missingId;
+      }
+
+      id = R.id.tvRoutesSheetLoadingLabel;
+      TextView tvRoutesSheetLoadingLabel = ViewBindings.findChildViewById(rootView, id);
+      if (tvRoutesSheetLoadingLabel == null) {
         break missingId;
       }
 
@@ -128,8 +160,8 @@ public final class BottomSheetRoutesListBinding implements ViewBinding {
       }
 
       return new BottomSheetRoutesListBinding((LinearLayout) rootView, cgRoutesSheetFilter,
-          chipSheetAll, chipSheetJeepneys, chipSheetSaved, chipSheetTerminals, rvRoutesSheetList,
-          tvRoutesTrackedCount);
+          chipSheetAll, chipSheetJeepneys, chipSheetSaved, chipSheetTerminals, llRoutesSheetLoading,
+          pbRoutesSheetLoading, rvRoutesSheetList, tvRoutesSheetLoadingLabel, tvRoutesTrackedCount);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

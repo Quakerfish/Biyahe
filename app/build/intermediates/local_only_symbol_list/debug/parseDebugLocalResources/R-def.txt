@@ -36,6 +36,7 @@ color text_primary
 color text_secondary
 color white
 drawable bg_avatar_circle
+drawable bg_bottom_sheet_rounded
 drawable bg_button_blue
 drawable bg_button_primary
 drawable bg_card_white
@@ -125,6 +126,7 @@ id etPassword
 id etRatingComment
 id etSearchDestination
 id etUsername
+id flMainRouteLoadingOverlay
 id hsvSavedChips
 id ivDestinationTerminalPhoto
 id ivDropdownAvatar
@@ -135,14 +137,21 @@ id ivProfileAvatar
 id ivTerminalPhoto
 id llExpandedDetails
 id llPillCode
+id llRoutePathLoading
+id llRoutesSheetLoading
 id llTerminalImages
+id llUserRatingContainer
 id mapContainer
 id mapView
 id nav_home
 id nav_routes
 id nav_settings
+id pbRoutePathLoading
+id pbRouteSearch
+id pbRoutesSheetLoading
 id rbFareAccuracy
 id rbRouteAccuracy
+id rbUserRouteRating
 id rootLayout
 id routeInfoCard
 id rowAppearance
@@ -182,7 +191,10 @@ id tvPostUserName
 id tvRateRouteHeader
 id tvResendTimer
 id tvRouteCode
+id tvRouteDisclaimer
 id tvRouteName
+id tvRoutePathLoadingLabel
+id tvRoutesSheetLoadingLabel
 id tvRoutesTrackedCount
 id tvSheetDestinationTerminal
 id tvSheetItemRouteCode
@@ -198,6 +210,7 @@ id tvTerminalDescription
 id tvTerminalName
 id tvTerminalStatus
 id tvTerminals
+id tvUserRouteRatingText
 id tvUsername
 id tvVehicleType
 id vRouteColorIndicator
@@ -294,5 +307,6 @@ style ProfileMenuIcon
 style ProfileMenuRow
 style ProfileMenuTextGroup
 style ProfileMenuTitle
+style ShapeAppearanceOverlay.App.TopCorners20dp
 style Theme.App.Starting
 style Theme.Biyahe

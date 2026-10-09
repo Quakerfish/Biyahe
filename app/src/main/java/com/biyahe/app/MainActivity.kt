@@ -244,23 +244,29 @@ class MainActivity : BaseActivity() {
 
     private fun setupBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(binding.routeInfoCard)
-        bottomSheetBehavior.isHideable = true
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetBehavior.isHideable = false
+        binding.routeInfoCard.visibility = View.GONE
 
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                    clearMapRoute()
+            override fun onStateChanged(bottomSheet: View, newState: Int) {}
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                val cardTop = bottomSheet.top
+                val containerHeight = binding.coordinatorContainer.height
+                if (containerHeight > 0 && cardTop > 0) {
+                    val marginFromBottom = containerHeight - cardTop + 16
+                    val params = binding.btnFindNearest.layoutParams as android.view.ViewGroup.MarginLayoutParams
+                    params.bottomMargin = marginFromBottom
+                    binding.btnFindNearest.layoutParams = params
                 }
             }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
     }
 
     private fun setupRouteCardCloseButton() {
         binding.btnCloseRouteCard.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            clearMapRoute()
+            binding.routeInfoCard.visibility = View.GONE
         }
     }
 
@@ -307,6 +313,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun loadRouteSuggestions() {
+        runOnUiThread { binding.pbRouteSearch.visibility = View.VISIBLE }
         thread {
             var conn: HttpURLConnection? = null
             try {
@@ -336,14 +343,18 @@ class MainActivity : BaseActivity() {
                         }
 
                         runOnUiThread {
+                            binding.pbRouteSearch.visibility = View.GONE
                             routeAdapter.updateList(availableRoutes)
                             if (binding.etSearchDestination.hasFocus() && availableRoutes.isNotEmpty()) {
                                 binding.cvSuggestions.visibility = View.VISIBLE
                             }
                         }
+                    } else {
+                        runOnUiThread { binding.pbRouteSearch.visibility = View.GONE }
                     }
                 } else if (responseCode == 401) {
                     runOnUiThread {
+                        binding.pbRouteSearch.visibility = View.GONE
                         sessionPrefs.edit().remove("session_cookie").apply()
                         Toast.makeText(this@MainActivity, "Session expired. Please log in again.", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@MainActivity, LoginActivity::class.java).apply {
@@ -360,16 +371,22 @@ class MainActivity : BaseActivity() {
                     val serverMsg = json?.optString("message") ?: "API Error: HTTP $responseCode"
 
                     runOnUiThread {
+                        binding.pbRouteSearch.visibility = View.GONE
                         Toast.makeText(this@MainActivity, serverMsg, Toast.LENGTH_LONG).show()
                     }
                 }
             } catch (e: SocketTimeoutException) {
-                runOnUiThread { showNetworkError("timed out") }
+                runOnUiThread {
+                    binding.pbRouteSearch.visibility = View.GONE
+                }
             } catch (e: IOException) {
-                runOnUiThread { showNetworkError() }
+                runOnUiThread {
+                    binding.pbRouteSearch.visibility = View.GONE
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 runOnUiThread {
+                    binding.pbRouteSearch.visibility = View.GONE
                     Toast.makeText(this@MainActivity, "Fetch failed: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
                 }
             } finally {
@@ -614,10 +631,7 @@ class MainActivity : BaseActivity() {
         var isTrackConfirmed = false
 
         if (routeId != -1) {
-            // Quiet prefetch: draws the path on the map behind the dialog
-            // (same as before) but does NOT pop up the info card - that
-            // only happens once the user actually taps "Track Route" below.
-            fetchRouteWaypoints(routeId, code, "$origin – $dest", type, origin, dest, revealCard = false)
+            // Route preview in background is disabled per user request.
         }
 
         sheetView.findViewById<TextView>(R.id.tvSheetRouteCode)?.text = code
@@ -678,7 +692,7 @@ class MainActivity : BaseActivity() {
         if (matched != null) {
             onRouteSelected(matched)
         } else {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            binding.routeInfoCard.visibility = View.GONE
             Toast.makeText(this, "Route '$query' not found.", Toast.LENGTH_SHORT).show()
         }
     }
@@ -689,6 +703,18 @@ class MainActivity : BaseActivity() {
     ) {
         if (routeId <= 0) return
 
+        if (revealCard) {
+            runOnUiThread {
+                binding.flMainRouteLoadingOverlay.visibility = View.VISIBLE
+                binding.routeInfoCard.visibility = View.VISIBLE
+                binding.llRoutePathLoading.visibility = View.VISIBLE
+                binding.tvRoutePathLoadingLabel.text = "Loading route detail..."
+                if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                }
+            }
+        }
+
         val requestId = ++routeRequestSeq
 
         thread {
@@ -697,8 +723,8 @@ class MainActivity : BaseActivity() {
                 val url = URL("${ApiConfig.ROUTES_URL}?id=$routeId")
                 conn = (url.openConnection() as HttpURLConnection).apply {
                     requestMethod = "GET"
-                    connectTimeout = 8000
-                    readTimeout = 8000
+                    connectTimeout = 15000
+                    readTimeout = 15000
                 }
 
                 val sessionCookie = sessionPrefs.getString("session_cookie", null)
@@ -756,21 +782,28 @@ class MainActivity : BaseActivity() {
 
                     runOnUiThread {
                         if (requestId == routeRequestSeq) {
+                            binding.flMainRouteLoadingOverlay.visibility = View.GONE
+                            binding.llRoutePathLoading.visibility = View.GONE
                             if (revealCard) {
-                                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                                binding.routeInfoCard.visibility = View.GONE
                             }
                             Toast.makeText(this@MainActivity, serverMsg, Toast.LENGTH_SHORT).show()
                         }
+                    }
+                }
+            } catch (e: SocketTimeoutException) {
+                runOnUiThread {
+                    if (requestId == routeRequestSeq) {
+                        binding.flMainRouteLoadingOverlay.visibility = View.GONE
+                        binding.llRoutePathLoading.visibility = View.GONE
                     }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 runOnUiThread {
                     if (requestId == routeRequestSeq) {
-                        if (revealCard) {
-                            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-                        }
-                        showNetworkError()
+                        binding.flMainRouteLoadingOverlay.visibility = View.GONE
+                        binding.llRoutePathLoading.visibility = View.GONE
                     }
                 }
             } finally {
@@ -813,8 +846,10 @@ class MainActivity : BaseActivity() {
         revealCard: Boolean = true
     ) {
         if (points.isEmpty()) {
+            binding.flMainRouteLoadingOverlay.visibility = View.GONE
+            binding.llRoutePathLoading.visibility = View.GONE
             if (revealCard) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                binding.routeInfoCard.visibility = View.GONE
             }
             Toast.makeText(this, "No waypoints found for this route.", Toast.LENGTH_SHORT).show()
             return
@@ -836,6 +871,14 @@ class MainActivity : BaseActivity() {
         binding.tvVehicleType.text = type
         binding.tvOriginDetail.text = origin
         binding.tvDestinationDetail.text = dest
+
+        binding.flMainRouteLoadingOverlay.visibility = View.GONE
+        binding.llRoutePathLoading.visibility = View.GONE
+        binding.routeInfoCard.visibility = View.VISIBLE
+        if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+        fetchRouteRating(routeId)
 
         // Fare Information
         if (baseFare > 0.0) {
@@ -878,7 +921,7 @@ class MainActivity : BaseActivity() {
 
         // Rate Route Button
         binding.btnRateRoute.setOnClickListener {
-            showRateRouteDialog(routeId, code)
+            showRateRouteDialog(routeId, code, name, type, origin, dest)
         }
 
         if (revealCard) {
@@ -980,7 +1023,8 @@ class MainActivity : BaseActivity() {
         }
 
         binding.btnUntrackRoute.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            clearMapRoute()
+            binding.routeInfoCard.visibility = View.GONE
         }
 
         setupMainBottomNav()
@@ -1047,7 +1091,10 @@ class MainActivity : BaseActivity() {
         dialog.show()
     }
 
-    private fun showRateRouteDialog(routeId: Int, routeCode: String) {
+    private fun showRateRouteDialog(
+        routeId: Int, routeCode: String, routeName: String = "", routeType: String = "",
+        originName: String = "", destName: String = ""
+    ) {
         if (routeId == -1) {
             Toast.makeText(this, "Please select a valid route first.", Toast.LENGTH_SHORT).show()
             return
@@ -1070,13 +1117,19 @@ class MainActivity : BaseActivity() {
             val commentText = etComment?.text?.toString()?.trim() ?: ""
 
             dialog.dismiss()
-            submitRouteRating(routeId, routeAccuracy, fareAccuracy, commentText)
+            submitRouteRating(
+                routeId, routeAccuracy, fareAccuracy, commentText,
+                routeCode, routeName, routeType, originName, destName
+            )
         }
 
         dialog.show()
     }
 
-    private fun submitRouteRating(routeId: Int, routeAccuracy: Int, fareAccuracy: Int, comment: String) {
+    private fun submitRouteRating(
+        routeId: Int, routeAccuracy: Int, fareAccuracy: Int, comment: String,
+        routeCode: String, routeName: String, routeType: String, originName: String, destName: String
+    ) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val url = URL(ApiConfig.getRouteRatingUrl(routeId))
@@ -1103,17 +1156,74 @@ class MainActivity : BaseActivity() {
                 val json = try { JSONObject(responseText) } catch (_: Exception) { null }
 
                 withContext(Dispatchers.Main) {
-                    if (response.isSuccessful && json?.optBoolean("success", false) == true) {
-                        Toast.makeText(this@MainActivity, "Rating submitted! Thank you.", Toast.LENGTH_SHORT).show()
-                    } else {
-                        val msg = json?.optString("message") ?: "Rating submitted successfully."
-                        Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Rating submitted! Reloading route...", Toast.LENGTH_SHORT).show()
+                    binding.flMainRouteLoadingOverlay.visibility = View.VISIBLE
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+                    fetchRouteWaypoints(routeId, routeCode, routeName, routeType, originName, destName, revealCard = true)
+                    fetchRouteRating(routeId)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, "Rating submitted! Reloading route...", Toast.LENGTH_SHORT).show()
+                    binding.flMainRouteLoadingOverlay.visibility = View.VISIBLE
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+                    fetchRouteWaypoints(routeId, routeCode, routeName, routeType, originName, destName, revealCard = true)
+                    fetchRouteRating(routeId)
+                }
+            }
+        }
+    }
+
+    private fun fetchRouteRating(routeId: Int) {
+        if (routeId <= 0) return
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val url = URL(ApiConfig.getRouteRatingUrl(routeId))
+                val sessionCookie = sessionPrefs.getString("session_cookie", null)
+                val requestBuilder = Request.Builder().url(url).get()
+                if (!sessionCookie.isNullOrEmpty()) {
+                    requestBuilder.addHeader("Cookie", sessionCookie)
+                }
+
+                val client = OkHttpClient()
+                val response = client.newCall(requestBuilder.build()).execute()
+                val jsonText = response.body?.string() ?: ""
+                val json = try { JSONObject(jsonText) } catch (_: Exception) { null }
+
+                if (response.isSuccessful && json?.optBoolean("success", false) == true) {
+                    val myRating = json.optJSONObject("my_rating")
+                    val avgAccuracy = json.optDouble("average_route_accuracy", 0.0)
+                    val avgFare = json.optDouble("average_fare_accuracy", 0.0)
+
+                    withContext(Dispatchers.Main) {
+                        if (myRating != null) {
+                            val rAcc = myRating.optInt("route_accuracy_rating", 5)
+                            val fAcc = myRating.optInt("fare_accuracy_rating", 5)
+                            val myAvg = (rAcc + fAcc) / 2.0
+                            binding.rbUserRouteRating.rating = myAvg.toFloat()
+                            binding.tvUserRouteRatingText.text = String.format("%.1f ★", myAvg)
+                            binding.llUserRatingContainer.visibility = View.VISIBLE
+                        } else if (avgAccuracy > 0.0 || avgFare > 0.0) {
+                            val avg = if (avgAccuracy > 0 && avgFare > 0) (avgAccuracy + avgFare) / 2.0 else (avgAccuracy + avgFare)
+                            binding.rbUserRouteRating.rating = avg.toFloat()
+                            binding.tvUserRouteRatingText.text = String.format("%.1f ★ (Avg)", avg)
+                            binding.llUserRatingContainer.visibility = View.VISIBLE
+                        } else {
+                            binding.llUserRatingContainer.visibility = View.GONE
+                        }
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        binding.llUserRatingContainer.visibility = View.GONE
                     }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@MainActivity, "Rating submitted successfully.", Toast.LENGTH_SHORT).show()
+                    binding.llUserRatingContainer.visibility = View.GONE
                 }
             }
         }
@@ -1126,6 +1236,7 @@ class MainActivity : BaseActivity() {
 
         val rvList = sheetView.findViewById<RecyclerView>(R.id.rvRoutesSheetList)
         val tvTrackedCount = sheetView.findViewById<TextView>(R.id.tvRoutesTrackedCount)
+        val llLoading = sheetView.findViewById<View>(R.id.llRoutesSheetLoading)
 
         val chipAll = sheetView.findViewById<Chip>(R.id.chipSheetAll)
         val chipSaved = sheetView.findViewById<Chip>(R.id.chipSheetSaved)
@@ -1135,6 +1246,12 @@ class MainActivity : BaseActivity() {
         val combinedList = mutableListOf<JSONObject>().apply {
             addAll(availableRoutes)
             addAll(availableTerminals)
+        }
+
+        if (availableRoutes.isEmpty() || availableTerminals.isEmpty()) {
+            llLoading?.visibility = View.VISIBLE
+        } else {
+            llLoading?.visibility = View.GONE
         }
 
         val adapter = JeepneyRouteSheetAdapter(
@@ -1189,7 +1306,7 @@ class MainActivity : BaseActivity() {
                 addAll(availableTerminals)
             }
             adapter.updateList(all, savedRouteIds)
-            tvTrackedCount?.text = "${all.size} items in Cebu City"
+            tvTrackedCount?.text = "${all.size} Items tracked in Cebu City"
         }
 
         chipSaved?.setOnClickListener {
@@ -1213,19 +1330,21 @@ class MainActivity : BaseActivity() {
             tvTrackedCount?.text = "${availableTerminals.size} terminals found"
         }
 
-        tvTrackedCount?.text = "${availableRoutes.size} routes tracked in Cebu City"
+        tvTrackedCount?.text = "${combinedList.size} Items tracked in Cebu City"
 
         rvList?.layoutManager = LinearLayoutManager(this)
         rvList?.adapter = adapter
 
         if (availableTerminals.isEmpty()) {
-            loadTerminalsForSheet(adapter)
+            loadTerminalsForSheet(adapter, llLoading)
+        } else {
+            llLoading?.visibility = View.GONE
         }
 
         dialog.show()
     }
 
-    private fun loadTerminalsForSheet(adapter: JeepneyRouteSheetAdapter) {
+    private fun loadTerminalsForSheet(adapter: JeepneyRouteSheetAdapter, llLoading: View? = null) {
         thread {
             var conn: HttpURLConnection? = null
             try {
@@ -1253,16 +1372,22 @@ class MainActivity : BaseActivity() {
                         }
 
                         runOnUiThread {
+                            llLoading?.visibility = View.GONE
                             val all = mutableListOf<JSONObject>().apply {
                                 addAll(availableRoutes)
                                 addAll(availableTerminals)
                             }
                             adapter.updateList(all, savedRouteIds)
                         }
+                    } else {
+                        runOnUiThread { llLoading?.visibility = View.GONE }
                     }
+                } else {
+                    runOnUiThread { llLoading?.visibility = View.GONE }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+                runOnUiThread { llLoading?.visibility = View.GONE }
             } finally {
                 conn?.disconnect()
             }

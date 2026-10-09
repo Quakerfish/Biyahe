@@ -144,9 +144,9 @@ ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifes
 	android:name
 		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:28:27-74
 activity#com.biyahe.app.MainActivity
-ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:9-118
+ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:9-115
 	android:windowSoftInputMode
-		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:73-115
+		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:73-112
 	android:exported
 		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:32:48-72
 	android:name

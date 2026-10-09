@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/bg_white"
+    android:background="@drawable/bg_bottom_sheet_rounded"
     android:orientation="vertical"
     android:paddingTop="12dp"
     android:paddingBottom="24dp">
@@ -110,6 +110,34 @@
         android:layout_height="1dp"
         android:layout_marginBottom="8dp"
         android:background="#10000000" />
+
+    <!-- Loading Spinner Container -->
+    <LinearLayout
+        android:id="@+id/llRoutesSheetLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/pbRoutesSheetLoading"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:indeterminateTint="@color/ph_blue" />
+
+        <TextView
+            android:id="@+id/tvRoutesSheetLoadingLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Loading routes..."
+            android:textColor="@color/ph_blue"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <!-- Routes List -->
     <androidx.recyclerview.widget.RecyclerView

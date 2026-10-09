@@ -12,10 +12,6 @@
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\activity_main.xml"
     },
     {
-        "merged": "com.biyahe.app-mergeDebugResources-40:/layout/bottom_sheet_find_route.xml",
-        "source": "com.biyahe.app-main-43:/layout/bottom_sheet_find_route.xml"
-    },
-    {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-mergeDebugResources-40:\\layout\\item_route_suggestion.xml",
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\item_route_suggestion.xml"
     },
@@ -28,10 +24,6 @@
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\activity_signup.xml"
     },
     {
-        "merged": "com.biyahe.app-mergeDebugResources-40:/layout/activity_login.xml",
-        "source": "com.biyahe.app-main-43:/layout/activity_login.xml"
-    },
-    {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-mergeDebugResources-40:\\layout\\activity_profile.xml",
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\activity_profile.xml"
     },
@@ -42,14 +34,6 @@
     {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-mergeDebugResources-40:\\layout\\item_route_display.xml",
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\item_route_display.xml"
-    },
-    {
-        "merged": "com.biyahe.app-mergeDebugResources-40:/layout/bottom_sheet_community.xml",
-        "source": "com.biyahe.app-main-43:/layout/bottom_sheet_community.xml"
-    },
-    {
-        "merged": "com.biyahe.app-mergeDebugResources-40:/layout/activity_signup.xml",
-        "source": "com.biyahe.app-main-43:/layout/activity_signup.xml"
     },
     {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-mergeDebugResources-40:\\layout\\bottom_sheet_route_detail.xml",
@@ -70,10 +54,6 @@
     {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-mergeDebugResources-40:\\layout\\activity_login.xml",
         "source": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-main-43:\\layout\\activity_login.xml"
-    },
-    {
-        "merged": "com.biyahe.app-mergeDebugResources-40:/layout/bottom_sheet_rate_route.xml",
-        "source": "com.biyahe.app-main-43:/layout/bottom_sheet_rate_route.xml"
     },
     {
         "merged": "C:\\Users\\Administrator\\.gradle\\daemon\\9.3.0\\com.biyahe.app-mergeDebugResources-40:\\layout\\item_jeepney_route_sheet.xml",
