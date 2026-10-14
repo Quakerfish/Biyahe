@@ -187,6 +187,9 @@ public final class ActivityMainBinding implements ViewBinding {
   public final TextView tvSuggestionsHeader;
 
   @NonNull
+  public final TextView tvUserRouteRatingComment;
+
+  @NonNull
   public final TextView tvUserRouteRatingText;
 
   @NonNull
@@ -219,7 +222,8 @@ public final class ActivityMainBinding implements ViewBinding {
       @NonNull TextView tvRatingLabel, @NonNull TextView tvRouteCode,
       @NonNull TextView tvRouteDisclaimer, @NonNull TextView tvRouteName,
       @NonNull TextView tvRoutePathLoadingLabel, @NonNull TextView tvSuggestionsHeader,
-      @NonNull TextView tvUserRouteRatingText, @NonNull TextView tvVehicleType) {
+      @NonNull TextView tvUserRouteRatingComment, @NonNull TextView tvUserRouteRatingText,
+      @NonNull TextView tvVehicleType) {
     this.rootView = rootView;
     this.bottomNav = bottomNav;
     this.btnClearSearch = btnClearSearch;
@@ -272,6 +276,7 @@ public final class ActivityMainBinding implements ViewBinding {
     this.tvRouteName = tvRouteName;
     this.tvRoutePathLoadingLabel = tvRoutePathLoadingLabel;
     this.tvSuggestionsHeader = tvSuggestionsHeader;
+    this.tvUserRouteRatingComment = tvUserRouteRatingComment;
     this.tvUserRouteRatingText = tvUserRouteRatingText;
     this.tvVehicleType = tvVehicleType;
   }
@@ -605,6 +610,12 @@ public final class ActivityMainBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvUserRouteRatingComment;
+      TextView tvUserRouteRatingComment = ViewBindings.findChildViewById(rootView, id);
+      if (tvUserRouteRatingComment == null) {
+        break missingId;
+      }
+
       id = R.id.tvUserRouteRatingText;
       TextView tvUserRouteRatingText = ViewBindings.findChildViewById(rootView, id);
       if (tvUserRouteRatingText == null) {
@@ -628,7 +639,7 @@ public final class ActivityMainBinding implements ViewBinding {
           rvRouteSuggestions, searchContainer, topBarContainer, tvBaseFare, tvDestinationDetail,
           tvDiscountedFare, tvDropdownEmail, tvDropdownUsername, tvNoSuggestions, tvOriginDetail,
           tvRatingLabel, tvRouteCode, tvRouteDisclaimer, tvRouteName, tvRoutePathLoadingLabel,
-          tvSuggestionsHeader, tvUserRouteRatingText, tvVehicleType);
+          tvSuggestionsHeader, tvUserRouteRatingComment, tvUserRouteRatingText, tvVehicleType);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -175,38 +175,34 @@ ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifes
 		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:35:48-72
 	android:name
 		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:35:19-47
-activity#com.biyahe.app.RoutesActivity
-ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:36:9-120
-	android:windowSoftInputMode
-		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:36:75-117
+activity#com.biyahe.app.ForgotPasswordActivity
+ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:36:9-85
 	android:exported
-		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:36:50-74
+		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:36:58-82
 	android:name
-		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:36:19-49
-activity#com.biyahe.app.SavedActivity
-ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:37:9-119
-	android:windowSoftInputMode
-		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:37:74-116
-	android:exported
-		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:37:49-73
-	android:name
-		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:37:19-48
+		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:36:19-57
 activity#com.biyahe.app.ProfileActivity
-ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:38:9-120
+ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:37:9-120
 	android:windowSoftInputMode
-		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:38:76-118
+		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:37:76-118
 	android:exported
-		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:38:51-75
+		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:37:51-75
 	android:name
-		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:38:19-50
+		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:37:19-50
 activity#com.biyahe.app.EditProfileActivity
-ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:39:9-124
+ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:38:9-124
 	android:windowSoftInputMode
-		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:39:80-122
+		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:38:80-122
 	android:exported
-		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:39:55-79
+		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:38:55-79
 	android:name
-		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:39:19-54
+		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:38:19-54
+activity#com.biyahe.app.RatingsActivity
+ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:39:9-78
+	android:exported
+		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:39:51-75
+	android:name
+		ADDED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml:39:19-50
 uses-sdk
 INJECTED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from E:\Windows\Documents\Codes\biyahe-android\app\src\main\AndroidManifest.xml

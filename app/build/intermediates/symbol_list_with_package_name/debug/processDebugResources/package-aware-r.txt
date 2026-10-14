@@ -3222,6 +3222,7 @@ drawable ic_mtrl_checked_circle
 drawable ic_mtrl_chip_checked_black
 drawable ic_mtrl_chip_checked_circle
 drawable ic_mtrl_chip_close_circle
+drawable ic_my_location
 drawable ic_person
 drawable ic_route
 drawable ic_search
@@ -3445,6 +3446,8 @@ id btnSave
 id btnSaveRoute
 id btnSendCode
 id btnSheetSaveRoute
+id btnStatRatedContainer
+id btnStatSavedContainer
 id btnSubmitPost
 id btnSubmitRating
 id btnTrackRoute
@@ -3759,6 +3762,7 @@ id parent_matrix
 id password_toggle
 id path
 id pathRelative
+id pbRatingsLoading
 id pbRoutePathLoading
 id pbRouteSearch
 id pbRoutesSheetLoading
@@ -3791,6 +3795,7 @@ id rowProfileCardDetails
 id rowSavedPlaces
 id row_index_key
 id rvCommunityPosts
+id rvRatedRoutes
 id rvRouteSuggestions
 id rvRoutesSheetList
 id rvTerminalRoutes
@@ -3914,12 +3919,14 @@ id triangle
 id tvAppearanceValue
 id tvBackToLogin
 id tvBaseFare
+id tvContinueGuest
 id tvDestinationDetail
 id tvDiscountedFare
 id tvDisplayName
 id tvDropdownEmail
 id tvDropdownUsername
 id tvEmail
+id tvEmptyRatings
 id tvEmptyRoutesSheet
 id tvForgotPassword
 id tvFpResend
@@ -3938,6 +3945,10 @@ id tvPostTimestamp
 id tvPostUserAvatar
 id tvPostUserName
 id tvRateRouteHeader
+id tvRatedComment
+id tvRatedDate
+id tvRatedRouteCode
+id tvRatedRouteName
 id tvRatingLabel
 id tvResendTimer
 id tvRouteCode
@@ -3965,6 +3976,7 @@ id tvTerminalDescription
 id tvTerminalName
 id tvTerminalStatus
 id tvTerminals
+id tvUserRouteRatingComment
 id tvUserRouteRatingText
 id tvVehicleType
 id unchecked
@@ -4113,6 +4125,7 @@ layout activity_forgot_password
 layout activity_login
 layout activity_main
 layout activity_profile
+layout activity_ratings
 layout activity_signup
 layout bottom_sheet_community
 layout bottom_sheet_find_route
@@ -4140,6 +4153,7 @@ layout ime_base_split_test_activity
 layout ime_secondary_split_test_activity
 layout item_community_post
 layout item_jeepney_route_sheet
+layout item_rated_route
 layout item_route_display
 layout item_route_suggestion
 layout m3_alert_dialog

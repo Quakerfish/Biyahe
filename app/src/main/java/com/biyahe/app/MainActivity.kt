@@ -129,6 +129,9 @@ class MainActivity : BaseActivity() {
     private var routeJob: Job? = null
     private var ratingJob: Job? = null
 
+    private val isGuest: Boolean
+        get() = sessionPrefs.getBoolean("is_guest", false)
+
     private val activeMarkers = mutableListOf<Marker>()
     private val originIcon: Icon by lazy { createCircleMarkerIcon("#0038A8") }
     private val destinationIcon: Icon by lazy { createCircleMarkerIcon("#CE1126") }
@@ -168,8 +171,12 @@ class MainActivity : BaseActivity() {
         setupBackHandling()
 
         loadRouteSuggestions()
-        loadSavedRouteChips()
-        loadUserProfileAvatar()
+        if (!isGuest) {
+            loadSavedRouteChips()
+            loadUserProfileAvatar()
+        } else {
+            setupGuestProfileUI()
+        }
         // Coming back from another tab: bring the card and path back (an explicit
         // track intent below, if any, overrides this).
         persistedRoute?.let { trackRoute(it) }
@@ -186,8 +193,12 @@ class MainActivity : BaseActivity() {
         mapView.onResume()
         reconcileRouteCard()
         setupMainBottomNav()
-        loadSavedRouteChips()
-        loadUserProfileAvatar()
+        if (!isGuest) {
+            loadSavedRouteChips()
+            loadUserProfileAvatar()
+        } else {
+            setupGuestProfileUI()
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -195,6 +206,7 @@ class MainActivity : BaseActivity() {
         setIntent(intent)
         setupMainBottomNav()
         checkTrackIntent(intent)
+        ensureRouteCardVisible()
     }
 
     override fun onPause() {
@@ -491,43 +503,69 @@ class MainActivity : BaseActivity() {
     }
 
     /**
-     * Keep the sheet and the route fields consistent after returning to this screen.
-     * With a route held, the card is force-rebuilt: made visible, brought to the front
-     * and cycled HIDDEN -> COLLAPSED so its real position can never disagree with the
-     * state the behavior reports.
+     * Keep the sheet and the route fields consistent (call after returning to this screen).
+     * No route -> the card is parked. A route -> [ensureRouteCardVisible].
      */
     private fun reconcileRouteCard() {
-        val card = binding.routeInfoCard
-        card.post {
-            val container = binding.coordinatorContainer
-            Log.d(
-                TAG,
-                "reconcile: route=${currentRoute?.id} state=${bottomSheetBehavior.state} " +
-                        "top=${card.top} h=${card.height} containerH=${container.height} " +
-                        "vis=${card.visibility} alpha=${card.alpha} tY=${card.translationY}"
-            )
-            val route = currentRoute
-            if (route == null) {
+        binding.routeInfoCard.post {
+            if (currentRoute == null) {
                 if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN) {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 }
-            } else if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                updateFabPosition()
+            } else {
+                ensureRouteCardVisible()
+            }
+        }
+    }
+
+    /**
+     * Watchdog. The card's real position is the ground truth, not the state the sheet
+     * reports: after a dialog closes, another screen finishes or the window regains focus,
+     * the sheet can claim COLLAPSED while the card is actually off-screen. If a route is
+     * tracked and the card is not really on screen, bring it back. Cheap to call often;
+     * it checks again shortly after, once layout and animations have settled.
+     */
+    private fun ensureRouteCardVisible(recheck: Boolean = true) {
+        val card = binding.routeInfoCard
+        val container = binding.coordinatorContainer
+        card.post {
+            if (currentRoute == null || container.height == 0) return@post
+
+            val state = bottomSheetBehavior.state
+            val settling = state == BottomSheetBehavior.STATE_DRAGGING ||
+                    state == BottomSheetBehavior.STATE_SETTLING
+            val offscreen = card.top >= container.height - dp(8) ||
+                    card.visibility != View.VISIBLE || card.alpha < 0.99f
+
+            if (!settling && (offscreen || state == BottomSheetBehavior.STATE_HIDDEN)) {
+                Log.w(
+                    TAG,
+                    "route card was off-screen: route=${currentRoute?.id} state=$state " +
+                            "top=${card.top} containerH=${container.height} vis=${card.visibility} alpha=${card.alpha}"
+                )
                 card.visibility = View.VISIBLE
                 card.alpha = 1f
                 card.translationY = 0f
-                card.bringToFront()
-                bindRouteHeader(route)
-                card.requestLayout()
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-                card.post {
-                    if (currentRoute != null) {
-                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                if (state == BottomSheetBehavior.STATE_COLLAPSED) {
+                    // The sheet already believes it is collapsed, so setting COLLAPSED again
+                    // is a no-op. Nudge it through EXPANDED (no HIDDEN, so nothing is cleared).
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    card.post {
+                        if (currentRoute != null) bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     }
-                    binding.btnFindNearest.post { updateFabPosition() }
+                } else {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 }
             }
             updateFabPosition()
+            if (recheck) card.postDelayed({ ensureRouteCardVisible(recheck = false) }, 400)
         }
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus && ::binding.isInitialized) ensureRouteCardVisible()
     }
 
     private fun updateFabPosition() {
@@ -588,6 +626,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun handleSessionExpired() {
+        if (isGuest) return
         sessionPrefs.edit { remove("session_cookie") }
         toast("Session expired. Please log in again.")
         startActivity(Intent(this, LoginActivity::class.java).apply {
@@ -847,6 +886,7 @@ class MainActivity : BaseActivity() {
                     if (id != -1) savedRouteIds.add(id)
                 }
                 populateSavedRouteChips(saved)
+                ensureRouteCardVisible()
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
@@ -1098,6 +1138,7 @@ class MainActivity : BaseActivity() {
         binding.tvBaseFare.text = "--"
         binding.tvDiscountedFare.text = "--"
         binding.llUserRatingContainer.visibility = View.GONE
+        showMyComment(null)
         binding.llTerminalImages.visibility = View.GONE
         Glide.with(this).clear(binding.ivOriginTerminalPhoto)
         Glide.with(this).clear(binding.ivDestinationTerminalPhoto)
@@ -1263,23 +1304,66 @@ class MainActivity : BaseActivity() {
                             val average = (mine.optInt("route_accuracy_rating", 5) +
                                     mine.optInt("fare_accuracy_rating", 5)) / 2.0
                             showRating("Your rating", average)
+                            showMyComment(mine.optString("comment", ""))
                         }
                         avgRoute > 0.0 || avgFare > 0.0 -> {
                             val average = if (avgRoute > 0 && avgFare > 0) (avgRoute + avgFare) / 2.0
                             else avgRoute + avgFare
                             showRating("Commuter rating", average)
+                            showMyComment(null)
                         }
-                        else -> binding.llUserRatingContainer.visibility = View.GONE
+                        else -> {
+                            binding.llUserRatingContainer.visibility = View.GONE
+                            showMyComment(null)
+                        }
                     }
                 } else {
                     binding.llUserRatingContainer.visibility = View.GONE
+                    showMyComment(null)
                 }
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Exception) {
                 Log.w(TAG, "fetchRouteRating failed", e)
-                if (currentRoute?.id == routeId) binding.llUserRatingContainer.visibility = View.GONE
+                if (currentRoute?.id == routeId) {
+                    binding.llUserRatingContainer.visibility = View.GONE
+                    showMyComment(null)
+                }
             }
+        }
+    }
+
+    /** The signed-in user's own comment, shown right under the rating row (hidden if none). */
+    private var tvMyComment: TextView? = null
+
+    private fun showMyComment(comment: String?) {
+        val text = comment?.trim().orEmpty()
+        val show = text.isNotEmpty() && !text.equals("null", ignoreCase = true)
+
+        var view = tvMyComment
+        if (view == null) {
+            if (!show) return // nothing to hide yet
+            val rating = binding.llUserRatingContainer
+            val parent = rating.parent as? ViewGroup ?: return
+            view = TextView(this).apply {
+                setTextColor(ContextCompat.getColor(context, R.color.text_primary))
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+                setTypeface(typeface, android.graphics.Typeface.ITALIC)
+                setLineSpacing(0f, 1.15f)
+                setPadding(0, dp(6), 0, 0)
+                layoutParams = ViewGroup.MarginLayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            }
+            parent.addView(view, parent.indexOfChild(rating) + 1)
+            tvMyComment = view
+        }
+
+        if (show) {
+            view.text = "\u201C$text\u201D"
+            view.visibility = View.VISIBLE
+        } else {
+            view.visibility = View.GONE
         }
     }
 
@@ -1290,7 +1374,36 @@ class MainActivity : BaseActivity() {
         binding.llUserRatingContainer.visibility = View.VISIBLE
     }
 
+    private fun showGuestLoginPrompt(featureName: String = "save or rate routes") {
+        AlertDialog.Builder(this)
+            .setTitle("Log in required")
+            .setMessage("Please log in or create an account to $featureName.")
+            .setPositiveButton("Log In") { _, _ ->
+                sessionPrefs.edit { remove("is_guest") }
+                startActivity(Intent(this, LoginActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                })
+                finish()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun setupGuestProfileUI() {
+        binding.tvDropdownUsername.text = "Guest Commuter"
+        binding.tvDropdownEmail.text = "Log in to save & rate routes"
+        val pad = dp(10)
+        binding.ivMainAvatar.setPadding(pad, pad, pad, pad)
+        binding.ivMainAvatar.setImageResource(R.drawable.ic_person)
+        binding.ivMainAvatar.imageTintList =
+            ColorStateList.valueOf(ContextCompat.getColor(this, R.color.ph_blue))
+    }
+
     private fun showRateRouteDialog(info: RouteInfo) {
+        if (isGuest) {
+            showGuestLoginPrompt("rate routes")
+            return
+        }
         if (info.id == -1) {
             toast("Please select a valid route first.")
             return
@@ -1386,15 +1499,39 @@ class MainActivity : BaseActivity() {
 
         binding.rowProfileCardDetails.setOnClickListener {
             binding.cvProfileDropdown.visibility = View.GONE
-            navigateToTab(ProfileActivity::class.java)
+            if (isGuest) {
+                showGuestLoginPrompt("view or edit your profile")
+            } else {
+                navigateToTab(ProfileActivity::class.java)
+            }
         }
 
         binding.btnDropdownLogout.setOnClickListener {
             binding.cvProfileDropdown.visibility = View.GONE
-            showSignOutConfirmation()
+            if (isGuest) {
+                showGuestLoginPrompt("log in or sign up")
+            } else {
+                showSignOutConfirmation()
+            }
         }
 
-        binding.btnFindNearest.setOnClickListener { showFindRouteBottomSheet() }
+        binding.btnFindNearest.setOnClickListener {
+            val locationComponent = mapLibreMap?.locationComponent
+            if (locationComponent != null && locationComponent.isLocationComponentActivated) {
+                val lastLoc = locationComponent.lastKnownLocation
+                if (lastLoc != null) {
+                    mapLibreMap?.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(LatLng(lastLoc.latitude, lastLoc.longitude), 15.0)
+                    )
+                } else {
+                    locationComponent.cameraMode = CameraMode.TRACKING
+                    toast("Focusing current location...")
+                }
+            } else {
+                mapLibreMap?.style?.let { enableLocationComponent(it) }
+                toast("Focusing current location...")
+            }
+        }
 
         // Tap the header to toggle the sheet; the buttons below are bound once here
         // (they used to be re-bound on every route display).
@@ -1423,7 +1560,11 @@ class MainActivity : BaseActivity() {
                     false
                 }
                 R.id.nav_settings -> {
-                    navigateToTab(ProfileActivity::class.java)
+                    if (isGuest) {
+                        showGuestLoginPrompt("access settings and profile")
+                    } else {
+                        navigateToTab(ProfileActivity::class.java)
+                    }
                     false
                 }
                 else -> false
@@ -1553,6 +1694,7 @@ class MainActivity : BaseActivity() {
         val dialog = BottomSheetDialog(this)
         val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_routes_list, null)
         dialog.setContentView(sheetView)
+        dialog.setOnDismissListener { ensureRouteCardVisible() }
 
         val rvList = sheetView.findViewById<RecyclerView>(R.id.rvRoutesSheetList)
         val tvTrackedCount = sheetView.findViewById<TextView>(R.id.tvRoutesTrackedCount)
@@ -1668,6 +1810,10 @@ class MainActivity : BaseActivity() {
     }
 
     private fun toggleSaveRoute(routeId: Int, shouldSave: Boolean) {
+        if (isGuest) {
+            showGuestLoginPrompt("save routes")
+            return
+        }
         // POST saves, DELETE unsaves, route_id as a query param (see /api/saved-routes).
         lifecycleScope.launch {
             try {
@@ -1679,6 +1825,7 @@ class MainActivity : BaseActivity() {
                 if (ok) {
                     toast(if (shouldSave) "Saved to your routes" else "Removed from saved")
                     loadSavedRouteChips()
+                    ensureRouteCardVisible()
                 } else {
                     // Roll back the optimistic change so the UI doesn't lie.
                     if (shouldSave) savedRouteIds.remove(routeId) else savedRouteIds.add(routeId)
@@ -1691,74 +1838,6 @@ class MainActivity : BaseActivity() {
                 if (shouldSave) savedRouteIds.remove(routeId) else savedRouteIds.add(routeId)
                 toast("Couldn't reach the server.", long = true)
             }
-        }
-    }
-
-    private fun showFindRouteBottomSheet() {
-        val dialog = BottomSheetDialog(this)
-        val sheetView = layoutInflater.inflate(R.layout.bottom_sheet_find_route, null)
-        dialog.setContentView(sheetView)
-
-        val actvOrigin = sheetView.findViewById<AutoCompleteTextView>(R.id.actvOrigin)
-        val actvDestination = sheetView.findViewById<AutoCompleteTextView>(R.id.actvDestination)
-        val btnFindRoutePath = sheetView.findViewById<View>(R.id.btnFindRoutePath)
-
-        lifecycleScope.launch {
-            try {
-                val names = ensureTerminals()
-                    .map { it.optString("terminal_name") }
-                    .filter { it.isNotBlank() }
-                val originOptions = listOf("Current Location") + names
-
-                actvDestination?.setAdapter(
-                    ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, names)
-                )
-                actvDestination?.setOnClickListener { actvDestination.showDropDown() }
-
-                actvOrigin?.setAdapter(
-                    ArrayAdapter(this@MainActivity, android.R.layout.simple_dropdown_item_1line, originOptions)
-                )
-                actvOrigin?.setOnClickListener { actvOrigin.showDropDown() }
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                Log.w(TAG, "terminal list failed", e)
-            }
-        }
-
-        btnFindRoutePath?.setOnClickListener {
-            val destText = actvDestination?.text.toString().trim()
-            val origText = actvOrigin?.text.toString().trim()
-
-            if (destText.isEmpty() || destText.equals("Select terminal", ignoreCase = true)) {
-                toast("Please select a destination terminal.")
-                return@setOnClickListener
-            }
-
-            dialog.dismiss()
-            findRoutePathAndConfirm(origText, destText)
-        }
-
-        dialog.show()
-    }
-
-    private fun findRoutePathAndConfirm(originStr: String, destinationStr: String) {
-        val isCurrentLocation = originStr.isEmpty() || originStr.equals("Current Location", ignoreCase = true)
-
-        fun touches(route: JSONObject, name: String) =
-            route.optString("destination_name", "").equals(name, ignoreCase = true) ||
-                    route.optString("origin_name", "").equals(name, ignoreCase = true)
-
-        val matching = availableRoutes.filter { route ->
-            touches(route, destinationStr) && (isCurrentLocation || touches(route, originStr))
-        }
-
-        val best = matching.firstOrNull() ?: availableRoutes.firstOrNull { touches(it, destinationStr) }
-
-        if (best != null) {
-            showRouteDetailDialog(best)
-        } else {
-            toast("No route found heading to $destinationStr.")
         }
     }
 

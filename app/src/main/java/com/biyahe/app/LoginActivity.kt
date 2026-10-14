@@ -32,6 +32,15 @@ class LoginActivity : BaseActivity() {
         binding.tvGoToSignup.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
         }
+
+        binding.tvContinueGuest.setOnClickListener {
+            val sessionPrefs = getSharedPreferences("app_session", MODE_PRIVATE)
+            sessionPrefs.edit().putBoolean("is_guest", true).remove("session_cookie").apply()
+            startActivity(Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            })
+            finish()
+        }
     }
 
     private fun attemptLogin() {
