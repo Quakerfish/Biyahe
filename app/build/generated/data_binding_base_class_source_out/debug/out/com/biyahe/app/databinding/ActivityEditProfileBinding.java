@@ -15,6 +15,7 @@ import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.biyahe.app.R;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -33,13 +34,16 @@ public final class ActivityEditProfileBinding implements ViewBinding {
   public final MaterialButton btnSave;
 
   @NonNull
-  public final EditText etCurrentPassword;
+  public final TextInputEditText etConfirmPassword;
+
+  @NonNull
+  public final TextInputEditText etCurrentPassword;
 
   @NonNull
   public final EditText etEmail;
 
   @NonNull
-  public final EditText etNewPassword;
+  public final TextInputEditText etNewPassword;
 
   @NonNull
   public final EditText etUsername;
@@ -49,13 +53,14 @@ public final class ActivityEditProfileBinding implements ViewBinding {
 
   private ActivityEditProfileBinding(@NonNull RelativeLayout rootView, @NonNull ImageButton btnBack,
       @NonNull FrameLayout btnChangeAvatar, @NonNull MaterialButton btnSave,
-      @NonNull EditText etCurrentPassword, @NonNull EditText etEmail,
-      @NonNull EditText etNewPassword, @NonNull EditText etUsername,
-      @NonNull ImageView ivEditAvatar) {
+      @NonNull TextInputEditText etConfirmPassword, @NonNull TextInputEditText etCurrentPassword,
+      @NonNull EditText etEmail, @NonNull TextInputEditText etNewPassword,
+      @NonNull EditText etUsername, @NonNull ImageView ivEditAvatar) {
     this.rootView = rootView;
     this.btnBack = btnBack;
     this.btnChangeAvatar = btnChangeAvatar;
     this.btnSave = btnSave;
+    this.etConfirmPassword = etConfirmPassword;
     this.etCurrentPassword = etCurrentPassword;
     this.etEmail = etEmail;
     this.etNewPassword = etNewPassword;
@@ -108,8 +113,14 @@ public final class ActivityEditProfileBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.etConfirmPassword;
+      TextInputEditText etConfirmPassword = ViewBindings.findChildViewById(rootView, id);
+      if (etConfirmPassword == null) {
+        break missingId;
+      }
+
       id = R.id.etCurrentPassword;
-      EditText etCurrentPassword = ViewBindings.findChildViewById(rootView, id);
+      TextInputEditText etCurrentPassword = ViewBindings.findChildViewById(rootView, id);
       if (etCurrentPassword == null) {
         break missingId;
       }
@@ -121,7 +132,7 @@ public final class ActivityEditProfileBinding implements ViewBinding {
       }
 
       id = R.id.etNewPassword;
-      EditText etNewPassword = ViewBindings.findChildViewById(rootView, id);
+      TextInputEditText etNewPassword = ViewBindings.findChildViewById(rootView, id);
       if (etNewPassword == null) {
         break missingId;
       }
@@ -139,7 +150,8 @@ public final class ActivityEditProfileBinding implements ViewBinding {
       }
 
       return new ActivityEditProfileBinding((RelativeLayout) rootView, btnBack, btnChangeAvatar,
-          btnSave, etCurrentPassword, etEmail, etNewPassword, etUsername, ivEditAvatar);
+          btnSave, etConfirmPassword, etCurrentPassword, etEmail, etNewPassword, etUsername,
+          ivEditAvatar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -90,6 +90,15 @@
                             android:padding="3dp"
                             android:src="@drawable/ic_edit"
                             app:tint="@color/ph_blue" />
+
+                        <!-- Shown while a new profile picture is uploading -->
+                        <ProgressBar
+                            android:id="@+id/avatarProgress"
+                            style="?android:attr/progressBarStyleSmall"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:visibility="gone" />
                     </FrameLayout>
 
                     <LinearLayout
@@ -100,29 +109,33 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tvFullName"
+                            android:id="@+id/tvDisplayName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:text="Commuter"
                             android:textColor="@color/text_primary"
                             android:textSize="17sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tvUsername"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textColor="@color/text_muted"
-                            android:textSize="13sp" />
-
-                        <TextView
                             android:id="@+id/tvEmail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:textColor="@color/text_muted"
-                            android:textSize="13sp"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tvMemberSince"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textColor="@color/text_muted"
+                            android:textSize="12sp"
                             android:visibility="gone" />
                     </LinearLayout>
 
@@ -135,6 +148,81 @@
                         android:padding="10dp"
                         android:src="@drawable/ic_edit"
                         app:tint="@color/ph_blue" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Activity Stats (saved_routes and route_ratings tables) -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/bg_white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="#E2E8F0"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvStatSaved"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-"
+                            android:textColor="@color/ph_blue"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Saved routes"
+                            android:textColor="@color/text_muted"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#E2E8F0" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvStatRated"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-"
+                            android:textColor="@color/ph_blue"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Routes rated"
+                            android:textColor="@color/text_muted"
+                            android:textSize="12sp" />
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -162,23 +250,10 @@
 
                         <LinearLayout style="@style/ProfileMenuTextGroup">
                             <TextView style="@style/ProfileMenuTitle" android:text="@string/menu_saved_places_title" />
-                            <TextView style="@style/ProfileMenuDesc" android:text="@string/menu_saved_places_desc" />
-                        </LinearLayout>
-
-                        <ImageView style="@style/ProfileMenuChevron" />
-                    </LinearLayout>
-
-                    <View style="@style/ProfileMenuDivider" />
-
-                    <LinearLayout
-                        android:id="@+id/rowPreferences"
-                        style="@style/ProfileMenuRow">
-
-                        <ImageView style="@style/ProfileMenuIcon" android:src="@drawable/ic_sliders" app:tint="@color/ph_blue" />
-
-                        <LinearLayout style="@style/ProfileMenuTextGroup">
-                            <TextView style="@style/ProfileMenuTitle" android:text="@string/menu_preferences_title" />
-                            <TextView style="@style/ProfileMenuDesc" android:text="@string/menu_preferences_desc" />
+                            <TextView
+                                android:id="@+id/tvSavedValue"
+                                style="@style/ProfileMenuDesc"
+                                android:text="@string/menu_saved_places_desc" />
                         </LinearLayout>
 
                         <ImageView style="@style/ProfileMenuChevron" />
@@ -198,38 +273,6 @@
                                 android:id="@+id/tvAppearanceValue"
                                 style="@style/ProfileMenuDesc"
                                 android:text="@string/menu_appearance_desc_system" />
-                        </LinearLayout>
-
-                        <ImageView style="@style/ProfileMenuChevron" />
-                    </LinearLayout>
-
-                    <View style="@style/ProfileMenuDivider" />
-
-                    <LinearLayout
-                        android:id="@+id/rowNotifications"
-                        style="@style/ProfileMenuRow">
-
-                        <ImageView style="@style/ProfileMenuIcon" android:src="@drawable/ic_bell" app:tint="@color/ph_blue" />
-
-                        <LinearLayout style="@style/ProfileMenuTextGroup">
-                            <TextView style="@style/ProfileMenuTitle" android:text="@string/menu_notifications_title" />
-                            <TextView style="@style/ProfileMenuDesc" android:text="@string/menu_notifications_desc" />
-                        </LinearLayout>
-
-                        <ImageView style="@style/ProfileMenuChevron" />
-                    </LinearLayout>
-
-                    <View style="@style/ProfileMenuDivider" />
-
-                    <LinearLayout
-                        android:id="@+id/rowHelp"
-                        style="@style/ProfileMenuRow">
-
-                        <ImageView style="@style/ProfileMenuIcon" android:src="@drawable/ic_help" app:tint="@color/ph_blue" />
-
-                        <LinearLayout style="@style/ProfileMenuTextGroup">
-                            <TextView style="@style/ProfileMenuTitle" android:text="@string/menu_help_title" />
-                            <TextView style="@style/ProfileMenuDesc" android:text="@string/menu_help_desc" />
                         </LinearLayout>
 
                         <ImageView style="@style/ProfileMenuChevron" />
@@ -259,7 +302,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation Bar (Home, Routes, Community) -->
+    <!-- Bottom Navigation Bar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"

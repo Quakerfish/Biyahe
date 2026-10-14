@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -24,6 +25,9 @@ import java.lang.String;
 public final class ActivityProfileBinding implements ViewBinding {
   @NonNull
   private final RelativeLayout rootView;
+
+  @NonNull
+  public final ProgressBar avatarProgress;
 
   @NonNull
   public final BottomNavigationView bottomNav;
@@ -44,52 +48,53 @@ public final class ActivityProfileBinding implements ViewBinding {
   public final LinearLayout rowAppearance;
 
   @NonNull
-  public final LinearLayout rowHelp;
-
-  @NonNull
-  public final LinearLayout rowNotifications;
-
-  @NonNull
-  public final LinearLayout rowPreferences;
-
-  @NonNull
   public final LinearLayout rowSavedPlaces;
 
   @NonNull
   public final TextView tvAppearanceValue;
 
   @NonNull
+  public final TextView tvDisplayName;
+
+  @NonNull
   public final TextView tvEmail;
 
   @NonNull
-  public final TextView tvFullName;
+  public final TextView tvMemberSince;
 
   @NonNull
-  public final TextView tvUsername;
+  public final TextView tvSavedValue;
+
+  @NonNull
+  public final TextView tvStatRated;
+
+  @NonNull
+  public final TextView tvStatSaved;
 
   private ActivityProfileBinding(@NonNull RelativeLayout rootView,
-      @NonNull BottomNavigationView bottomNav, @NonNull FrameLayout btnChangeAvatar,
-      @NonNull ImageButton btnEditProfile, @NonNull MaterialButton btnLogout,
-      @NonNull ImageView ivProfileAvatar, @NonNull LinearLayout rowAppearance,
-      @NonNull LinearLayout rowHelp, @NonNull LinearLayout rowNotifications,
-      @NonNull LinearLayout rowPreferences, @NonNull LinearLayout rowSavedPlaces,
-      @NonNull TextView tvAppearanceValue, @NonNull TextView tvEmail, @NonNull TextView tvFullName,
-      @NonNull TextView tvUsername) {
+      @NonNull ProgressBar avatarProgress, @NonNull BottomNavigationView bottomNav,
+      @NonNull FrameLayout btnChangeAvatar, @NonNull ImageButton btnEditProfile,
+      @NonNull MaterialButton btnLogout, @NonNull ImageView ivProfileAvatar,
+      @NonNull LinearLayout rowAppearance, @NonNull LinearLayout rowSavedPlaces,
+      @NonNull TextView tvAppearanceValue, @NonNull TextView tvDisplayName,
+      @NonNull TextView tvEmail, @NonNull TextView tvMemberSince, @NonNull TextView tvSavedValue,
+      @NonNull TextView tvStatRated, @NonNull TextView tvStatSaved) {
     this.rootView = rootView;
+    this.avatarProgress = avatarProgress;
     this.bottomNav = bottomNav;
     this.btnChangeAvatar = btnChangeAvatar;
     this.btnEditProfile = btnEditProfile;
     this.btnLogout = btnLogout;
     this.ivProfileAvatar = ivProfileAvatar;
     this.rowAppearance = rowAppearance;
-    this.rowHelp = rowHelp;
-    this.rowNotifications = rowNotifications;
-    this.rowPreferences = rowPreferences;
     this.rowSavedPlaces = rowSavedPlaces;
     this.tvAppearanceValue = tvAppearanceValue;
+    this.tvDisplayName = tvDisplayName;
     this.tvEmail = tvEmail;
-    this.tvFullName = tvFullName;
-    this.tvUsername = tvUsername;
+    this.tvMemberSince = tvMemberSince;
+    this.tvSavedValue = tvSavedValue;
+    this.tvStatRated = tvStatRated;
+    this.tvStatSaved = tvStatSaved;
   }
 
   @Override
@@ -119,6 +124,12 @@ public final class ActivityProfileBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.avatarProgress;
+      ProgressBar avatarProgress = ViewBindings.findChildViewById(rootView, id);
+      if (avatarProgress == null) {
+        break missingId;
+      }
+
       id = R.id.bottomNav;
       BottomNavigationView bottomNav = ViewBindings.findChildViewById(rootView, id);
       if (bottomNav == null) {
@@ -155,24 +166,6 @@ public final class ActivityProfileBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.rowHelp;
-      LinearLayout rowHelp = ViewBindings.findChildViewById(rootView, id);
-      if (rowHelp == null) {
-        break missingId;
-      }
-
-      id = R.id.rowNotifications;
-      LinearLayout rowNotifications = ViewBindings.findChildViewById(rootView, id);
-      if (rowNotifications == null) {
-        break missingId;
-      }
-
-      id = R.id.rowPreferences;
-      LinearLayout rowPreferences = ViewBindings.findChildViewById(rootView, id);
-      if (rowPreferences == null) {
-        break missingId;
-      }
-
       id = R.id.rowSavedPlaces;
       LinearLayout rowSavedPlaces = ViewBindings.findChildViewById(rootView, id);
       if (rowSavedPlaces == null) {
@@ -185,27 +178,46 @@ public final class ActivityProfileBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvDisplayName;
+      TextView tvDisplayName = ViewBindings.findChildViewById(rootView, id);
+      if (tvDisplayName == null) {
+        break missingId;
+      }
+
       id = R.id.tvEmail;
       TextView tvEmail = ViewBindings.findChildViewById(rootView, id);
       if (tvEmail == null) {
         break missingId;
       }
 
-      id = R.id.tvFullName;
-      TextView tvFullName = ViewBindings.findChildViewById(rootView, id);
-      if (tvFullName == null) {
+      id = R.id.tvMemberSince;
+      TextView tvMemberSince = ViewBindings.findChildViewById(rootView, id);
+      if (tvMemberSince == null) {
         break missingId;
       }
 
-      id = R.id.tvUsername;
-      TextView tvUsername = ViewBindings.findChildViewById(rootView, id);
-      if (tvUsername == null) {
+      id = R.id.tvSavedValue;
+      TextView tvSavedValue = ViewBindings.findChildViewById(rootView, id);
+      if (tvSavedValue == null) {
         break missingId;
       }
 
-      return new ActivityProfileBinding((RelativeLayout) rootView, bottomNav, btnChangeAvatar,
-          btnEditProfile, btnLogout, ivProfileAvatar, rowAppearance, rowHelp, rowNotifications,
-          rowPreferences, rowSavedPlaces, tvAppearanceValue, tvEmail, tvFullName, tvUsername);
+      id = R.id.tvStatRated;
+      TextView tvStatRated = ViewBindings.findChildViewById(rootView, id);
+      if (tvStatRated == null) {
+        break missingId;
+      }
+
+      id = R.id.tvStatSaved;
+      TextView tvStatSaved = ViewBindings.findChildViewById(rootView, id);
+      if (tvStatSaved == null) {
+        break missingId;
+      }
+
+      return new ActivityProfileBinding((RelativeLayout) rootView, avatarProgress, bottomNav,
+          btnChangeAvatar, btnEditProfile, btnLogout, ivProfileAvatar, rowAppearance,
+          rowSavedPlaces, tvAppearanceValue, tvDisplayName, tvEmail, tvMemberSince, tvSavedValue,
+          tvStatRated, tvStatSaved);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Top App Bar with Logo, Flag Accent & Avatar -->
+    <!-- Top app bar: brand, avatar, flag accent -->
     <LinearLayout
         android:id="@+id/topBarContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg_white"
-        android:elevation="12dp"
+        android:elevation="6dp"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -19,7 +20,6 @@
             android:layout_height="56dp"
             android:paddingHorizontal="16dp">
 
-            <!-- Biyahe Brand Logo & Title -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -29,22 +29,38 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="10dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_biyahe_logo" />
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Biyahe"
-                    android:textColor="@color/ph_blue"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="Biyahe"
+                        android:textColor="@color/ph_blue"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
+                        android:includeFontPadding="false"
+                        android:letterSpacing="0.04"
+                        android:text="Cebu City jeepney routes"
+                        android:textColor="@color/text_muted"
+                        android:textSize="11sp" />
+                </LinearLayout>
             </LinearLayout>
 
-            <!-- Profile Avatar Circle Button -->
             <FrameLayout
                 android:id="@+id/btnProfile"
                 android:layout_width="40dp"
@@ -53,6 +69,7 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/bg_avatar_circle"
                 android:clickable="true"
+                android:contentDescription="Open profile menu"
                 android:focusable="true">
 
                 <ImageView
@@ -67,20 +84,667 @@
             </FrameLayout>
         </RelativeLayout>
 
-        <!-- Philippine Flag Tri-Color Accent Line -->
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="@drawable/bg_top_flag_bar" />
     </LinearLayout>
 
-    <!-- CoordinatorLayout bounded specifically to the screen region BELOW topBarContainer and ABOVE bottomNav -->
+    <!-- Region between the top bar and the bottom nav -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomNav"
         android:layout_below="@+id/topBarContainer">
+
+        <!-- Map -->
+        <FrameLayout
+            android:id="@+id/mapContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <org.maplibre.android.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+        <!-- Floating search bar, saved-route chips and suggestions -->
+        <LinearLayout
+            android:id="@+id/searchContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="10dp"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cvSearchBar"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                app:cardBackgroundColor="@color/bg_white"
+                app:cardCornerRadius="26dp"
+                app:cardElevation="6dp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="false"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingStart="18dp"
+                    android:paddingEnd="12dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="12dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_search"
+                        app:tint="@color/ph_blue" />
+
+                    <EditText
+                        android:id="@+id/etSearchDestination"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="Search a route code or terminal"
+                        android:imeOptions="actionSearch"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:textColor="@color/text_primary"
+                        android:textColorHint="@color/text_muted"
+                        android:textSize="14sp" />
+
+                    <ProgressBar
+                        android:id="@+id/pbRouteSearch"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="8dp"
+                        android:indeterminateTint="@color/ph_blue"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/btnClearSearch"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginStart="4dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Clear search"
+                        android:padding="7dp"
+                        android:src="@drawable/ic_clear"
+                        android:visibility="gone"
+                        app:tint="@color/text_muted" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Chips and suggestions share the same slot (suggestions hide the chips) -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <HorizontalScrollView
+                    android:id="@+id/hsvSavedChips"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    android:visibility="gone">
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/cgSavedRoutes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:chipSpacingHorizontal="8dp"
+                        app:singleLine="true" />
+                </HorizontalScrollView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvSuggestions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/bg_white"
+                    app:cardCornerRadius="20dp"
+                    app:cardElevation="8dp"
+                    app:strokeColor="@color/divider"
+                    app:strokeWidth="1dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvSuggestionsHeader"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:letterSpacing="0.05"
+                            android:paddingHorizontal="16dp"
+                            android:paddingBottom="6dp"
+                            android:paddingTop="12dp"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_muted"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            tools:text="All routes - 24" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/divider" />
+
+                        <!-- Scrolls once it reaches its maximum height -->
+                        <com.biyahe.app.MaxHeightRecyclerView
+                            android:id="@+id/rvRouteSuggestions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:overScrollMode="never"
+                            android:scrollbars="vertical" />
+
+                        <TextView
+                            android:id="@+id/tvNoSuggestions"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:padding="20dp"
+                            android:textColor="@color/text_muted"
+                            android:textSize="13sp"
+                            android:visibility="gone"
+                            tools:text="No routes match your search" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Route info bottom sheet -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/routeInfoCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="104dp"
+            app:behavior_skipCollapsed="false"
+            app:cardBackgroundColor="@color/bg_white"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="16dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.TopCorners20dp"
+            app:strokeWidth="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="8dp">
+
+                <View
+                    android:layout_width="36dp"
+                    android:layout_height="4dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_pill_soft" />
+
+                <!-- Header (always visible, even when collapsed) -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="16dp">
+
+                    <LinearLayout
+                        android:id="@+id/llPillCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_pill_soft"
+                        android:clickable="true"
+                        android:contentDescription="Zoom to route"
+                        android:focusable="true"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="8dp">
+
+                        <TextView
+                            android:id="@+id/tvRouteCode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/ph_blue"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="04L" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_toEndOf="@+id/llPillCode"
+                        android:layout_toStartOf="@+id/btnCloseRouteCard"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvRouteName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="@color/text_primary"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="Carbon - Lahug" />
+
+                        <TextView
+                            android:id="@+id/tvVehicleType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:textColor="@color/text_muted"
+                            android:textSize="12sp"
+                            tools:text="Jeepney" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/btnCloseRouteCard"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="Close route info"
+                        android:padding="9dp"
+                        android:src="@drawable/ic_close"
+                        app:tint="@color/text_muted" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/divider" />
+
+                <!-- Details scroll when the sheet is taller than the screen -->
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never">
+
+                    <LinearLayout
+                        android:id="@+id/llExpandedDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="20dp"
+                        android:paddingHorizontal="16dp"
+                        android:paddingTop="14dp">
+
+                        <!-- Path status: loading / error + retry / no path -->
+                        <LinearLayout
+                            android:id="@+id/llRoutePathLoading"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="14dp"
+                            android:background="@drawable/bg_fare_tile_regular"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="12dp"
+                            android:visibility="gone">
+
+                            <ProgressBar
+                                android:id="@+id/pbRoutePathLoading"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:indeterminateTint="@color/ph_blue" />
+
+                            <TextView
+                                android:id="@+id/tvRoutePathLoadingLabel"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:layout_weight="1"
+                                android:text="Loading route detail..."
+                                android:textColor="@color/ph_blue"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Terminal photos -->
+                        <LinearLayout
+                            android:id="@+id/llTerminalImages"
+                            android:layout_width="match_parent"
+                            android:layout_height="112dp"
+                            android:layout_marginBottom="16dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/cvOriginTerminalPhoto"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginEnd="6dp"
+                                android:layout_weight="1"
+                                android:visibility="gone"
+                                app:cardCornerRadius="14dp"
+                                app:cardElevation="0dp"
+                                app:strokeColor="@color/divider"
+                                app:strokeWidth="1dp">
+
+                                <ImageView
+                                    android:id="@+id/ivOriginTerminalPhoto"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:contentDescription="Origin terminal photo"
+                                    android:scaleType="centerCrop" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/cvDestinationTerminalPhoto"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:visibility="gone"
+                                app:cardCornerRadius="14dp"
+                                app:cardElevation="0dp"
+                                app:strokeColor="@color/divider"
+                                app:strokeWidth="1dp">
+
+                                <ImageView
+                                    android:id="@+id/ivDestinationTerminalPhoto"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:contentDescription="Destination terminal photo"
+                                    android:scaleType="centerCrop" />
+                            </com.google.android.material.card.MaterialCardView>
+                        </LinearLayout>
+
+                        <!-- Terminals tiles -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:letterSpacing="0.05"
+                            android:text="Terminals"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_muted"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_fare_tile_regular"
+                                android:orientation="vertical"
+                                android:padding="14dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Origin"
+                                    android:textColor="@color/ph_blue"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tvOriginDetail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    tools:text="Carbon Market" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_fare_tile_regular"
+                                android:orientation="vertical"
+                                android:padding="14dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Destination"
+                                    android:textColor="@color/ph_blue"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tvDestinationDetail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    tools:text="Lahug" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Fare tiles -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:letterSpacing="0.05"
+                            android:text="Fare"
+                            android:textAllCaps="true"
+                            android:textColor="@color/text_muted"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_fare_tile_regular"
+                                android:orientation="vertical"
+                                android:padding="14dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Regular"
+                                    android:textColor="@color/ph_blue"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tvBaseFare"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    tools:text="PHP 13.00" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_fare_tile_discount"
+                                android:orientation="vertical"
+                                android:padding="14dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Discounted"
+                                    android:textColor="@color/ph_green"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/tvDiscountedFare"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:textColor="@color/ph_green"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    tools:text="PHP 10.40" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="2dp"
+                                    android:text="Student, Senior, PWD"
+                                    android:textColor="@color/text_muted"
+                                    android:textSize="10.5sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Rating summary -->
+                        <LinearLayout
+                            android:id="@+id/llUserRatingContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <TextView
+                                android:id="@+id/tvRatingLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/text_muted"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                tools:text="Your rating" />
+
+                            <RatingBar
+                                android:id="@+id/rbUserRouteRating"
+                                style="?android:attr/ratingBarStyleSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:isIndicator="true"
+                                android:numStars="5"
+                                android:progressTint="@color/ph_yellow"
+                                android:secondaryProgressTint="@color/ph_yellow"
+                                android:stepSize="0.5" />
+
+                            <TextView
+                                android:id="@+id/tvUserRouteRatingText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:textColor="@color/text_primary"
+                                android:textSize="12sp"
+                                android:textStyle="bold"
+                                tools:text="4.5" />
+                        </LinearLayout>
+
+                        <!-- Actions -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="18dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnRateRoute"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_marginEnd="6dp"
+                                android:layout_weight="1"
+                                android:backgroundTint="@color/ph_blue"
+                                android:text="Rate Route"
+                                android:textColor="@color/bg_white"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                app:cornerRadius="25dp" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnUntrackRoute"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                                android:layout_width="0dp"
+                                android:layout_height="50dp"
+                                android:layout_marginStart="6dp"
+                                android:layout_weight="1"
+                                android:text="Clear route"
+                                android:textColor="@color/ph_blue"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                app:cornerRadius="25dp"
+                                app:strokeColor="@color/ph_blue"
+                                app:strokeWidth="1dp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvRouteDisclaimer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:gravity="center"
+                            android:text="Route paths are approximate and may contain inaccuracies."
+                            android:textColor="@color/text_muted"
+                            android:textSize="11sp"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Find-a-route button; code keeps it riding above the sheet -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnFindNearest"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="16dp"
+            android:clickable="true"
+            android:contentDescription="Find a route"
+            android:elevation="12dp"
+            android:focusable="true"
+            app:cardBackgroundColor="@color/ph_blue"
+            app:cardCornerRadius="27dp"
+            app:cardElevation="8dp"
+            app:strokeWidth="0dp">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:layout_gravity="center"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_compass"
+                app:tint="@color/bg_white" />
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Main Screen Route Path Loading Overlay -->
         <FrameLayout
@@ -89,7 +753,7 @@
             android:layout_height="match_parent"
             android:background="#66000000"
             android:clickable="true"
-            android:elevation="30dp"
+            android:elevation="14dp"
             android:focusable="true"
             android:visibility="gone">
 
@@ -127,616 +791,23 @@
             </com.google.android.material.card.MaterialCardView>
         </FrameLayout>
 
-        <!-- Map Container -->
-        <FrameLayout
-            android:id="@+id/mapContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <org.maplibre.android.maps.MapView
-                android:id="@+id/mapView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </FrameLayout>
-
-        <!-- Floating Search Bar & Suggestions Overlay -->
-        <LinearLayout
-            android:id="@+id/searchContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:elevation="10dp"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="12dp">
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                app:cardBackgroundColor="@color/bg_white"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="4dp"
-                app:cardPreventCornerOverlap="false"
-                app:cardUseCompatPadding="false"
-                app:strokeColor="@color/divider"
-                app:strokeWidth="1dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp">
-
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_marginEnd="10dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_search"
-                        app:tint="@color/ph_blue" />
-
-                    <EditText
-                        android:id="@+id/etSearchDestination"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:hint="Where to? Search a stop or route"
-                        android:imeOptions="actionSearch"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:textColor="@color/text_primary"
-                        android:textColorHint="@color/text_muted"
-                        android:textSize="13sp" />
-
-                    <ProgressBar
-                        android:id="@+id/pbRouteSearch"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="8dp"
-                        android:indeterminateTint="@color/ph_blue"
-                        android:visibility="gone" />
-
-                    <ImageView
-                        android:id="@+id/btnClearSearch"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginStart="8dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Clear search"
-                        android:padding="2dp"
-                        android:src="@drawable/ic_clear"
-                        android:visibility="gone"
-                        app:tint="@color/text_muted" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Container for Chips & Suggestions Overlay -->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
-
-                <!-- Saved Routes Filter Chips Bar -->
-                <HorizontalScrollView
-                    android:id="@+id/hsvSavedChips"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    android:scrollbars="none"
-                    android:visibility="gone">
-
-                    <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/cgSavedRoutes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:singleLine="true" />
-                </HorizontalScrollView>
-
-                <!-- Route Suggestions Card -->
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cvSuggestions"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    app:cardBackgroundColor="@color/bg_white"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="12dp">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvRouteSuggestions"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxHeight="260dp"
-                        android:overScrollMode="never" />
-                </androidx.cardview.widget.CardView>
-            </FrameLayout>
-        </LinearLayout>
-
-        <!-- Bottom Sheet Route Info Card -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/routeInfoCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="0dp"
-            app:behavior_hideable="false"
-            app:behavior_peekHeight="110dp"
-            app:behavior_skipCollapsed="false"
-            app:cardBackgroundColor="@color/bg_white"
-            app:cardCornerRadius="0dp"
-            app:cardElevation="16dp"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.TopCorners20dp"
-            app:strokeWidth="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="16dp">
-
-                <View
-                    android:layout_width="32dp"
-                    android:layout_height="4dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/bg_pill_soft" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:id="@+id/llPillCode"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/bg_pill_soft"
-                        android:orientation="horizontal"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="6dp">
-
-                        <TextView
-                            android:id="@+id/tvRouteCode"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/ph_blue"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_toStartOf="@+id/btnCloseRouteCard"
-                        android:layout_toEndOf="@+id/llPillCode"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tvRouteName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tvVehicleType"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textColor="@color/text_muted"
-                            android:textSize="11.5sp" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/btnCloseRouteCard"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Close route info"
-                        android:padding="4dp"
-                        android:src="@drawable/ic_close"
-                        app:tint="@color/text_muted" />
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="12dp"
-                    android:background="#1A000000" />
-
-                <LinearLayout
-                    android:id="@+id/llExpandedDetails"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <!-- Side-by-side Terminal Photos -->
-                    <LinearLayout
-                        android:id="@+id/llTerminalImages"
-                        android:layout_width="match_parent"
-                        android:layout_height="110dp"
-                        android:layout_marginBottom="12dp"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/cvOriginTerminalPhoto"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="6dp"
-                            android:visibility="gone"
-                            app:cardCornerRadius="12dp"
-                            app:cardElevation="2dp"
-                            app:strokeColor="@color/divider"
-                            app:strokeWidth="1dp">
-
-                            <ImageView
-                                android:id="@+id/ivOriginTerminalPhoto"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:contentDescription="Origin terminal photo"
-                                android:scaleType="centerCrop" />
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/cvDestinationTerminalPhoto"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:layout_marginStart="6dp"
-                            android:visibility="gone"
-                            app:cardCornerRadius="12dp"
-                            app:cardElevation="2dp"
-                            app:strokeColor="@color/divider"
-                            app:strokeWidth="1dp">
-
-                            <ImageView
-                                android:id="@+id/ivDestinationTerminalPhoto"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:contentDescription="Destination terminal photo"
-                                android:scaleType="centerCrop" />
-                        </com.google.android.material.card.MaterialCardView>
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:letterSpacing="0.05"
-                        android:text="Terminals"
-                        android:textAllCaps="true"
-                        android:textColor="@color/text_muted"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <!-- Origin Terminal Row -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_person"
-                            app:tint="@color/ph_blue" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Origin Terminal"
-                                android:textColor="@color/text_muted"
-                                android:textSize="11sp" />
-
-                            <TextView
-                                android:id="@+id/tvOriginDetail"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/text_primary"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="2dp"
-                        android:layout_height="16dp"
-                        android:layout_marginVertical="2dp"
-                        android:layout_marginStart="9dp"
-                        android:background="@color/ph_blue" />
-
-                    <!-- Destination Terminal Row -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_search"
-                            app:tint="@color/ph_blue" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Destination Terminal"
-                                android:textColor="@color/text_muted"
-                                android:textSize="11sp" />
-
-                            <TextView
-                                android:id="@+id/tvDestinationDetail"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/text_primary"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <!-- Fare Information Section -->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="12dp"
-                        android:background="#1A000000" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:letterSpacing="0.05"
-                        android:text="Fare Information"
-                        android:textAllCaps="true"
-                        android:textColor="@color/text_muted"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Base Fare"
-                                android:textColor="@color/text_muted"
-                                android:textSize="11sp" />
-
-                            <TextView
-                                android:id="@+id/tvBaseFare"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/text_primary"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Discounted (Student/Senior/PWD)"
-                                android:textColor="@color/ph_green"
-                                android:textSize="11sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/tvDiscountedFare"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/ph_green"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <!-- Action Buttons: Rate & Untrack -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnRateRoute"
-                            android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="6dp"
-                            android:backgroundTint="@color/ph_blue"
-                            android:text="Rate"
-                            android:textColor="@color/bg_white"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            app:cornerRadius="24dp" />
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btnUntrackRoute"
-                            android:layout_width="0dp"
-                            android:layout_height="48dp"
-                            android:layout_weight="1"
-                            android:layout_marginStart="6dp"
-                            android:backgroundTint="@color/ph_blue_soft"
-                            android:text="Untrack"
-                            android:textColor="@color/ph_blue"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            app:cornerRadius="24dp"
-                            app:strokeColor="@color/ph_blue"
-                            app:strokeWidth="1dp" />
-                    </LinearLayout>
-
-                    <!-- User Route Rating Container -->
-                    <LinearLayout
-                        android:id="@+id/llUserRatingContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Your Rating:"
-                            android:textColor="@color/text_muted"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-
-                        <RatingBar
-                            android:id="@+id/rbUserRouteRating"
-                            style="?android:attr/ratingBarStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:isIndicator="true"
-                            android:numStars="5"
-                            android:progressTint="@color/ph_yellow"
-                            android:secondaryProgressTint="@color/ph_yellow"
-                            android:stepSize="0.5" />
-
-                        <TextView
-                            android:id="@+id/tvUserRouteRatingText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="6dp"
-                            android:textColor="@color/text_primary"
-                            android:textSize="12sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Route Path Loading Container -->
-                    <LinearLayout
-                        android:id="@+id/llRoutePathLoading"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="16dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:visibility="visible">
-
-                        <ProgressBar
-                            android:id="@+id/pbRoutePathLoading"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:indeterminateTint="@color/ph_blue" />
-
-                        <TextView
-                            android:id="@+id/tvRoutePathLoadingLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:text="Loading route detail..."
-                            android:textColor="@color/ph_blue"
-                            android:textSize="13.5sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <!-- Route Disclaimer -->
-                    <TextView
-                        android:id="@+id/tvRouteDisclaimer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:gravity="center"
-                        android:text="Disclaimer: Route paths shown are approximate and may contain inaccuracies."
-                        android:textColor="@color/text_muted"
-                        android:textSize="11sp"
-                        android:textStyle="italic" />
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Direction Compass Button -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/btnFindNearest"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="124dp"
-            android:clickable="true"
-            android:elevation="24dp"
-            android:focusable="true"
-            app:cardBackgroundColor="@color/bg_white"
-            app:cardCornerRadius="28dp"
-            app:cardElevation="16dp"
-            app:strokeColor="@color/ph_blue"
-            app:strokeWidth="1.5dp">
-
-            <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center"
-                android:contentDescription="Find route"
-                android:src="@drawable/ic_compass"
-                app:tint="@color/ph_blue" />
-        </com.google.android.material.card.MaterialCardView>
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <!-- Profile Panel Card Overlay (Matching Image 5) -->
+    <!-- Profile dropdown -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvProfileDropdown"
-        android:layout_width="230dp"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="64dp"
+        android:layout_below="@+id/topBarContainer"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         android:elevation="20dp"
         android:visibility="gone"
         app:cardBackgroundColor="@color/bg_white"
         app:cardCornerRadius="16dp"
         app:cardElevation="12dp"
-        app:strokeColor="#E2E8F0"
+        app:strokeColor="@color/divider"
         app:strokeWidth="1dp">
 
         <LinearLayout
@@ -755,8 +826,8 @@
 
                 <ImageView
                     android:id="@+id/ivDropdownAvatar"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
                     android:background="@drawable/bg_avatar_circle"
                     android:contentDescription="@null"
                     android:scaleType="centerCrop"
@@ -764,19 +835,22 @@
                     app:tint="@color/ph_blue" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tvDropdownUsername"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="reze"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:textColor="@color/text_primary"
                         android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:text="username" />
 
                     <TextView
                         android:id="@+id/tvDropdownEmail"
@@ -785,9 +859,9 @@
                         android:layout_marginTop="1dp"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text="reze@gmail.com"
                         android:textColor="@color/text_muted"
-                        android:textSize="12sp" />
+                        android:textSize="12sp"
+                        tools:text="name@email.com" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -795,12 +869,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginVertical="10dp"
-                android:background="#15000000" />
+                android:background="@color/divider" />
 
             <LinearLayout
                 android:id="@+id/btnDropdownLogout"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="40dp"
                 android:background="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -822,11 +896,9 @@
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Bottom Navigation Bar (Home, Routes, Community) -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
