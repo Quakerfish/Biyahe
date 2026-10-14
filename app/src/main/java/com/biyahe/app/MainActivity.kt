@@ -1605,6 +1605,19 @@ class MainActivity : BaseActivity() {
             adapter.updateList(list, savedRouteIds)
             tvTrackedCount?.text = label
 
+            val empty = list.isEmpty()
+            rvList?.visibility = if (empty) View.GONE else View.VISIBLE
+            val tvEmpty = sheetView.findViewById<TextView>(R.id.tvEmptyRoutesSheet)
+            tvEmpty?.visibility = if (empty) View.VISIBLE else View.GONE
+            if (empty) {
+                tvEmpty?.text = when (filter) {
+                    SheetFilter.SAVED -> "No saved routes yet. Tap the bookmark icon on any route to save it."
+                    SheetFilter.TERMINALS -> "No terminals found."
+                    SheetFilter.JEEPNEYS -> "No jeepney routes found."
+                    else -> "No routes or terminals found."
+                }
+            }
+
             val active = when (filter) {
                 SheetFilter.ALL -> chipAll
                 SheetFilter.SAVED -> chipSaved

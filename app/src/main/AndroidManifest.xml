@@ -33,8 +33,7 @@
         <activity android:name=".LoginActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
         <activity android:name=".SignupActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
         <activity android:name=".AuthActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".RoutesActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".SavedActivity" android:exported="false" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ForgotPasswordActivity" android:exported="false" />
         <activity android:name=".ProfileActivity" android:exported="false" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".EditProfileActivity" android:exported="false" android:windowSoftInputMode="adjustResize"/>
     </application>

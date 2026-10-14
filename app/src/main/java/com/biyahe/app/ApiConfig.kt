@@ -15,19 +15,16 @@ object ApiConfig {
     const val UPDATE_PROFILE_URL = "$BASE_URL/api/profile"
     const val UPLOAD_AVATAR_URL = "$BASE_URL/api/profile/image"
 
+    // Login 2FA + forgot password. The server generates, emails (via EmailJS) and
+    // checks every code, so no EmailJS keys live in this app any more.
+    const val VERIFY_OTP_URL = "$BASE_URL/api/login/verify-otp"
+    const val RESEND_OTP_URL = "$BASE_URL/api/login/resend-otp"
+    const val FORGOT_PASSWORD_URL = "$BASE_URL/api/forgot-password"
+    const val RESET_PASSWORD_URL = "$BASE_URL/api/reset-password"
+
     // NEW: logout used to be a query param on get_profile.php
     // (?action=logout); it's now its own endpoint.
     const val LOGOUT_URL = "$BASE_URL/api/logout"
 
     fun getRouteRatingUrl(routeId: Int) = "$BASE_URL/api/routes/$routeId/ratings"
-
-    // EmailJS Configuration
-    // TODO(security): these are shipped in the APK as plain strings, so anyone can extract
-    // them with a decompiler and send mail through your EmailJS quota. When you have a
-    // backend endpoint free, move OTP sending server-side and drop this block entirely.
-    const val EMAILJS_API_URL = "https://api.emailjs.com/api/v1.0/email/send"
-    const val EMAILJS_SERVICE_ID = "service_ljzft88"
-    const val EMAILJS_TEMPLATE_ID = "template_0rsdbdu"
-    const val EMAILJS_PUBLIC_KEY = "yGCBfHEDzOe8b14kb"
-    const val EMAILJS_PRIVATE_KEY = "BljzL9_rsdOSUUByucTUg" // Added Private Key / Access Token
 }

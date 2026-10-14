@@ -3440,8 +3440,10 @@ id btnLogin
 id btnLogout
 id btnProfile
 id btnRateRoute
+id btnResetPassword
 id btnSave
 id btnSaveRoute
+id btnSendCode
 id btnSheetSaveRoute
 id btnSubmitPost
 id btnSubmitRating
@@ -3553,6 +3555,10 @@ id etDigit4
 id etDigit5
 id etDigit6
 id etEmail
+id etFpCode
+id etFpConfirmPassword
+id etFpEmail
+id etFpNewPassword
 id etFullName
 id etNewPassword
 id etPassword
@@ -3637,6 +3643,8 @@ id llExpandedDetails
 id llPillCode
 id llRoutePathLoading
 id llRoutesSheetLoading
+id llStepEmail
+id llStepReset
 id llTerminalImages
 id llUserRatingContainer
 id m3_side_sheet
@@ -3904,6 +3912,7 @@ id transition_scene_layoutid_cache
 id transition_transform
 id triangle
 id tvAppearanceValue
+id tvBackToLogin
 id tvBaseFare
 id tvDestinationDetail
 id tvDiscountedFare
@@ -3911,7 +3920,11 @@ id tvDisplayName
 id tvDropdownEmail
 id tvDropdownUsername
 id tvEmail
+id tvEmptyRoutesSheet
 id tvForgotPassword
+id tvFpResend
+id tvFpSubtitle
+id tvFpTitle
 id tvGoToLogin
 id tvGoToSignup
 id tvMemberSince
@@ -4096,6 +4109,7 @@ layout abc_select_dialog_material
 layout abc_tooltip
 layout activity_auth
 layout activity_edit_profile
+layout activity_forgot_password
 layout activity_login
 layout activity_main
 layout activity_profile

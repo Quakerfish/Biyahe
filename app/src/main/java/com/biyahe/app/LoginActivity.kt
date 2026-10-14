@@ -4,13 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import com.biyahe.app.databinding.ActivityLoginBinding
-import org.json.JSONException
 import org.json.JSONObject
-import java.io.IOException
-import java.io.OutputStreamWriter
-import java.net.HttpURLConnection
-import java.net.SocketTimeoutException
-import java.net.URL
 
 class LoginActivity : BaseActivity() {
 
@@ -29,7 +23,10 @@ class LoginActivity : BaseActivity() {
         }
 
         binding.tvForgotPassword.setOnClickListener {
-            Toast.makeText(this, "Password recovery isn't wired up yet.", Toast.LENGTH_SHORT).show()
+            val typed = binding.etUsername.text.toString().trim()
+            startActivity(Intent(this, ForgotPasswordActivity::class.java).apply {
+                if (typed.contains("@")) putExtra(ForgotPasswordActivity.EXTRA_EMAIL, typed)
+            })
         }
 
         binding.tvGoToSignup.setOnClickListener {
@@ -58,83 +55,33 @@ class LoginActivity : BaseActivity() {
         loginUser(username, password)
     }
 
+    /** Step 1: password check. The server emails the code; AuthActivity checks it. */
     private fun loginUser(username: String, password: String) {
         setLoading(true)
+        AuthHttp.clearCookie(this) // never reuse an old session for a fresh login
 
-        Thread {
-            var conn: HttpURLConnection? = null
-            try {
-                val url = URL(ApiConfig.LOGIN_URL)
-                conn = (url.openConnection() as HttpURLConnection).apply {
-                    requestMethod = "POST"
-                    setRequestProperty("Content-Type", "application/json; charset=UTF-8")
-                    doOutput = true
-                    connectTimeout = 10000
-                    readTimeout = 10000
+        val body = JSONObject().apply {
+            put("username", username)
+            put("password", password)
+        }
+        AuthHttp.post(this, ApiConfig.LOGIN_URL, body, sendCookie = false) { result ->
+            setLoading(false)
+            when {
+                result.networkError != null -> showNetworkError(result.networkError)
+                result.ok && result.json?.optBoolean("otp_required", true) == true -> {
+                    Toast.makeText(this, result.message("Code sent."), Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, AuthActivity::class.java).apply {
+                        putExtra("USER_EMAIL", result.json?.optString("email").orEmpty())
+                        putExtra(
+                            AuthActivity.EXTRA_COOLDOWN,
+                            result.json?.optInt("resend_cooldown_seconds", 45) ?: 45
+                        )
+                    })
+                    finish()
                 }
-
-                val jsonBody = JSONObject().apply {
-                    put("username", username)
-                    put("password", password)
-                }
-
-                OutputStreamWriter(conn.outputStream).use { writer ->
-                    writer.write(jsonBody.toString())
-                    writer.flush()
-                }
-
-                val responseCode = conn.responseCode
-
-                // Extract PHP session cookie if login succeeded
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    val cookies = conn.headerFields["Set-Cookie"]
-                    // The FastAPI backend's session cookie is named "biyahe_session"
-                    // (PHPSESSID was the old PHP backend's cookie name). The
-                    // firstOrNull() fallback means this kept working either way,
-                    // but naming it explicitly here avoids confusion later.
-                    val sessionCookie = cookies?.firstOrNull { it.contains("biyahe_session") } ?: cookies?.firstOrNull()
-
-                    if (sessionCookie != null) {
-                        val rawCookie = sessionCookie.split(";")[0]
-                        getSharedPreferences("app_session", MODE_PRIVATE)
-                            .edit().putString("session_cookie", rawCookie).apply()
-                    }
-                }
-
-                val stream = if (responseCode == HttpURLConnection.HTTP_OK) conn.inputStream else conn.errorStream
-                val response = stream.bufferedReader().use { it.readText() }
-                val jsonResponse = JSONObject(response)
-                val success = jsonResponse.optBoolean("success", false)
-                val message = jsonResponse.optString("message", getString(R.string.error_generic))
-                val userEmail = jsonResponse.optString("email", username)
-
-                runOnUiThread {
-                    setLoading(false)
-                    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-
-                    if (success) {
-                        val intent = Intent(this, AuthActivity::class.java).apply {
-                            putExtra("USER_EMAIL", userEmail)
-                        }
-                        startActivity(intent)
-                        finish()
-                    }
-                }
-            } catch (e: SocketTimeoutException) {
-                runOnUiThread { setLoading(false); showNetworkError("timed out") }
-            } catch (e: IOException) {
-                runOnUiThread { setLoading(false); showNetworkError() }
-            } catch (e: JSONException) {
-                runOnUiThread { setLoading(false); showNetworkError("bad response") }
-            } catch (e: Exception) {
-                runOnUiThread {
-                    setLoading(false)
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_LONG).show()
-                }
-            } finally {
-                conn?.disconnect()
+                else -> Toast.makeText(this, result.message(getString(R.string.error_generic)), Toast.LENGTH_LONG).show()
             }
-        }.start()
+        }
     }
 
     private fun setLoading(loading: Boolean) {
