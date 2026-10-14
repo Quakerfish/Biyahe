@@ -34,11 +34,39 @@ class ProfileActivity : BaseActivity() {
         setupProfileBottomNav()
     }
 
+    private val isGuest: Boolean
+        get() = getSharedPreferences("app_session", MODE_PRIVATE).getBoolean("is_guest", false)
+
     override fun onResume() {
         super.onResume()
         setupProfileBottomNav()
         updateAppearanceSummary()
-        loadProfile()
+        if (isGuest) {
+            setupGuestProfileUI()
+        } else {
+            loadProfile()
+        }
+    }
+
+    private fun setupGuestProfileUI() {
+        binding.tvDisplayName.text = "Guest Commuter"
+        binding.tvEmail.text = "Log in or sign up to save & rate routes"
+        binding.tvMemberSince.visibility = View.GONE
+        binding.btnEditProfile.visibility = View.GONE
+        binding.btnChangeAvatar.isEnabled = false
+        binding.tvStatSaved.text = "0"
+        binding.tvStatRated.text = "0"
+        binding.tvSavedValue.text = "Log in required"
+
+        binding.btnLogout.text = "Log In or Sign Up"
+        binding.btnLogout.setIconResource(R.drawable.ic_person)
+        binding.btnLogout.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            startActivity(intent)
+            finish()
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -65,9 +93,41 @@ class ProfileActivity : BaseActivity() {
         }
     }
 
+    private fun showGuestLoginPrompt(featureName: String = "save or rate routes") {
+        AlertDialog.Builder(this)
+            .setTitle("Log in required")
+            .setMessage("Please log in or create an account to $featureName.")
+            .setPositiveButton("Log In") { _, _ ->
+                getSharedPreferences("app_session", MODE_PRIVATE).edit().remove("is_guest").apply()
+                startActivity(Intent(this, LoginActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                })
+                finish()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
     private fun openSavedRoutes() {
+        if (isGuest) {
+            showGuestLoginPrompt("view your saved routes")
+            return
+        }
         val intent = Intent(this, MainActivity::class.java).apply {
             putExtra("OPEN_ROUTES_SHEET", true)
+            putExtra("FILTER_SAVED", true)
+            flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+        startActivity(intent)
+        disableActivityTransitions()
+    }
+
+    private fun openRatedRoutes() {
+        if (isGuest) {
+            showGuestLoginPrompt("view your rated routes")
+            return
+        }
+        val intent = Intent(this, RatingsActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT or Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
         startActivity(intent)
@@ -89,6 +149,8 @@ class ProfileActivity : BaseActivity() {
         }
 
         binding.rowSavedPlaces.setOnClickListener { openSavedRoutes() }
+        binding.btnStatSavedContainer.setOnClickListener { openSavedRoutes() }
+        binding.btnStatRatedContainer.setOnClickListener { openRatedRoutes() }
         binding.rowAppearance.setOnClickListener { showAppearanceDialog() }
         binding.btnLogout.setOnClickListener { showLogoutConfirmationDialog() }
     }

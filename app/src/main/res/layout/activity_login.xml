@@ -159,7 +159,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="10dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 android:text="Forgot password?"
                 android:textColor="@color/ph_blue"
                 android:textSize="13sp"
@@ -179,11 +178,29 @@
                 app:cornerRadius="14dp" />
         </LinearLayout>
 
+        <!-- Continue without an account -->
+        <TextView
+            android:id="@+id/tvContinueGuest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:padding="8dp"
+            android:text="Continue without an account"
+            android:textColor="@color/ph_blue"
+            android:textSize="13.5sp"
+            android:textStyle="bold" />
+
+        <!-- Flexible Spacer to push Signup footer to the very bottom of the screen -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <!-- Footer Sign Up Link -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -199,7 +216,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 android:text="Sign up"
                 android:textColor="@color/ph_blue"
                 android:textSize="13.5sp"

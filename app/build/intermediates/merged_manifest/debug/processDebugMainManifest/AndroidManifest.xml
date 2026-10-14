@@ -74,13 +74,8 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name="com.biyahe.app.RoutesActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name="com.biyahe.app.SavedActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+            android:name="com.biyahe.app.ForgotPasswordActivity"
+            android:exported="false" />
         <activity
             android:name="com.biyahe.app.ProfileActivity"
             android:exported="false"
@@ -89,6 +84,9 @@
             android:name="com.biyahe.app.EditProfileActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.biyahe.app.RatingsActivity"
+            android:exported="false" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

@@ -42,6 +42,12 @@ public final class ActivityProfileBinding implements ViewBinding {
   public final MaterialButton btnLogout;
 
   @NonNull
+  public final LinearLayout btnStatRatedContainer;
+
+  @NonNull
+  public final LinearLayout btnStatSavedContainer;
+
+  @NonNull
   public final ImageView ivProfileAvatar;
 
   @NonNull
@@ -74,7 +80,8 @@ public final class ActivityProfileBinding implements ViewBinding {
   private ActivityProfileBinding(@NonNull RelativeLayout rootView,
       @NonNull ProgressBar avatarProgress, @NonNull BottomNavigationView bottomNav,
       @NonNull FrameLayout btnChangeAvatar, @NonNull ImageButton btnEditProfile,
-      @NonNull MaterialButton btnLogout, @NonNull ImageView ivProfileAvatar,
+      @NonNull MaterialButton btnLogout, @NonNull LinearLayout btnStatRatedContainer,
+      @NonNull LinearLayout btnStatSavedContainer, @NonNull ImageView ivProfileAvatar,
       @NonNull LinearLayout rowAppearance, @NonNull LinearLayout rowSavedPlaces,
       @NonNull TextView tvAppearanceValue, @NonNull TextView tvDisplayName,
       @NonNull TextView tvEmail, @NonNull TextView tvMemberSince, @NonNull TextView tvSavedValue,
@@ -85,6 +92,8 @@ public final class ActivityProfileBinding implements ViewBinding {
     this.btnChangeAvatar = btnChangeAvatar;
     this.btnEditProfile = btnEditProfile;
     this.btnLogout = btnLogout;
+    this.btnStatRatedContainer = btnStatRatedContainer;
+    this.btnStatSavedContainer = btnStatSavedContainer;
     this.ivProfileAvatar = ivProfileAvatar;
     this.rowAppearance = rowAppearance;
     this.rowSavedPlaces = rowSavedPlaces;
@@ -154,6 +163,18 @@ public final class ActivityProfileBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.btnStatRatedContainer;
+      LinearLayout btnStatRatedContainer = ViewBindings.findChildViewById(rootView, id);
+      if (btnStatRatedContainer == null) {
+        break missingId;
+      }
+
+      id = R.id.btnStatSavedContainer;
+      LinearLayout btnStatSavedContainer = ViewBindings.findChildViewById(rootView, id);
+      if (btnStatSavedContainer == null) {
+        break missingId;
+      }
+
       id = R.id.ivProfileAvatar;
       ImageView ivProfileAvatar = ViewBindings.findChildViewById(rootView, id);
       if (ivProfileAvatar == null) {
@@ -215,9 +236,9 @@ public final class ActivityProfileBinding implements ViewBinding {
       }
 
       return new ActivityProfileBinding((RelativeLayout) rootView, avatarProgress, bottomNav,
-          btnChangeAvatar, btnEditProfile, btnLogout, ivProfileAvatar, rowAppearance,
-          rowSavedPlaces, tvAppearanceValue, tvDisplayName, tvEmail, tvMemberSince, tvSavedValue,
-          tvStatRated, tvStatSaved);
+          btnChangeAvatar, btnEditProfile, btnLogout, btnStatRatedContainer, btnStatSavedContainer,
+          ivProfileAvatar, rowAppearance, rowSavedPlaces, tvAppearanceValue, tvDisplayName, tvEmail,
+          tvMemberSince, tvSavedValue, tvStatRated, tvStatSaved);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

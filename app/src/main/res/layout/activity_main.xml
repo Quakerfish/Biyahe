@@ -633,40 +633,57 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
+                            android:orientation="vertical"
                             android:visibility="gone">
 
-                            <TextView
-                                android:id="@+id/tvRatingLabel"
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/text_muted"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
-                                tools:text="Your rating" />
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
 
-                            <RatingBar
-                                android:id="@+id/rbUserRouteRating"
-                                style="?android:attr/ratingBarStyleSmall"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:isIndicator="true"
-                                android:numStars="5"
-                                android:progressTint="@color/ph_yellow"
-                                android:secondaryProgressTint="@color/ph_yellow"
-                                android:stepSize="0.5" />
+                                <TextView
+                                    android:id="@+id/tvRatingLabel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/text_muted"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    tools:text="Your rating" />
+
+                                <RatingBar
+                                    android:id="@+id/rbUserRouteRating"
+                                    style="?android:attr/ratingBarStyleSmall"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:isIndicator="true"
+                                    android:numStars="5"
+                                    android:progressTint="@color/ph_yellow"
+                                    android:secondaryProgressTint="@color/ph_yellow"
+                                    android:stepSize="0.5" />
+
+                                <TextView
+                                    android:id="@+id/tvUserRouteRatingText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:textColor="@color/text_primary"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    tools:text="4.5" />
+                            </LinearLayout>
 
                             <TextView
-                                android:id="@+id/tvUserRouteRatingText"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/tvUserRouteRatingComment"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:textColor="@color/text_primary"
-                                android:textSize="12sp"
-                                android:textStyle="bold"
-                                tools:text="4.5" />
+                                android:layout_marginTop="4dp"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="12.5sp"
+                                android:textStyle="italic"
+                                android:visibility="gone"
+                                tools:text="&quot;Accurate route and smooth jeepney ride!&quot;" />
                         </LinearLayout>
 
                         <!-- Actions -->
@@ -742,7 +759,7 @@
                 android:layout_height="26dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_compass"
+                android:src="@drawable/ic_my_location"
                 app:tint="@color/bg_white" />
         </com.google.android.material.card.MaterialCardView>
 

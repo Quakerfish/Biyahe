@@ -124,6 +124,7 @@ class AuthActivity : BaseActivity() {
             when {
                 result.networkError != null -> showNetworkError(result.networkError)
                 result.ok -> {
+                    getSharedPreferences("app_session", MODE_PRIVATE).edit().putBoolean("is_guest", false).apply()
                     Toast.makeText(this, "Verification successful!", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, MainActivity::class.java).apply {
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
