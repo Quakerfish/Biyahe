@@ -48,6 +48,9 @@ public final class BottomSheetRoutesListBinding implements ViewBinding {
   public final RecyclerView rvRoutesSheetList;
 
   @NonNull
+  public final TextView tvEmptyRoutesSheet;
+
+  @NonNull
   public final TextView tvRoutesSheetLoadingLabel;
 
   @NonNull
@@ -58,7 +61,8 @@ public final class BottomSheetRoutesListBinding implements ViewBinding {
       @NonNull Chip chipSheetJeepneys, @NonNull Chip chipSheetSaved,
       @NonNull Chip chipSheetTerminals, @NonNull LinearLayout llRoutesSheetLoading,
       @NonNull ProgressBar pbRoutesSheetLoading, @NonNull RecyclerView rvRoutesSheetList,
-      @NonNull TextView tvRoutesSheetLoadingLabel, @NonNull TextView tvRoutesTrackedCount) {
+      @NonNull TextView tvEmptyRoutesSheet, @NonNull TextView tvRoutesSheetLoadingLabel,
+      @NonNull TextView tvRoutesTrackedCount) {
     this.rootView = rootView;
     this.cgRoutesSheetFilter = cgRoutesSheetFilter;
     this.chipSheetAll = chipSheetAll;
@@ -68,6 +72,7 @@ public final class BottomSheetRoutesListBinding implements ViewBinding {
     this.llRoutesSheetLoading = llRoutesSheetLoading;
     this.pbRoutesSheetLoading = pbRoutesSheetLoading;
     this.rvRoutesSheetList = rvRoutesSheetList;
+    this.tvEmptyRoutesSheet = tvEmptyRoutesSheet;
     this.tvRoutesSheetLoadingLabel = tvRoutesSheetLoadingLabel;
     this.tvRoutesTrackedCount = tvRoutesTrackedCount;
   }
@@ -147,6 +152,12 @@ public final class BottomSheetRoutesListBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvEmptyRoutesSheet;
+      TextView tvEmptyRoutesSheet = ViewBindings.findChildViewById(rootView, id);
+      if (tvEmptyRoutesSheet == null) {
+        break missingId;
+      }
+
       id = R.id.tvRoutesSheetLoadingLabel;
       TextView tvRoutesSheetLoadingLabel = ViewBindings.findChildViewById(rootView, id);
       if (tvRoutesSheetLoadingLabel == null) {
@@ -161,7 +172,8 @@ public final class BottomSheetRoutesListBinding implements ViewBinding {
 
       return new BottomSheetRoutesListBinding((LinearLayout) rootView, cgRoutesSheetFilter,
           chipSheetAll, chipSheetJeepneys, chipSheetSaved, chipSheetTerminals, llRoutesSheetLoading,
-          pbRoutesSheetLoading, rvRoutesSheetList, tvRoutesSheetLoadingLabel, tvRoutesTrackedCount);
+          pbRoutesSheetLoading, rvRoutesSheetList, tvEmptyRoutesSheet, tvRoutesSheetLoadingLabel,
+          tvRoutesTrackedCount);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
