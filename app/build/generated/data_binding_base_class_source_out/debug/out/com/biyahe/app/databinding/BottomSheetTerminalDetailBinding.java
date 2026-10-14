@@ -32,6 +32,12 @@ public final class BottomSheetTerminalDetailBinding implements ViewBinding {
   public final RecyclerView rvTerminalRoutes;
 
   @NonNull
+  public final TextView tvPassingRoutesHeader;
+
+  @NonNull
+  public final TextView tvTerminalCoordinates;
+
+  @NonNull
   public final TextView tvTerminalDescription;
 
   @NonNull
@@ -40,17 +46,25 @@ public final class BottomSheetTerminalDetailBinding implements ViewBinding {
   @NonNull
   public final TextView tvTerminalStatus;
 
+  @NonNull
+  public final View vTerminalDivider;
+
   private BottomSheetTerminalDetailBinding(@NonNull LinearLayout rootView,
       @NonNull MaterialCardView cvTerminalPhotoContainer, @NonNull ImageView ivTerminalPhoto,
-      @NonNull RecyclerView rvTerminalRoutes, @NonNull TextView tvTerminalDescription,
-      @NonNull TextView tvTerminalName, @NonNull TextView tvTerminalStatus) {
+      @NonNull RecyclerView rvTerminalRoutes, @NonNull TextView tvPassingRoutesHeader,
+      @NonNull TextView tvTerminalCoordinates, @NonNull TextView tvTerminalDescription,
+      @NonNull TextView tvTerminalName, @NonNull TextView tvTerminalStatus,
+      @NonNull View vTerminalDivider) {
     this.rootView = rootView;
     this.cvTerminalPhotoContainer = cvTerminalPhotoContainer;
     this.ivTerminalPhoto = ivTerminalPhoto;
     this.rvTerminalRoutes = rvTerminalRoutes;
+    this.tvPassingRoutesHeader = tvPassingRoutesHeader;
+    this.tvTerminalCoordinates = tvTerminalCoordinates;
     this.tvTerminalDescription = tvTerminalDescription;
     this.tvTerminalName = tvTerminalName;
     this.tvTerminalStatus = tvTerminalStatus;
+    this.vTerminalDivider = vTerminalDivider;
   }
 
   @Override
@@ -98,6 +112,18 @@ public final class BottomSheetTerminalDetailBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvPassingRoutesHeader;
+      TextView tvPassingRoutesHeader = ViewBindings.findChildViewById(rootView, id);
+      if (tvPassingRoutesHeader == null) {
+        break missingId;
+      }
+
+      id = R.id.tvTerminalCoordinates;
+      TextView tvTerminalCoordinates = ViewBindings.findChildViewById(rootView, id);
+      if (tvTerminalCoordinates == null) {
+        break missingId;
+      }
+
       id = R.id.tvTerminalDescription;
       TextView tvTerminalDescription = ViewBindings.findChildViewById(rootView, id);
       if (tvTerminalDescription == null) {
@@ -116,9 +142,15 @@ public final class BottomSheetTerminalDetailBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.vTerminalDivider;
+      View vTerminalDivider = ViewBindings.findChildViewById(rootView, id);
+      if (vTerminalDivider == null) {
+        break missingId;
+      }
+
       return new BottomSheetTerminalDetailBinding((LinearLayout) rootView, cvTerminalPhotoContainer,
-          ivTerminalPhoto, rvTerminalRoutes, tvTerminalDescription, tvTerminalName,
-          tvTerminalStatus);
+          ivTerminalPhoto, rvTerminalRoutes, tvPassingRoutesHeader, tvTerminalCoordinates,
+          tvTerminalDescription, tvTerminalName, tvTerminalStatus, vTerminalDivider);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

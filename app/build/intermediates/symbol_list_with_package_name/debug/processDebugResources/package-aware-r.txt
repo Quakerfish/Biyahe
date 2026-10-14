@@ -3158,6 +3158,8 @@ drawable bg_bottom_sheet_rounded
 drawable bg_button_blue
 drawable bg_button_primary
 drawable bg_card_white
+drawable bg_fare_tile_discount
+drawable bg_fare_tile_regular
 drawable bg_field
 drawable bg_icon_button
 drawable bg_input_field
@@ -3166,6 +3168,8 @@ drawable bg_pill_soft
 drawable bg_route_code
 drawable bg_route_item
 drawable bg_status_dot
+drawable bg_terminal_dot_destination
+drawable bg_terminal_dot_origin
 drawable bg_top_flag_bar
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
@@ -3409,6 +3413,7 @@ id auto
 id autoComplete
 id autoCompleteToEnd
 id autoCompleteToStart
+id avatarProgress
 id barrier
 id baseline
 id beginOnFirstDraw
@@ -3492,6 +3497,7 @@ id cut
 id cvDestinationTerminalPhoto
 id cvOriginTerminalPhoto
 id cvProfileDropdown
+id cvSearchBar
 id cvSuggestions
 id cvTerminalPhotoContainer
 id date_picker_actions
@@ -3773,9 +3779,6 @@ id rootLayout
 id rounded
 id routeInfoCard
 id rowAppearance
-id rowHelp
-id rowNotifications
-id rowPreferences
 id rowProfileCardDetails
 id rowSavedPlaces
 id row_index_key
@@ -3904,14 +3907,17 @@ id tvAppearanceValue
 id tvBaseFare
 id tvDestinationDetail
 id tvDiscountedFare
+id tvDisplayName
 id tvDropdownEmail
 id tvDropdownUsername
 id tvEmail
 id tvForgotPassword
-id tvFullName
 id tvGoToLogin
 id tvGoToSignup
+id tvMemberSince
+id tvNoSuggestions
 id tvOriginDetail
+id tvPassingRoutesHeader
 id tvPostBody
 id tvPostLocation
 id tvPostTag
@@ -3919,6 +3925,7 @@ id tvPostTimestamp
 id tvPostUserAvatar
 id tvPostUserName
 id tvRateRouteHeader
+id tvRatingLabel
 id tvResendTimer
 id tvRouteCode
 id tvRouteDisclaimer
@@ -3926,6 +3933,7 @@ id tvRouteName
 id tvRoutePathLoadingLabel
 id tvRoutesSheetLoadingLabel
 id tvRoutesTrackedCount
+id tvSavedValue
 id tvSheetDestinationTerminal
 id tvSheetItemRouteCode
 id tvSheetItemRouteName
@@ -3934,14 +3942,17 @@ id tvSheetOriginTerminal
 id tvSheetRouteCode
 id tvSheetRouteName
 id tvSheetVehicleType
+id tvStatRated
+id tvStatSaved
 id tvSuggestionCode
 id tvSuggestionName
+id tvSuggestionsHeader
+id tvTerminalCoordinates
 id tvTerminalDescription
 id tvTerminalName
 id tvTerminalStatus
 id tvTerminals
 id tvUserRouteRatingText
-id tvUsername
 id tvVehicleType
 id unchecked
 id uniform
@@ -3949,6 +3960,7 @@ id unlabeled
 id up
 id useLogo
 id vRouteColorIndicator
+id vTerminalDivider
 id vertical_only
 id view_offset_helper
 id view_transition

@@ -2,39 +2,28 @@ package com.biyahe.app
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.util.Patterns
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.biyahe.app.databinding.ActivityEditProfileBinding
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
-import java.net.HttpURLConnection
-import java.net.URL
 
 class EditProfileActivity : BaseActivity() {
 
     private lateinit var binding: ActivityEditProfileBinding
     private var selectedImageUri: Uri? = null
+    private var originalUsername = ""
+    private var originalEmail = ""
 
     private val pickImageLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         uri?.let { selectedUri ->
             selectedImageUri = selectedUri
-            Glide.with(this)
-                .load(selectedUri)
-                .circleCrop()
-                .into(binding.ivEditAvatar)
+            Glide.with(this).load(selectedUri).circleCrop().into(binding.ivEditAvatar)
         }
     }
 
@@ -43,13 +32,13 @@ class EditProfileActivity : BaseActivity() {
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val currentUsername = intent.getStringExtra("EXTRA_USERNAME") ?: ""
-        val currentEmail = intent.getStringExtra("EXTRA_EMAIL") ?: ""
+        originalUsername = intent.getStringExtra("EXTRA_USERNAME").orEmpty()
+        originalEmail = intent.getStringExtra("EXTRA_EMAIL").orEmpty()
         val currentAvatarUrl = intent.getStringExtra("EXTRA_AVATAR_URL")
             ?.takeIf { it.startsWith("http://", ignoreCase = true) || it.startsWith("https://", ignoreCase = true) }
 
-        binding.etUsername.setText(currentUsername)
-        binding.etEmail.setText(currentEmail)
+        binding.etUsername.setText(originalUsername)
+        binding.etEmail.setText(originalEmail)
 
         if (!currentAvatarUrl.isNullOrEmpty()) {
             Glide.with(this)
@@ -59,164 +48,147 @@ class EditProfileActivity : BaseActivity() {
                 .into(binding.ivEditAvatar)
         }
 
-        binding.btnChangeAvatar.setOnClickListener {
-            pickImageLauncher.launch("image/*")
-        }
-
+        binding.btnChangeAvatar.setOnClickListener { pickImageLauncher.launch("image/*") }
         binding.btnBack.setOnClickListener { finish() }
-        binding.btnSave.setOnClickListener { showSaveConfirmationDialog() }
+        binding.btnSave.setOnClickListener { validateThenConfirm() }
     }
 
-    private fun showSaveConfirmationDialog() {
+    private fun clearErrors() {
+        binding.etUsername.error = null
+        binding.etEmail.error = null
+        binding.etCurrentPassword.error = null
+        binding.etNewPassword.error = null
+        binding.etConfirmPassword.error = null
+    }
+
+    /** Checks everything on the phone first, so obvious mistakes never cost a network round trip. */
+    private fun validateThenConfirm() {
+        clearErrors()
+
+        val username = binding.etUsername.text.toString().trim()
+        val email = binding.etEmail.text.toString().trim()
+        val current = binding.etCurrentPassword.text.toString()
+        val newPass = binding.etNewPassword.text.toString()
+        val confirm = binding.etConfirmPassword.text.toString()
+        val changingPassword = current.isNotEmpty() || newPass.isNotEmpty() || confirm.isNotEmpty()
+
+        if (username.length !in 3..50) {
+            binding.etUsername.error = "Username must be 3 to 50 characters"
+            binding.etUsername.requestFocus()
+            return
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            binding.etEmail.error = "Enter a valid email address"
+            binding.etEmail.requestFocus()
+            return
+        }
+        if (changingPassword) {
+            if (current.isEmpty()) {
+                binding.etCurrentPassword.error = "Enter your current password"
+                binding.etCurrentPassword.requestFocus()
+                return
+            }
+            if (newPass.length < 8) {
+                binding.etNewPassword.error = "At least 8 characters"
+                binding.etNewPassword.requestFocus()
+                return
+            }
+            if (newPass == current) {
+                binding.etNewPassword.error = "Must be different from your current password"
+                binding.etNewPassword.requestFocus()
+                return
+            }
+            if (newPass != confirm) {
+                binding.etConfirmPassword.error = "Passwords do not match"
+                binding.etConfirmPassword.requestFocus()
+                return
+            }
+        }
+
+        val detailsChanged = username != originalUsername || email != originalEmail
+        if (!detailsChanged && !changingPassword && selectedImageUri == null) {
+            Toast.makeText(this, "You haven't changed anything.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         AlertDialog.Builder(this)
             .setTitle("Save Changes?")
-            .setMessage("Do you want to save changes?")
-            .setPositiveButton("Save") { _, _ -> saveChanges() }
+            .setMessage("Do you want to save your changes?")
+            .setPositiveButton("Save") { _, _ ->
+                saveChanges(username, email, if (changingPassword) current else null, if (changingPassword) newPass else null, detailsChanged)
+            }
             .setNegativeButton("Cancel", null)
             .show()
     }
 
-    private fun saveChanges() {
-        val username = binding.etUsername.text.toString().trim()
-        val email = binding.etEmail.text.toString().trim()
-        val currentPassword = binding.etCurrentPassword.text.toString().trim()
-        val newPassword = binding.etNewPassword.text.toString().trim()
+    private fun setSaving(saving: Boolean) {
+        binding.btnSave.isEnabled = !saving
+        binding.btnSave.text = if (saving) "Saving..." else "Save Changes"
+    }
 
-        if (username.isEmpty() || email.isEmpty()) {
-            Toast.makeText(this, "Username and email cannot be empty.", Toast.LENGTH_SHORT).show()
-            return
-        }
+    private fun saveChanges(
+        username: String,
+        email: String,
+        currentPassword: String?,
+        newPassword: String?,
+        detailsChanged: Boolean
+    ) {
+        setSaving(true)
 
-        if (newPassword.isNotEmpty() && currentPassword.isEmpty()) {
-            Toast.makeText(this, "Please enter your current password to set a new one.", Toast.LENGTH_SHORT).show()
-            return
-        }
+        lifecycleScope.launch {
+            // 1. Profile picture (only if a new one was picked). A failure here doesn't block the rest.
+            var avatarError: String? = null
+            selectedImageUri?.let { uri ->
+                val upload = ProfileApi.uploadAvatar(this@EditProfileActivity, uri)
+                if (upload is ApiResult.Failure) avatarError = upload.message
+            }
 
-        binding.btnSave.isEnabled = false
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                // 1. Upload avatar if a new one was selected. Previously this
-                // result was discarded - if the avatar upload silently
-                // failed, the user still saw "Profile updated successfully"
-                // because only the username/email save below was checked.
-                var avatarUploadFailed = false
-                selectedImageUri?.let { uri ->
-                    avatarUploadFailed = !uploadAvatarSync(uri)
-                }
-
-                // 2. Update profile details
-                val url = URL(ApiConfig.UPDATE_PROFILE_URL)
-                val connection = (url.openConnection() as HttpURLConnection).apply {
-                    requestMethod = "POST"
-                    setRequestProperty("Content-Type", "application/json; utf-8")
-                    doOutput = true
-                    connectTimeout = 5000
-                    readTimeout = 5000
-
-                    val cookie = getSharedPreferences("app_session", MODE_PRIVATE)
-                        .getString("session_cookie", null)
-                    if (!cookie.isNullOrEmpty()) {
-                        setRequestProperty("Cookie", cookie)
-                    }
-                }
-
-                val jsonBody = JSONObject().apply {
-                    put("username", username)
-                    put("email", email)
-                    put("current_password", currentPassword)
-                    put("new_password", newPassword)
-                }
-
-                connection.outputStream.use { os ->
-                    os.write(jsonBody.toString().toByteArray(Charsets.UTF_8))
-                }
-
-                val responseCode = connection.responseCode
-                val stream = if (responseCode == HttpURLConnection.HTTP_OK) {
-                    connection.inputStream
-                } else {
-                    connection.errorStream
-                }
-
-                val responseText = stream?.bufferedReader()?.use { it.readText() } ?: ""
-                val json = JSONObject(responseText)
-                val message = json.optString("message", "An error occurred.")
-
-                withContext(Dispatchers.Main) {
-                    binding.btnSave.isEnabled = true
-                    if (responseCode == HttpURLConnection.HTTP_OK && json.optBoolean("success", false)) {
-                        val finalMessage = if (avatarUploadFailed) {
-                            "$message (Your profile picture, however, failed to upload - please try that again.)"
-                        } else {
-                            message
-                        }
-                        Toast.makeText(this@EditProfileActivity, finalMessage, Toast.LENGTH_LONG).show()
+            // 2. Username / email / password (only if any of those changed).
+            if (detailsChanged || newPassword != null) {
+                when (val result = ProfileApi.updateProfile(this@EditProfileActivity, username, email, currentPassword, newPassword)) {
+                    is ApiResult.Success -> {
+                        val note = avatarError?.let { "\nYour picture was not updated: $it" } ?: ""
+                        Toast.makeText(this@EditProfileActivity, result.data + note, Toast.LENGTH_LONG).show()
                         finish()
-                    } else {
-                        Toast.makeText(this@EditProfileActivity, message, Toast.LENGTH_LONG).show()
+                    }
+                    is ApiResult.Failure -> {
+                        setSaving(false)
+                        showSaveError(result.message)
                     }
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                withContext(Dispatchers.Main) {
-                    binding.btnSave.isEnabled = true
-                    Toast.makeText(this@EditProfileActivity, "Network error: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            } else {
+                setSaving(false)
+                if (avatarError == null) {
+                    Toast.makeText(this@EditProfileActivity, "Profile picture updated!", Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    Toast.makeText(this@EditProfileActivity, avatarError, Toast.LENGTH_LONG).show()
                 }
             }
         }
     }
 
-    /** Returns true on a confirmed successful upload, false on any failure (network, non-2xx, or success:false in the response body). */
-    private fun uploadAvatarSync(fileUri: Uri): Boolean {
-        return try {
-            val inputStream = contentResolver.openInputStream(fileUri) ?: return false
-            val imageBytes = inputStream.use { it.readBytes() }
-            val mimeType = contentResolver.getType(fileUri) ?: "image/jpeg"
-            val mediaType = mimeType.toMediaTypeOrNull()
-
-            // Previously hardcoded "avatar.jpg" regardless of the real file
-            // type - a PNG/WEBP pick would still be tagged .jpg server-side.
-            // The server reads the actual content type separately, so this
-            // was cosmetic rather than a visible bug, but it's still wrong:
-            // match the filename's extension to what was actually picked.
-            val requestBody = MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart(
-                    "profile_image",
-                    "avatar.${extensionForMimeType(mimeType)}",
-                    imageBytes.toRequestBody(mediaType)
-                )
-                .build()
-
-            val cookie = getSharedPreferences("app_session", MODE_PRIVATE)
-                .getString("session_cookie", null)
-
-            val requestBuilder = Request.Builder()
-                .url(ApiConfig.UPLOAD_AVATAR_URL)
-                .post(requestBody)
-
-            if (!cookie.isNullOrEmpty()) {
-                requestBuilder.addHeader("Cookie", cookie)
+    /** Puts the server's complaint next to the field it is about, when we can tell which one. */
+    private fun showSaveError(message: String) {
+        val lower = message.lowercase()
+        when {
+            "current password" in lower -> {
+                binding.etCurrentPassword.error = message
+                binding.etCurrentPassword.requestFocus()
             }
-
-            val client = OkHttpClient()
-            val response = client.newCall(requestBuilder.build()).execute()
-            val responseText = response.body?.string() ?: ""
-            Log.d("EditProfileActivity", "Upload response (${response.code}): $responseText")
-
-            response.isSuccessful &&
-                    (try { JSONObject(responseText).optBoolean("success", false) } catch (_: Exception) { false })
-        } catch (e: Exception) {
-            e.printStackTrace()
-            Log.e("EditProfileActivity", "Upload exception", e)
-            false
+            "password" in lower -> {
+                binding.etNewPassword.error = message
+                binding.etNewPassword.requestFocus()
+            }
+            "username" in lower && "email" !in lower -> {
+                binding.etUsername.error = message
+                binding.etUsername.requestFocus()
+            }
+            "email" in lower && "username" !in lower -> {
+                binding.etEmail.error = message
+                binding.etEmail.requestFocus()
+            }
+            else -> Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         }
-    }
-
-    private fun extensionForMimeType(mimeType: String): String = when (mimeType.lowercase()) {
-        "image/png" -> "png"
-        "image/webp" -> "webp"
-        else -> "jpg" // covers image/jpeg, and any unrecognized type as a safe fallback
     }
 }
