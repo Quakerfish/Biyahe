@@ -1,39 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Adaptive icon foreground. 108dp canvas; the whole mark sits inside the central 66dp
+     safe circle (radius 33 from the centre), so even the round mask shows all of it. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <group
-        android:scaleX="2.8"
-        android:scaleY="2.8"
-        android:translateX="20.4"
-        android:translateY="20.4">
+    <!-- soft ground shadow under the pin tip -->
+    <path
+        android:fillColor="#260F172A"
+        android:pathData="M46,85.2 a8,2.2 0 1,0 16,0 a8,2.2 0 1,0 -16,0 z" />
 
-        <!-- Left Half Pin Body (Philippine Blue) -->
-        <path
-            android:fillColor="#0038A8"
-            android:pathData="M12,2C8.13,2 5,5.13 5,9c0,5.25 7,13 7,13z" />
+    <!-- Left half of the pin (Philippine blue) -->
+    <path
+        android:fillColor="#0038A8"
+        android:pathData="M54,22 C40.7,22 30,32.7 30,46 C30,62 54,84 54,84 z" />
 
-        <!-- Right Half Pin Body (Philippine Red) -->
-        <path
-            android:fillColor="#CE1126"
-            android:pathData="M12,2c3.87,0 7,3.13 7,7 0,5.25 -7,13 -7,13z" />
+    <!-- Right half of the pin (Philippine red) -->
+    <path
+        android:fillColor="#CE1126"
+        android:pathData="M54,22 C67.3,22 78,32.7 78,46 C78,62 54,84 54,84 z" />
 
-        <!-- Inner White Circle for Sun Background -->
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M12,9m-4,0a4,4 0,1 0,8 0a4,4 0,1 0,-8 0" />
+    <!-- White badge behind the sun -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M36.50,46.00 a17.5,17.5 0 1,0 35.0,0 a17.5,17.5 0 1,0 -35.0,0 z" />
 
-        <!-- Yellow Philippine Sun inside Pin -->
-        <path
-            android:fillColor="#FCD116"
-            android:pathData="M12,9m-3,0a3,3 0,1 0,6 0a3,3 0,1 0,-6 0" />
+    <!-- Sun rays (8, like the flag) -->
+    <path
+        android:fillColor="#FCD116"
+        android:pathData="M55.70,35.40 L54.00,30.80 L52.30,35.40 z M62.70,39.71 L64.75,35.25 L60.29,37.30 z M64.60,47.70 L69.20,46.00 L64.60,44.30 z M60.29,54.70 L64.75,56.75 L62.70,52.29 z M52.30,56.60 L54.00,61.20 L55.70,56.60 z M45.30,52.29 L43.25,56.75 L47.71,54.70 z M43.40,44.30 L38.80,46.00 L43.40,47.70 z M47.71,37.30 L43.25,35.25 L45.30,39.71 z" />
 
-        <!-- Center White Dot -->
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M12,9m-1,0a1,1 0,1 0,2 0a1,1 0,1 0,-2 0" />
-    </group>
+    <!-- Sun disc -->
+    <path
+        android:fillColor="#FCD116"
+        android:pathData="M46.20,46.00 a7.8,7.8 0 1,0 15.6,0 a7.8,7.8 0 1,0 -15.6,0 z" />
+
+    <!-- Centre dot: the "you are here" point -->
+    <path
+        android:fillColor="#0038A8"
+        android:pathData="M51.20,46.00 a2.8,2.8 0 1,0 5.6,0 a2.8,2.8 0 1,0 -5.6,0 z" />
 </vector>

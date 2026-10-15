@@ -3211,6 +3211,7 @@ int drawable ic_home 0x7f0700b0
 int drawable ic_keyboard_black_24dp 0x7f0700b1
 int drawable ic_launcher_background 0x7f0700b2
 int drawable ic_launcher_foreground 0x7f0700b3
+int drawable ic_launcher_monochrome 0x7f070126
 int drawable ic_lock 0x7f0700b4
 int drawable ic_logout 0x7f0700b5
 int drawable ic_m3_chip_check 0x7f0700b6
@@ -3394,8 +3395,6 @@ int id action_mode_close_button 0x7f080042
 int id action_text 0x7f080043
 int id actions 0x7f080044
 int id activity_chooser_view_content 0x7f080045
-int id actvDestination 0x7f080046
-int id actvOrigin 0x7f080047
 int id add 0x7f080048
 int id alertTitle 0x7f080049
 int id aligned 0x7f08004a
@@ -3434,8 +3433,6 @@ int id btnCreateAccount 0x7f08006a
 int id btnDropdownLogout 0x7f08006b
 int id btnEditProfile 0x7f08006c
 int id btnFindNearest 0x7f08006d
-int id btnFindRoutePath 0x7f08006e
-int id btnHelpful 0x7f08006f
 int id btnLogin 0x7f080070
 int id btnLogout 0x7f080071
 int id btnProfile 0x7f080072
@@ -3447,7 +3444,6 @@ int id btnSendCode 0x7f080077
 int id btnSheetSaveRoute 0x7f080078
 int id btnStatRatedContainer 0x7f080079
 int id btnStatSavedContainer 0x7f08007a
-int id btnSubmitPost 0x7f08007b
 int id btnSubmitRating 0x7f08007c
 int id btnTrackRoute 0x7f08007d
 int id btnUntrackRoute 0x7f08007e
@@ -3547,7 +3543,6 @@ int id endToStart 0x7f0800db
 int id enterAlways 0x7f0800dc
 int id enterAlwaysCollapsed 0x7f0800dd
 int id escape 0x7f0800de
-int id etCommunityPostInput 0x7f0800df
 int id etConfirmPassword 0x7f0800e0
 int id etCurrentPassword 0x7f0800e1
 int id etDigit1 0x7f0800e2
@@ -3793,7 +3788,6 @@ int id rowAppearance 0x7f0801d1
 int id rowProfileCardDetails 0x7f0801d2
 int id rowSavedPlaces 0x7f0801d3
 int id row_index_key 0x7f0801d4
-int id rvCommunityPosts 0x7f0801d5
 int id rvRatedRoutes 0x7f0801d6
 int id rvRouteSuggestions 0x7f0801d7
 int id rvRoutesSheetList 0x7f0801d8
@@ -3862,10 +3856,6 @@ int id submenuarrow 0x7f080216
 int id submit_area 0x7f080217
 int id supportScrollUp 0x7f080218
 int id tabMode 0x7f080219
-int id tagAllClear 0x7f08021a
-int id tagCrowded 0x7f08021b
-int id tagDetour 0x7f08021c
-int id tagTraffic 0x7f08021d
 int id tag_accessibility_actions 0x7f08021e
 int id tag_accessibility_clickable_spans 0x7f08021f
 int id tag_accessibility_heading 0x7f080220
@@ -3937,12 +3927,6 @@ int id tvMemberSince 0x7f080261
 int id tvNoSuggestions 0x7f080262
 int id tvOriginDetail 0x7f080263
 int id tvPassingRoutesHeader 0x7f080264
-int id tvPostBody 0x7f080265
-int id tvPostLocation 0x7f080266
-int id tvPostTag 0x7f080267
-int id tvPostTimestamp 0x7f080268
-int id tvPostUserAvatar 0x7f080269
-int id tvPostUserName 0x7f08026a
 int id tvRateRouteHeader 0x7f08026b
 int id tvRatedComment 0x7f08026c
 int id tvRatedDate 0x7f08026d
@@ -4126,8 +4110,6 @@ int layout activity_main 0x7f0b0020
 int layout activity_profile 0x7f0b0021
 int layout activity_ratings 0x7f0b0022
 int layout activity_signup 0x7f0b0023
-int layout bottom_sheet_community 0x7f0b0024
-int layout bottom_sheet_find_route 0x7f0b0025
 int layout bottom_sheet_rate_route 0x7f0b0026
 int layout bottom_sheet_route_detail 0x7f0b0027
 int layout bottom_sheet_routes_list 0x7f0b0028
@@ -4150,7 +4132,6 @@ int layout design_text_input_end_icon 0x7f0b0038
 int layout design_text_input_start_icon 0x7f0b0039
 int layout ime_base_split_test_activity 0x7f0b003a
 int layout ime_secondary_split_test_activity 0x7f0b003b
-int layout item_community_post 0x7f0b003c
 int layout item_jeepney_route_sheet 0x7f0b003d
 int layout item_rated_route 0x7f0b003e
 int layout item_route_display 0x7f0b003f
