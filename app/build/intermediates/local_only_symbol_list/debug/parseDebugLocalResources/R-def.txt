@@ -69,6 +69,7 @@ drawable ic_help
 drawable ic_home
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+drawable ic_launcher_monochrome
 drawable ic_lock
 drawable ic_logout
 drawable ic_message
@@ -78,8 +79,6 @@ drawable ic_route
 drawable ic_search
 drawable ic_sliders
 drawable ic_theme
-id actvDestination
-id actvOrigin
 id avatarProgress
 id bottomNav
 id btnBack
@@ -90,8 +89,6 @@ id btnCreateAccount
 id btnDropdownLogout
 id btnEditProfile
 id btnFindNearest
-id btnFindRoutePath
-id btnHelpful
 id btnLogin
 id btnLogout
 id btnProfile
@@ -103,7 +100,6 @@ id btnSendCode
 id btnSheetSaveRoute
 id btnStatRatedContainer
 id btnStatSavedContainer
-id btnSubmitPost
 id btnSubmitRating
 id btnTrackRoute
 id btnUntrackRoute
@@ -121,7 +117,6 @@ id cvProfileDropdown
 id cvSearchBar
 id cvSuggestions
 id cvTerminalPhotoContainer
-id etCommunityPostInput
 id etConfirmPassword
 id etCurrentPassword
 id etDigit1
@@ -175,16 +170,11 @@ id routeInfoCard
 id rowAppearance
 id rowProfileCardDetails
 id rowSavedPlaces
-id rvCommunityPosts
 id rvRatedRoutes
 id rvRouteSuggestions
 id rvRoutesSheetList
 id rvTerminalRoutes
 id searchContainer
-id tagAllClear
-id tagCrowded
-id tagDetour
-id tagTraffic
 id topBarContainer
 id tvAppearanceValue
 id tvBackToLogin
@@ -208,12 +198,6 @@ id tvMemberSince
 id tvNoSuggestions
 id tvOriginDetail
 id tvPassingRoutesHeader
-id tvPostBody
-id tvPostLocation
-id tvPostTag
-id tvPostTimestamp
-id tvPostUserAvatar
-id tvPostUserName
 id tvRateRouteHeader
 id tvRatedComment
 id tvRatedDate
@@ -259,13 +243,10 @@ layout activity_main
 layout activity_profile
 layout activity_ratings
 layout activity_signup
-layout bottom_sheet_community
-layout bottom_sheet_find_route
 layout bottom_sheet_rate_route
 layout bottom_sheet_route_detail
 layout bottom_sheet_routes_list
 layout bottom_sheet_terminal_detail
-layout item_community_post
 layout item_jeepney_route_sheet
 layout item_rated_route
 layout item_route_display

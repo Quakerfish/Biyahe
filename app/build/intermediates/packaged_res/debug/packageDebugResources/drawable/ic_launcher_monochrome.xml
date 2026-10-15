@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Themed (monochrome) icon for Android 13+. Android tints the alpha of this layer. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#000000"
+        android:fillType="evenOdd"
+        android:pathData="M54,22 C40.7,22 30,32.7 30,46 C30,62 54,84 54,84 z M54,22 C67.3,22 78,32.7 78,46 C78,62 54,84 54,84 z M36.50,46.00 a17.5,17.5 0 1,0 35.0,0 a17.5,17.5 0 1,0 -35.0,0 z" />
+    <path
+        android:fillColor="#000000"
+        android:pathData="M55.70,35.40 L54.00,30.80 L52.30,35.40 z M62.70,39.71 L64.75,35.25 L60.29,37.30 z M64.60,47.70 L69.20,46.00 L64.60,44.30 z M60.29,54.70 L64.75,56.75 L62.70,52.29 z M52.30,56.60 L54.00,61.20 L55.70,56.60 z M45.30,52.29 L43.25,56.75 L47.71,54.70 z M43.40,44.30 L38.80,46.00 L43.40,47.70 z M47.71,37.30 L43.25,35.25 L45.30,39.71 z M46.20,46.00 a7.8,7.8 0 1,0 15.6,0 a7.8,7.8 0 1,0 -15.6,0 z" />
+</vector>
